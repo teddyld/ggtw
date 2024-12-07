@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.light {
+  --background: 255 255 255;
+  --foreground: 23 23 23;
+  --primary: 37 99 234;
+  --secondary: 30 58 139;
+}
+
+.dark {
+  --background: 23 23 23;
+  --foreground: 255 255 255;
+  --primary: 37 99 234;
+  --secondary: 30 58 139;
+}
