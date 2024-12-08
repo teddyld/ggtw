@@ -5,6 +5,8 @@ import {
   Navigate,
 } from "react-router-dom";
 import "./axios.ts";
+import { MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
 
 const queryClient = new QueryClient();
 
@@ -21,9 +23,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <MantineProvider defaultColorScheme="dark">
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </MantineProvider>
   );
 }
 
