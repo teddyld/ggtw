@@ -1,7 +1,7 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 import "dotenv/config";
 
-export const client = new MongoClient(process.env.MONGODB_URI, {
+const client = new MongoClient(process.env.MONGODB_URI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -23,3 +23,5 @@ async function run() {
 }
 
 run().catch(console.dir);
+
+export const db = client.db("ggtw");
