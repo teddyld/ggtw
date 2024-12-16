@@ -2,11 +2,17 @@ import express from "express";
 
 import "dotenv/config";
 import cors from "cors";
-import cookieParser from "cookie-parser";
+import { clerkMiddleware, createClerkClient } from "@clerk/express";
 
-import { client } from "./src/mongodb.js";
+import { clerkWebHook } from "./src/webhook.js";
+import { InputError, AccessError } from "./src/error.js";
 
 const app = express();
+const port = process.env.PORT || 5050;
+const clerkClient = createClerkClient({
+  secretKey: process.env.CLERK_SECRET_KEY,
+  publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+});
 
 app.use(
   cors({
@@ -14,8 +20,8 @@ app.use(
     origin: process.env.CLIENT_URL,
   })
 );
-app.use(cookieParser());
 app.use(express.json());
+app.use(clerkMiddleware({ clerkClient: clerkClient }));
 
 const catchErrors = (fn) => async (req, res) => {
   try {
@@ -36,4 +42,16 @@ app.get("/", (req, res) => {
   res.json({ success: true });
 });
 
-app.listen(5050, () => console.log("🚀 Server is listening on port 5050..."));
+app.post(
+  "/api/webhooks",
+  catchErrors(async (req, res) => {
+    const headers = req.headers;
+    const payload = JSON.stringify(req.body);
+    const { success, message } = await clerkWebHook(headers, payload);
+    console.log(success, message);
+  })
+);
+
+app.listen(port, () =>
+  console.log(`🚀 Server is listening on port ${port}...`)
+);
