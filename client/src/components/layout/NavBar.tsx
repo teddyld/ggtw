@@ -53,7 +53,6 @@ export default function NavBar() {
         </Stack>
       </AppShell.Section>
       <AppShell.Section>
-        {" "}
         <Stack align="center" gap={0}>
           <Divider w="100%" />
           <Flex p="md" align="center" justify="center" wrap="wrap" gap="xs">
