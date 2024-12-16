@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           mobile: !opened,
         },
       }}
-      padding="md"
+      padding="xs"
     >
       <AppShell.Header>
         <Header opened={opened} toggle={toggle} />
