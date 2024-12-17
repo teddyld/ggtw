@@ -1,4 +1,5 @@
 import { FaDumbbell, FaChartLine, FaRegUser } from "react-icons/fa";
+import { IconType } from "react-icons/lib";
 
 export const pageInfo = [
   {
@@ -17,3 +18,9 @@ export const pageInfo = [
     icon: FaRegUser,
   },
 ];
+
+export type pageType = {
+  name: string;
+  route: string;
+  icon: IconType;
+};
