@@ -9,7 +9,7 @@ import { useTheme } from "../hooks/useTheme";
 import Container from "../components/layout/Container";
 import Layout from "../components/layout/Layout";
 
-export default function Profile() {
+export default function ProfilePage() {
   const { theme } = useTheme();
   const [control, setControl] = React.useState("account");
 

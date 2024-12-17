@@ -6,24 +6,24 @@ import {
 } from "react-router-dom";
 import "./axios.ts";
 
-import Workout from "./pages/Workout.tsx";
-import Statistics from "./pages/Statistics.tsx";
-import Profile from "./pages/Profile.tsx";
+import WorkoutPage from "./pages/WorkoutPage.tsx";
+import StatisticsPage from "./pages/StatisticsPage.tsx";
+import ProfilePage from "./pages/ProfilePage.tsx";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Workout />,
+    element: <WorkoutPage />,
   },
   {
     path: "/statistics",
-    element: <Statistics />,
+    element: <StatisticsPage />,
   },
   {
     path: "/profile",
-    element: <Profile />,
+    element: <ProfilePage />,
   },
   {
     path: "*",
