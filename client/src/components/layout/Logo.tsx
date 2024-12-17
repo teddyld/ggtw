@@ -2,7 +2,7 @@ import { Group, Image, Text } from "@mantine/core";
 import FlameLogo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
-export default function Logo() {
+export default function Logo({ opened }: { opened: boolean }) {
   const navigate = useNavigate();
 
   return (
@@ -19,6 +19,7 @@ export default function Logo() {
         variant="gradient"
         gradient={{ from: "red.9", to: "red.4", deg: 90 }}
         fw={700}
+        className={!opened ? "hidden" : ""}
       >
         GGTW
       </Text>

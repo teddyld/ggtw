@@ -18,9 +18,10 @@ import {
 import { MdLogin, MdLogout } from "react-icons/md";
 import { FaRegUser, FaChevronDown } from "react-icons/fa";
 
-import Logo from "./Logo";
 import { useTheme } from "../../hooks/useTheme";
 import { useNavigate } from "react-router-dom";
+
+import Logo from "./Logo";
 
 export default function Header({
   opened,
@@ -37,13 +38,15 @@ export default function Header({
     <>
       <Group h="100%" px="md" justify="space-between" wrap="nowrap">
         <Group wrap="nowrap" gap="md">
-          <Logo />
           <Burger
             opened={opened}
             onClick={toggle}
             hiddenFrom="sm"
             aria-label="Toggle navigation"
           />
+          <Box hiddenFrom="sm">
+            <Logo opened={false} />
+          </Box>
         </Group>
 
         <SignedOut>
@@ -58,19 +61,20 @@ export default function Header({
           <Menu>
             <Menu.Target>
               <Button
-                h={{ base: 38, sm: 48 }}
+                h={{ base: 30, sm: 40 }}
                 p={{ base: "0", sm: "10" }}
+                py="0"
                 variant="gradient"
                 className="h-min"
                 radius="xl"
-                gradient={{ from: "red", to: "rgba(120, 0, 0, 1)", deg: 150 }}
+                gradient={{ from: "red.9", to: "red.4", deg: 150 }}
               >
                 <Group justify="space-between" wrap="nowrap" gap="xs">
                   <Avatar
                     src={user?.imageUrl}
                     alt="Profile avatar"
                     className="border-2 border-secondary hover:border-transparent"
-                    size={35}
+                    size={30}
                   />
                   <Text visibleFrom="sm">You</Text>
                   <Box visibleFrom="sm">

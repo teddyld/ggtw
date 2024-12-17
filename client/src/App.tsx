@@ -7,7 +7,6 @@ import {
 import "./axios.ts";
 
 import Workout from "./pages/Workout.tsx";
-import Program from "./pages/Program.tsx";
 import Statistics from "./pages/Statistics.tsx";
 import Profile from "./pages/Profile.tsx";
 
@@ -17,10 +16,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Workout />,
-  },
-  {
-    path: "/program",
-    element: <Program />,
   },
   {
     path: "/statistics",
