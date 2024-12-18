@@ -18,8 +18,8 @@ export default function NavBarPages({ opened }: { opened: boolean }) {
           );
         } else {
           return (
-            <Tooltip label={page.name} position="right">
-              <NavBarButton page={page} key={`page-btn-${key}`}>
+            <Tooltip label={page.name} position="right" key={`page-btn-${key}`}>
+              <NavBarButton page={page}>
                 <page.icon className="text-lg" />
               </NavBarButton>
             </Tooltip>

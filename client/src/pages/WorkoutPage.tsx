@@ -2,10 +2,10 @@ import React from "react";
 
 import Layout from "../components/layout/Layout";
 
-export default function Statistics() {
+export default function WorkoutPage() {
   return (
     <Layout>
-      <div>Statistics</div>
+      <div>Workout</div>
     </Layout>
   );
 }
