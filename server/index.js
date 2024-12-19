@@ -6,6 +6,7 @@ import { clerkMiddleware, createClerkClient } from "@clerk/express";
 
 import { clerkWebHook } from "./src/webhook.js";
 import { InputError, AccessError } from "./src/error.js";
+import { getUserSession } from "./src/service.js";
 
 const app = express();
 const port = process.env.PORT || 5050;
@@ -39,7 +40,7 @@ const catchErrors = (fn) => async (req, res) => {
 };
 
 app.get("/", (req, res) => {
-  res.json({ success: true });
+  res.json({ success: true, message: "Hello World" });
 });
 
 app.post(
@@ -47,8 +48,16 @@ app.post(
   catchErrors(async (req, res) => {
     const headers = req.headers;
     const payload = JSON.stringify(req.body);
-    const { success, message } = await clerkWebHook(headers, payload);
-    console.log(success, message);
+    await clerkWebHook(headers, payload);
+  })
+);
+
+app.get(
+  "/user/session/:id",
+  catchErrors(async (req, res) => {
+    const { id } = req.params;
+    const { session } = await getUserSession(id);
+    return res.json({ session, success: true });
   })
 );
 
