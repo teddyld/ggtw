@@ -3,7 +3,7 @@ import Layout from "../components/layout/Layout";
 import Container from "../components/layout/Container";
 
 export default function WorkoutPage() {
-  const { id, session, setSession, sessionPending } = useUser();
+  const { id } = useUser();
 
   return (
     <Layout>
