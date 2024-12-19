@@ -16,9 +16,8 @@ async function run() {
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("🚀 Connected to MongoDB");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
+  } catch (err) {
+    console.error(`Error running MongoDB: ${err.message}`);
   }
 }
 
