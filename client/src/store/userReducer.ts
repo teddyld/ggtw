@@ -1,17 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type sessionState = {
-  [key: string]: string | string[] | number | number[] | sessionState;
-};
+export type programState = {
+  [key: string]: string | string[] | number | number[] | programState;
+}[];
 
 type userState = {
   id: string;
-  session: sessionState;
+  program: programState;
 };
 
 const initialState: userState = {
   id: "",
-  session: {},
+  program: [],
 };
 
 const userSlice = createSlice({
@@ -21,11 +21,11 @@ const userSlice = createSlice({
     setStoreId: (state, action: PayloadAction<string>) => {
       state.id = action.payload;
     },
-    setStoreSession: (state, action: PayloadAction<sessionState>) => {
-      state.session = action.payload;
+    setStoreProgram: (state, action: PayloadAction<programState>) => {
+      state.program = action.payload;
     },
   },
 });
 
-export const { setStoreId, setStoreSession } = userSlice.actions;
+export const { setStoreId, setStoreProgram } = userSlice.actions;
 export default userSlice.reducer;
