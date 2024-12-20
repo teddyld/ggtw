@@ -6,7 +6,7 @@ import { clerkMiddleware, createClerkClient } from "@clerk/express";
 
 import { clerkWebHook } from "./src/webhook.js";
 import { InputError, AccessError } from "./src/error.js";
-import { getUserSession } from "./src/service.js";
+import { getUserProgram, updateUserProgram } from "./src/service.js";
 
 const app = express();
 const port = process.env.PORT || 5050;
@@ -53,11 +53,23 @@ app.post(
 );
 
 app.get(
-  "/user/session/:id",
+  "/user/program/:id",
   catchErrors(async (req, res) => {
     const { id } = req.params;
-    const { session } = await getUserSession(id);
-    return res.json({ session, success: true });
+    const { program } = await getUserProgram(id);
+    return res.json({ program, success: true });
+  })
+);
+
+app.put(
+  "/user/program/update",
+  catchErrors(async (req, res) => {
+    const { id, program } = req.body;
+    await updateUserProgram(id, program);
+    return res.json({
+      success: true,
+      message: "Successfully updated user program",
+    });
   })
 );
 

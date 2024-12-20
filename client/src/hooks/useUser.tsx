@@ -3,49 +3,50 @@ import axios from "axios";
 import { useAppSelector, useAppDispatch } from "../store";
 import {
   setStoreId,
-  setStoreSession,
-  sessionState,
+  setStoreProgram,
+  programState,
 } from "../store/userReducer";
 import { useUser as useClerkUser } from "@clerk/clerk-react";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export const useUser = () => {
   const dispatch = useAppDispatch();
+
   const id = useAppSelector((state) => state.user.id);
-  const session = useAppSelector((state) => state.user.session);
+  const program = useAppSelector((state) => state.user.program);
 
   const { user, isSignedIn, isLoaded } = useClerkUser();
 
-  const mutation = useMutation({
-    mutationFn: (id: string) =>
-      axios.get(`/user/session/${id}`).then((res) => res.data),
+  const { isPending, data } = useQuery({
+    queryKey: ["program", id],
+    queryFn: () => axios.get(`/user/program/${id}`).then((res) => res.data),
+    enabled: !!id, // Only run the query if the id is set
   });
 
   // Set user id from the User object from Clerk
   React.useEffect(() => {
-    const fetchSession = async (id: string) => {
-      try {
-        const data = await mutation.mutateAsync(id);
-        setSession(data.session);
-      } catch (error: any) {
-        console.error(error.message);
-      }
-    };
-
-    if (isSignedIn) {
+    if (isLoaded && isSignedIn) {
       dispatch(setStoreId(user?.id));
-      fetchSession(user?.id);
     }
-  }, [isLoaded]);
+  }, [isLoaded, isSignedIn]);
 
-  const setSession = (session: sessionState) => {
-    dispatch(setStoreSession(session));
+  // Update program in MongoDB
+  const setProgram = async (id: string, program: programState) => {
+    await axios.put("/user/program/update", { id, program });
+    dispatch(setStoreProgram(program));
   };
+
+  // Set user's program from MongoDB on initial load
+  React.useEffect(() => {
+    if (data) {
+      dispatch(setStoreProgram(data.program));
+    }
+  }, [isPending]);
 
   return {
     id,
-    session,
-    setSession,
-    sessionPending: mutation.isPending,
+    program,
+    setProgram,
+    programPending: isPending,
   };
 };
