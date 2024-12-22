@@ -7,6 +7,7 @@ import {
   Box,
 } from "@mantine/core";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useUser } from "@clerk/clerk-react";
 
 import Logo from "./Logo";
 import NavBarPages from "./NavBarPages";
@@ -19,6 +20,8 @@ export default function NavBar({
   opened: boolean;
   toggle: () => void;
 }) {
+  const { isSignedIn } = useUser();
+
   return (
     <>
       <AppShell.Section p="md">
@@ -39,9 +42,9 @@ export default function NavBar({
         </Group>
       </AppShell.Section>
       <AppShell.Section grow>
-        <NavBarPages opened={opened} />
+        {!isSignedIn ? <span /> : <NavBarPages opened={opened} />}
       </AppShell.Section>
-      {!opened && (
+      {!opened && isSignedIn && (
         <AppShell.Section>
           <Divider w="100%" />
           <Box p="md">
