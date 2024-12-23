@@ -1,12 +1,15 @@
 import React from "react";
 import { AppShell, Flex } from "@mantine/core";
+import { useUser } from "@clerk/clerk-react";
 
 import { useNavbar } from "../../hooks/useNavbar";
 import Header from "./Header";
 import NavBar from "./NavBar";
+import Dashboard from "./Dashboard";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { opened, toggle } = useNavbar();
+  const { isSignedIn } = useUser();
   const size = opened ? 250 : 60;
 
   return (
@@ -36,7 +39,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           direction="column"
           wrap="nowrap"
         >
-          {children}
+          {isSignedIn ? children : <Dashboard />}
         </Flex>
       </AppShell.Main>
     </AppShell>

@@ -14,7 +14,6 @@ import { useDisclosure } from "@mantine/hooks";
 import { SignInButton } from "@clerk/clerk-react";
 import { FaPen, FaDumbbell, FaChartLine } from "react-icons/fa";
 
-import Layout from "./Layout";
 import PrivacyModal from "./PrivacyModal";
 
 export default function Dashboard() {
@@ -22,7 +21,7 @@ export default function Dashboard() {
   const [opened, { open, close }] = useDisclosure();
 
   return (
-    <Layout>
+    <>
       <Stack
         py={100}
         px={{ base: 10, sm: 100 }}
@@ -121,6 +120,6 @@ export default function Dashboard() {
         </Group>
       </Group>
       <PrivacyModal opened={opened} close={close} />
-    </Layout>
+    </>
   );
 }
