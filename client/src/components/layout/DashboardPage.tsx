@@ -14,14 +14,15 @@ import { useDisclosure } from "@mantine/hooks";
 import { SignInButton } from "@clerk/clerk-react";
 import { FaPen, FaDumbbell, FaChartLine } from "react-icons/fa";
 
+import Layout from "./Layout";
 import PrivacyModal from "./PrivacyModal";
 
-export default function Dashboard() {
+export default function DashboardPage() {
   const [active, setActive] = React.useState(-1);
   const [opened, { open, close }] = useDisclosure();
 
   return (
-    <>
+    <Layout>
       <Stack
         py={100}
         px={{ base: 10, sm: 100 }}
@@ -37,7 +38,7 @@ export default function Dashboard() {
           Create your workout plans and track your progress. Use the ggtw
           platform for free to start tracking your workout today.
         </Highlight>
-        <SignInButton mode="modal" forceRedirectUrl="/">
+        <SignInButton mode="modal" forceRedirectUrl="/workout">
           <Button w={150} radius="xl" variant="light">
             Get started
           </Button>
@@ -120,6 +121,6 @@ export default function Dashboard() {
         </Group>
       </Group>
       <PrivacyModal opened={opened} close={close} />
-    </>
+    </Layout>
   );
 }

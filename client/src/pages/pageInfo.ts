@@ -4,7 +4,7 @@ import { IconType } from "react-icons/lib";
 export const pageInfo = [
   {
     name: "Workout",
-    route: "/",
+    route: "/workout",
     icon: FaDumbbell,
   },
   {
