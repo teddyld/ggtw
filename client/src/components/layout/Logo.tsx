@@ -6,7 +6,7 @@ import FlameLogo from "../../assets/logo.png";
 
 export default function Logo({ opened }: { opened: boolean }) {
   const navigate = useNavigate();
-  const { isSignedIn } = useUser()
+  const { isSignedIn } = useUser();
 
   return (
     <Group
