@@ -14,8 +14,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { SignInButton } from "@clerk/clerk-react";
 import { FaPen, FaDumbbell, FaChartLine } from "react-icons/fa";
 
-import Layout from "./Layout";
-import PrivacyModal from "./PrivacyModal";
+import Layout from "../components/layout/Layout";
+import PrivacyModal from "../components/layout/PrivacyModal";
 
 export default function DashboardPage() {
   const [active, setActive] = React.useState(-1);

@@ -9,7 +9,7 @@ import "./axios.ts";
 import WorkoutPage from "./pages/WorkoutPage.tsx";
 import StatisticsPage from "./pages/StatisticsPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
-import DashboardPage from "./components/layout/DashboardPage.tsx";
+import DashboardPage from "./pages/DashboardPage.tsx";
 
 const queryClient = new QueryClient();
 
