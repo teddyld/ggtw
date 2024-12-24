@@ -1,4 +1,4 @@
-import { Stack, Group, Skeleton } from "@mantine/core";
+import { Group, Skeleton } from "@mantine/core";
 
 import Layout from "../layout/Layout";
 import Container from "../layout/Container";
