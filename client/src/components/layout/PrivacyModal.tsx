@@ -1,4 +1,4 @@
-import { Modal, Accordion, Title, Anchor } from "@mantine/core";
+import { Modal, Accordion, Text, Anchor } from "@mantine/core";
 
 const privacyPolicy = [
   {
@@ -35,7 +35,7 @@ export default function PrivacyModal({
       <Accordion.Item key={`privacy-policy-${index}`} value={item.value}>
         <Accordion.Control>{item.value}</Accordion.Control>
         <Accordion.Panel>
-          {item.content}{" "}
+          {item.content}
           {item?.email ? (
             <Anchor href="mailto: ggtw.vincent@gmail.com">
               ggtw.vincent@gmail.com.
@@ -50,7 +50,7 @@ export default function PrivacyModal({
 
   return (
     <Modal
-      title={<Title order={2}>Application Privacy Policy</Title>}
+      title={<Text fw={700} size="xl">Application Privacy Policy</Text>}
       opened={opened}
       onClose={close}
       centered
