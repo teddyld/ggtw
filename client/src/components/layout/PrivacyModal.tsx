@@ -50,7 +50,11 @@ export default function PrivacyModal({
 
   return (
     <Modal
-      title={<Text fw={700} size="xl">Application Privacy Policy</Text>}
+      title={
+        <Text fw={700} size="xl">
+          Application Privacy Policy
+        </Text>
+      }
       opened={opened}
       onClose={close}
       centered
