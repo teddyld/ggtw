@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   SignedIn,
   SignedOut,
@@ -20,7 +21,6 @@ import { FaRegUser, FaChevronDown, FaPlus } from "react-icons/fa";
 
 import { useTheme } from "../../hooks/useTheme";
 import { useProgram } from "../../hooks/useProgram";
-import { useNavigate } from "react-router-dom";
 
 import WorkoutNewButton from "../workout/WorkoutNewButton";
 import WorkoutTemplatesButton from "../workout/WorkoutTemplatesButton";
@@ -76,11 +76,11 @@ export default function Header({
                 Create
               </WorkoutNewButton>
               <WorkoutTemplatesButton
+                program={program}
+                setProgram={setProgram}
                 variant="outline"
                 color="red"
                 radius="lg"
-                program={program}
-                setProgram={setProgram}
               />
             </Button.Group>
             <Menu>
