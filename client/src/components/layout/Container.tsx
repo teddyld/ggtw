@@ -12,7 +12,7 @@ export default function Container({ children, ...rest }: ContainerType) {
       p="xl"
       withBorder
       radius="md"
-      className="w-full max-w-4xl"
+      className="w-full max-w-2xl"
       {...rest}
     >
       {children}
