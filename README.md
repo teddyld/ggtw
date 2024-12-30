@@ -2,14 +2,14 @@
 
 ## Tech Stack
 
-- MongoDB (Prisma)
+- MongoDB
 - Express.js
 - React.js (TypeScript)
 - Node.js
 - MantineUI components
 - TailwindCSS
 - Redux state management
-- NextAuth.js
+- Clerk
 
 ## About
 
