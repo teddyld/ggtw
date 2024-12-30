@@ -1,9 +1,12 @@
-import { Group, Image, Text } from "@mantine/core";
-import FlameLogo from "../../assets/logo.png";
+import { useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
+import { Group, Image, Text } from "@mantine/core";
+
+import FlameLogo from "../../assets/logo.png";
 
 export default function Logo({ opened }: { opened: boolean }) {
   const navigate = useNavigate();
+  const { isSignedIn } = useUser();
 
   return (
     <Group
@@ -11,7 +14,7 @@ export default function Logo({ opened }: { opened: boolean }) {
       wrap="nowrap"
       className="cursor-pointer overflow-hidden"
       component="a"
-      onClick={() => navigate("/")}
+      onClick={() => navigate(isSignedIn ? "/workout" : "/")}
     >
       <Image src={FlameLogo} h={32} alt="ggtw logo" />
       <Text

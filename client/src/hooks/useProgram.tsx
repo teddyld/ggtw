@@ -1,15 +1,12 @@
 import React from "react";
 import axios from "axios";
 import { useAppSelector, useAppDispatch } from "../store";
-import {
-  setStoreId,
-  setStoreProgram,
-  programState,
-} from "../store/userReducer";
+import { setStoreId, setStoreProgram } from "../store/userReducer";
+import { programState } from "../components/workout/workoutData";
 import { useUser as useClerkUser } from "@clerk/clerk-react";
 import { useQuery } from "@tanstack/react-query";
 
-export const useUser = () => {
+export const useProgram = () => {
   const dispatch = useAppDispatch();
 
   const id = useAppSelector((state) => state.user.id);
@@ -31,20 +28,21 @@ export const useUser = () => {
   }, [isLoaded, isSignedIn]);
 
   // Update program in MongoDB
-  const setProgram = async (id: string, program: programState) => {
+  const setProgram = async (program: programState) => {
     await axios.put("/user/program/update", { id, program });
     dispatch(setStoreProgram(program));
   };
 
   // Set user's program from MongoDB on initial load
   React.useEffect(() => {
-    if (data) {
+    if (data && data.program.length > 0) {
       dispatch(setStoreProgram(data.program));
+    } else {
+      dispatch(setStoreProgram([]));
     }
   }, [isPending]);
 
   return {
-    id,
     program,
     setProgram,
     programPending: isPending,

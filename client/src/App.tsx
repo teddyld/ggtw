@@ -9,12 +9,17 @@ import "./axios.ts";
 import WorkoutPage from "./pages/WorkoutPage.tsx";
 import StatisticsPage from "./pages/StatisticsPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
+import DashboardPage from "./pages/DashboardPage.tsx";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <DashboardPage />,
+  },
+  {
+    path: "/workout",
     element: <WorkoutPage />,
   },
   {

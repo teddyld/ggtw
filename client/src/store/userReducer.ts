@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export type programState = {
-  [key: string]: string | string[] | number | number[] | programState;
-}[];
+import { programState } from "../components/workout/workoutData";
 
 type userState = {
   id: string;
