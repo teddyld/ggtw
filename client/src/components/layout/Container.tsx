@@ -9,7 +9,7 @@ export default function Container({ children, ...rest }: ContainerType) {
   return (
     <Paper
       shadow="md"
-      p="xl"
+      p={{ base: "sm", sm: "xl" }}
       withBorder
       radius="md"
       className="w-full max-w-2xl"
