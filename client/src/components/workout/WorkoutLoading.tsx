@@ -5,7 +5,7 @@ import Container from "../layout/Container";
 
 function WorkoutSkeleton() {
   return (
-    <Container w={472}>
+    <Container w={576}>
       <Skeleton height={40} mb="lg" />
       <Skeleton height={28} width={200} mb="sm" />
       <Skeleton height={22} width="25%" mb="xl" />
