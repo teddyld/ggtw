@@ -14,36 +14,43 @@ export type exerciseType = {
   id: string;
   name: string;
   muscleGroups: string[];
-  type: "reps" | "time";
-  setIds: string[];
+  types: exerciseTypes;
+  setOrder: string[];
+  setCount: number;
   sets: {
-    [key: string]: {
-      id: string;
-      values: {
-        reps: number;
-        weight: number;
-        time: number;
-      };
-    };
+    [key: string]: setType;
   };
 };
+
+export type setType = {
+  id: string;
+  values: {
+    reps: number;
+    weight: number;
+    time: number;
+  };
+};
+
+export type setInputTypes = "weight" | "reps" | "time";
+export type exerciseTypes = { reps: boolean; time: boolean };
 
 export type programState = workoutState[];
 
 const chestWorkout: workoutState = {
   name: "Chest + Triceps",
   exercises: {
-    "excerise-1": {
+    "exercise-1": {
       id: "exercise-1",
       name: "Incline Bench Press",
-      muscleGroups: ["Chest"],
-      type: "reps",
-      setIds: ["set-1", "set-2", "set-3"],
+      muscleGroups: ["CHEST"],
+      types: { reps: true, time: false },
+      setOrder: ["set-1", "set-2", "set-3"],
+      setCount: 3,
       sets: {
         "set-1": {
           id: "set-1",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -51,7 +58,7 @@ const chestWorkout: workoutState = {
         "set-2": {
           id: "set-2",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -59,24 +66,25 @@ const chestWorkout: workoutState = {
         "set-3": {
           id: "set-3",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
         },
       },
     },
-    "excerise-2": {
+    "exercise-2": {
       id: "exercise-2",
       name: "Cable Flys",
-      muscleGroups: ["Chest"],
-      type: "reps",
-      setIds: ["set-1", "set-2", "set-3"],
+      muscleGroups: ["CHEST"],
+      types: { reps: true, time: false },
+      setOrder: ["set-1", "set-2", "set-3"],
+      setCount: 3,
       sets: {
         "set-1": {
           id: "set-1",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -84,7 +92,7 @@ const chestWorkout: workoutState = {
         "set-2": {
           id: "set-2",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -92,24 +100,25 @@ const chestWorkout: workoutState = {
         "set-3": {
           id: "set-3",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
         },
       },
     },
-    "excerise-3": {
+    "exercise-3": {
       id: "exercise-3",
       name: "Tricep Pushdowns",
-      muscleGroups: ["Triceps"],
-      type: "reps",
-      setIds: ["set-1", "set-2", "set-3"],
+      muscleGroups: ["TRICEPS"],
+      types: { reps: true, time: false },
+      setOrder: ["set-1", "set-2", "set-3"],
+      setCount: 3,
       sets: {
         "set-1": {
           id: "set-1",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -117,7 +126,7 @@ const chestWorkout: workoutState = {
         "set-2": {
           id: "set-2",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -125,7 +134,7 @@ const chestWorkout: workoutState = {
         "set-3": {
           id: "set-3",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -133,24 +142,25 @@ const chestWorkout: workoutState = {
       },
     },
   },
-  exerciseOrder: ["excerise-1", "excerise-2", "excerise-3"],
+  exerciseOrder: ["exercise-1", "exercise-2", "exercise-3"],
   exerciseCount: 3,
 };
 
-export const backWorkout: workoutState = {
+const backWorkout: workoutState = {
   name: "Back & Biceps",
   exercises: {
-    "excerise-1": {
+    "exercise-1": {
       id: "exercise-1",
       name: "Pullups",
-      muscleGroups: ["Back", "Biceps"],
-      type: "reps",
-      setIds: ["set-1", "set-2", "set-3"],
+      muscleGroups: ["BACK", "BICEPS"],
+      types: { reps: true, time: false },
+      setOrder: ["set-1", "set-2", "set-3"],
+      setCount: 3,
       sets: {
         "set-1": {
           id: "set-1",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -158,7 +168,7 @@ export const backWorkout: workoutState = {
         "set-2": {
           id: "set-2",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -166,24 +176,25 @@ export const backWorkout: workoutState = {
         "set-3": {
           id: "set-3",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
         },
       },
     },
-    "excerise-2": {
+    "exercise-2": {
       id: "exercise-2",
       name: "Chest-Supported Rows",
-      muscleGroups: ["Back"],
-      type: "reps",
-      setIds: ["set-1", "set-2", "set-3"],
+      muscleGroups: ["BACK"],
+      types: { reps: true, time: false },
+      setOrder: ["set-1", "set-2", "set-3"],
+      setCount: 3,
       sets: {
         "set-1": {
           id: "set-1",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -191,7 +202,7 @@ export const backWorkout: workoutState = {
         "set-2": {
           id: "set-2",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -199,24 +210,25 @@ export const backWorkout: workoutState = {
         "set-3": {
           id: "set-3",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
         },
       },
     },
-    "excerise-3": {
+    "exercise-3": {
       id: "exercise-3",
       name: "Bicep Curls",
-      muscleGroups: ["Biceps"],
-      type: "reps",
-      setIds: ["set-1", "set-2", "set-3"],
+      muscleGroups: ["BICEPS"],
+      types: { reps: true, time: false },
+      setOrder: ["set-1", "set-2", "set-3"],
+      setCount: 3,
       sets: {
         "set-1": {
           id: "set-1",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -224,7 +236,7 @@ export const backWorkout: workoutState = {
         "set-2": {
           id: "set-2",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -232,7 +244,7 @@ export const backWorkout: workoutState = {
         "set-3": {
           id: "set-3",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -240,24 +252,25 @@ export const backWorkout: workoutState = {
       },
     },
   },
-  exerciseOrder: ["excerise-1", "excerise-2", "excerise-3"],
+  exerciseOrder: ["exercise-1", "exercise-2", "exercise-3"],
   exerciseCount: 3,
 };
 
 const legsWorkout: workoutState = {
   name: "Legs",
   exercises: {
-    "excerise-1": {
+    "exercise-1": {
       id: "exercise-1",
       name: "Calf Raises",
-      muscleGroups: ["Calves"],
-      type: "reps",
-      setIds: ["set-1", "set-2", "set-3"],
+      muscleGroups: ["CALVES"],
+      types: { reps: true, time: false },
+      setOrder: ["set-1", "set-2", "set-3"],
+      setCount: 3,
       sets: {
         "set-1": {
           id: "set-1",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -265,7 +278,7 @@ const legsWorkout: workoutState = {
         "set-2": {
           id: "set-2",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -273,24 +286,25 @@ const legsWorkout: workoutState = {
         "set-3": {
           id: "set-3",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
         },
       },
     },
-    "excerise-2": {
+    "exercise-2": {
       id: "exercise-2",
       name: "Seated Hamstring Curls",
-      muscleGroups: ["Hamstrings"],
-      type: "reps",
-      setIds: ["set-1", "set-2", "set-3"],
+      muscleGroups: ["HAMSTRINGS"],
+      types: { reps: true, time: false },
+      setOrder: ["set-1", "set-2", "set-3"],
+      setCount: 3,
       sets: {
         "set-1": {
           id: "set-1",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -298,7 +312,7 @@ const legsWorkout: workoutState = {
         "set-2": {
           id: "set-2",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -306,24 +320,25 @@ const legsWorkout: workoutState = {
         "set-3": {
           id: "set-3",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
         },
       },
     },
-    "excerise-3": {
+    "exercise-3": {
       id: "exercise-3",
       name: "Hacksquats",
-      muscleGroups: ["Quads", "Glutes"],
-      type: "reps",
-      setIds: ["set-1", "set-2", "set-3"],
+      muscleGroups: ["QUADS", "GLUTES"],
+      types: { reps: true, time: false },
+      setOrder: ["set-1", "set-2", "set-3"],
+      setCount: 3,
       sets: {
         "set-1": {
           id: "set-1",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -331,7 +346,7 @@ const legsWorkout: workoutState = {
         "set-2": {
           id: "set-2",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -339,7 +354,7 @@ const legsWorkout: workoutState = {
         "set-3": {
           id: "set-3",
           values: {
-            reps: 8,
+            reps: 0,
             weight: 0,
             time: 0,
           },
@@ -347,15 +362,8 @@ const legsWorkout: workoutState = {
       },
     },
   },
-  exerciseOrder: ["excerise-1", "excerise-2", "excerise-3"],
+  exerciseOrder: ["exercise-1", "exercise-2", "exercise-3"],
   exerciseCount: 3,
-};
-
-export const emptyWorkout: workoutState = {
-  name: "",
-  exercises: {},
-  exerciseOrder: [],
-  exerciseCount: 0,
 };
 
 export const templateWorkouts = {
@@ -364,11 +372,8 @@ export const templateWorkouts = {
   Legs: legsWorkout,
 };
 
-export type workoutButtonType = ButtonProps & {
+export type WorkoutButtonType = ButtonProps & {
   program: programState;
   setProgram: (program: programState) => Promise<void>;
   children?: React.ReactNode;
 };
-
-export const minValue = 0;
-export const maxValue = 20;

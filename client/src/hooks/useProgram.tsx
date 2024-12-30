@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useAppSelector, useAppDispatch } from "../store";
 import { setStoreId, setStoreProgram } from "../store/userReducer";
-import { programState, backWorkout } from "../components/workout/workoutData";
+import { programState } from "../components/workout/workoutData";
 import { useUser as useClerkUser } from "@clerk/clerk-react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -38,7 +38,7 @@ export const useProgram = () => {
     if (data && data.program.length > 0) {
       dispatch(setStoreProgram(data.program));
     } else {
-      dispatch(setStoreProgram([backWorkout]));
+      dispatch(setStoreProgram([]));
     }
   }, [isPending]);
 

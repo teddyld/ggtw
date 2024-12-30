@@ -1,18 +1,16 @@
 import { Menu, Button, Group } from "@mantine/core";
 import { FaChevronDown } from "react-icons/fa";
+import { WorkoutButtonType } from "./workoutData";
 
-import {
-  workoutState,
-  workoutButtonType,
-  templateWorkouts as templates,
-} from "./workoutData";
+import { workoutState, templateWorkouts as templates } from "./workoutData";
 
 export default function WorkoutTemplatesButton({
   program,
   setProgram,
   children,
   ...rest
-}: workoutButtonType) {
+}: WorkoutButtonType) {
+  // Add template workout defined in workoutData to program
   const addTemplateWorkout = async (template: workoutState) => {
     const newProgram = [...program, template];
     setProgram(newProgram);

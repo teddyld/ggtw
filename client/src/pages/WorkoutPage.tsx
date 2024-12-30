@@ -4,7 +4,7 @@ import Layout from "../components/layout/Layout";
 import Container from "../components/layout/Container";
 
 import { useProgram } from "../hooks/useProgram";
-import Workout from "../components/workout/Workout";
+import WorkoutList from "../components/workout/WorkoutList";
 import WorkoutLoading from "../components/workout/WorkoutLoading";
 import WorkoutTemplatesButton from "../components/workout/WorkoutTemplatesButton";
 import WorkoutNewButton from "../components/workout/WorkoutNewButton";
@@ -33,7 +33,14 @@ export default function WorkoutPage() {
       ) : (
         <>
           {program.map((workout, i) => {
-            return <Workout key={i} workout={workout} program={program} setProgram={setProgram} />;
+            return (
+              <WorkoutList
+                key={i}
+                workout={workout}
+                program={program}
+                setProgram={setProgram}
+              />
+            );
           })}
         </>
       )}

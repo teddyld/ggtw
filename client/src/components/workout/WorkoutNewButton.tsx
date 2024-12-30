@@ -1,23 +1,29 @@
 import { Button } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 
-import { emptyWorkout, workoutButtonType } from "./workoutData";
+import WorkoutNewModal from "./WorkoutNewModal";
+import { WorkoutButtonType } from "./workoutData";
 
 export default function WorkoutNewButton({
   program,
   setProgram,
   children,
   ...rest
-}: workoutButtonType) {
-  const addEmptyWorkout = () => {
-    const newProgram = [...program, emptyWorkout];
-    setProgram(newProgram);
-  };
-
+}: WorkoutButtonType) {
   const { color } = rest.color ? rest : { color: "gray" };
+  const [opened, { open, close }] = useDisclosure();
 
   return (
-    <Button {...rest} color={color} onClick={() => addEmptyWorkout()}>
-      {children}
-    </Button>
+    <>
+      <Button {...rest} color={color} onClick={open}>
+        {children}
+      </Button>
+      <WorkoutNewModal
+        program={program}
+        setProgram={setProgram}
+        opened={opened}
+        close={close}
+      />
+    </>
   );
 }
