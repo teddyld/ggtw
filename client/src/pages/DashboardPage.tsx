@@ -11,8 +11,9 @@ import {
   Group,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { SignInButton } from "@clerk/clerk-react";
+import { SignInButton, useUser } from "@clerk/clerk-react";
 import { FaPen, FaDumbbell, FaChartLine } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 import Layout from "../components/layout/Layout";
 import PrivacyModal from "../components/layout/PrivacyModal";
@@ -20,6 +21,14 @@ import PrivacyModal from "../components/layout/PrivacyModal";
 export default function DashboardPage() {
   const [active, setActive] = React.useState(-1);
   const [opened, { open, close }] = useDisclosure();
+  const { isSignedIn } = useUser();
+  const navigate = useNavigate();
+
+  const handleIsSignedIn = () => {
+    if (isSignedIn) {
+      navigate("/workout");
+    }
+  };
 
   return (
     <Layout>
@@ -39,7 +48,12 @@ export default function DashboardPage() {
           platform for free to start tracking your workout today.
         </Highlight>
         <SignInButton mode="modal" forceRedirectUrl="/workout">
-          <Button w={150} radius="xl" variant="light">
+          <Button
+            w={150}
+            radius="xl"
+            variant="light"
+            onClick={handleIsSignedIn}
+          >
             Get started
           </Button>
         </SignInButton>
