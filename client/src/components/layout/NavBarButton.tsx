@@ -25,11 +25,7 @@ const NavBarButton = (
         variant="subtle"
         justify="flex-start"
         className={clsx(
-          location.pathname === page.route ||
-            (location.pathname.startsWith("/profile") &&
-              page.route === "/profile")
-            ? "bg-primary/10"
-            : "",
+          location.pathname === page.route ? "bg-primary/10" : "",
           "w-full",
         )}
         h={60}

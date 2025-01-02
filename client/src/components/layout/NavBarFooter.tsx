@@ -39,7 +39,7 @@ export default function NavBarFooter({ opened }: { opened: boolean }) {
             size="xl"
             color="gray"
             onClick={() => toggleTheme()}
-            aria-label="Theme"
+            aria-label={`Change theme to ${theme}`}
           >
             {theme === "dark" ? (
               <MdOutlineDarkMode className="text-2xl" />
@@ -50,7 +50,13 @@ export default function NavBarFooter({ opened }: { opened: boolean }) {
         </Tooltip>
       </Flex>
 
-      <Text pb="sm" ta="center" c="dimmed" className={!opened ? "hidden" : ""}>
+      <Text
+        pb="sm"
+        ta="center"
+        c="dimmed"
+        className={!opened ? "hidden" : ""}
+        aria-hidden={!opened ? "true" : "false"}
+      >
         Made by 
         <Anchor href="https://teddyld.github.io/" target="_blank">
           Vincent Pham
