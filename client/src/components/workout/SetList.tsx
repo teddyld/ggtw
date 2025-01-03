@@ -21,7 +21,8 @@ const SetList = React.memo(
       />
     );
   },
-  (prevProps, nextProps) => prevProps.set === nextProps.set,
+  (prevProps, nextProps) =>
+    prevProps.set === nextProps.set && prevProps.checked === nextProps.checked,
 );
 
 export default SetList;
