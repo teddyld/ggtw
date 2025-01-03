@@ -1,5 +1,5 @@
 import { db } from "./mongodb.js";
-import { InputError, AccessError } from "./error.js";
+import { AccessError } from "./error.js";
 
 export const getUserProgram = async (id) =>
   new Promise(async (resolve, reject) => {
@@ -12,11 +12,30 @@ export const getUserProgram = async (id) =>
     }
   });
 
-export const updateUserProgram = async (id, program) =>
+export const updateUserWorkout = async (id, workout) =>
   new Promise(async (resolve, reject) => {
     try {
       const collection = db.collection("users");
-      await collection.updateOne({ user: id }, { $set: { program: program } });
+      const workoutField = `program.${workout.id}`;
+      await collection.updateOne(
+        { user: id },
+        { $set: { [workoutField]: workout } },
+      );
+      return resolve();
+    } catch (err) {
+      return reject(new AccessError(err.message));
+    }
+  });
+
+export const deleteUserWorkout = async (id, workoutId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const collection = db.collection("users");
+      const workoutField = `program.${workoutId}`;
+      await collection.updateOne(
+        { user: id },
+        { $unset: { [workoutField]: "" } },
+      );
       return resolve();
     } catch (err) {
       return reject(new AccessError(err.message));

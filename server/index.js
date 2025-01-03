@@ -6,7 +6,7 @@ import { clerkMiddleware, createClerkClient } from "@clerk/express";
 
 import { clerkWebHook } from "./src/webhook.js";
 import { InputError, AccessError } from "./src/error.js";
-import { getUserProgram, updateUserProgram } from "./src/service.js";
+import { deleteUserWorkout, getUserProgram, updateUserWorkout } from "./src/service.js";
 
 const app = express();
 const port = process.env.PORT || 5050;
@@ -19,7 +19,7 @@ app.use(
   cors({
     credentials: true,
     origin: process.env.CLIENT_URL,
-  })
+  }),
 );
 app.use(express.json());
 app.use(clerkMiddleware({ clerkClient: clerkClient }));
@@ -49,7 +49,7 @@ app.post(
     const headers = req.headers;
     const payload = JSON.stringify(req.body);
     await clerkWebHook(headers, payload);
-  })
+  }),
 );
 
 app.get(
@@ -58,21 +58,30 @@ app.get(
     const { id } = req.params;
     const { program } = await getUserProgram(id);
     return res.json({ program, success: true });
-  })
+  }),
 );
 
 app.put(
-  "/user/program/update",
+  "/user/workout/update",
   catchErrors(async (req, res) => {
-    const { id, program } = req.body;
-    await updateUserProgram(id, program);
+    const { id, workout } = req.body;
+    await updateUserWorkout(id, workout);
     return res.json({
       success: true,
-      message: "Successfully updated user program",
+      message: "Successfully updated user workout",
     });
-  })
+  }),
 );
 
+app.put("/user/workout/delete", catchErrors(async (req, res) => {
+  const { id, workoutId } = req.body;
+  await deleteUserWorkout(id, workoutId)
+  return res.json({
+    success: true,
+    message: "Successfully removed user workout",
+  })
+}))
+
 app.listen(port, () =>
-  console.log(`🚀 Server is listening on port ${port}...`)
+  console.log(`🚀 Server is listening on port ${port}...`),
 );
