@@ -12,13 +12,13 @@ export const getUserProgram = async (id) =>
     }
   });
 
-export const updateUserWorkout = async (id, workout) =>
+export const updateUserWorkout = async (userId, workout) =>
   new Promise(async (resolve, reject) => {
     try {
       const collection = db.collection("users");
       const workoutField = `program.${workout.id}`;
       await collection.updateOne(
-        { user: id },
+        { user: userId },
         { $set: { [workoutField]: workout } },
       );
       return resolve();
@@ -27,13 +27,13 @@ export const updateUserWorkout = async (id, workout) =>
     }
   });
 
-export const deleteUserWorkout = async (id, workoutId) =>
+export const deleteUserWorkout = async (userId, workoutId) =>
   new Promise(async (resolve, reject) => {
     try {
       const collection = db.collection("users");
       const workoutField = `program.${workoutId}`;
       await collection.updateOne(
-        { user: id },
+        { user: userId },
         { $unset: { [workoutField]: "" } },
       );
       return resolve();

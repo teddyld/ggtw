@@ -64,8 +64,8 @@ app.get(
 app.put(
   "/user/workout/update",
   catchErrors(async (req, res) => {
-    const { id, workout } = req.body;
-    await updateUserWorkout(id, workout);
+    const { userId, workout } = req.body;
+    await updateUserWorkout(userId, workout);
     return res.json({
       success: true,
       message: "Successfully updated user workout",
@@ -74,8 +74,8 @@ app.put(
 );
 
 app.put("/user/workout/delete", catchErrors(async (req, res) => {
-  const { id, workoutId } = req.body;
-  await deleteUserWorkout(id, workoutId)
+  const { userId, workoutId } = req.body;
+  await deleteUserWorkout(userId, workoutId)
   return res.json({
     success: true,
     message: "Successfully removed user workout",
