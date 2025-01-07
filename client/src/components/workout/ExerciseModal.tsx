@@ -65,10 +65,17 @@ export default function ExerciseModal({
   };
 
   // Submit when 'Enter' key is pressed with focus on TextInput
-  const handleSubmit = (key: string) => {
+  const handleEnterKey = (key: string) => {
     if (!editName || key !== "Enter") return;
-    updateExercise(editName, editMuscleGroups)
-  }
+    handleSubmit();
+  };
+
+  const handleSubmit = () => {
+    close();
+    if (editName !== exerciseName || editMuscleGroups !== muscleGroups) {
+      updateExercise(editName, editMuscleGroups);
+    }
+  };
 
   return (
     <Modal
@@ -92,7 +99,7 @@ export default function ExerciseModal({
             label: "pb-2",
           }}
           error={editName === "" ? "Invalid name" : ""}
-          onKeyDown={(event) => handleSubmit(event.key)}
+          onKeyDown={(event) => handleEnterKey(event.key)}
         />
         <Group className="relative">
           <Tooltip
@@ -140,7 +147,7 @@ export default function ExerciseModal({
             Cancel
           </Button>
           <Button
-            onClick={() => updateExercise(editName, editMuscleGroups)}
+            onClick={handleSubmit}
             disabled={editName === ""}
           >
             Save
