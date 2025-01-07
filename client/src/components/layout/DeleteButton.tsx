@@ -24,7 +24,12 @@ export default function DeleteButton({
           Delete {item}
         </Button>
       </Stack>
-      <Container className={!deleteCard ? "hidden" : ""} p="sm">
+      <Container
+        data-testid="deleteCard"
+        aria-hidden={!deleteCard ? "true" : "false"}
+        className={!deleteCard ? "hidden" : ""}
+        p="sm"
+      >
         <Stack gap="md">
           <Stack gap={5}>
             <Text size="sm">Are you sure you want to delete this {item}?</Text>

@@ -3,42 +3,45 @@ import { Text, Group } from "@mantine/core";
 import Layout from "../components/layout/Layout";
 import Container from "../components/layout/Container";
 
-import { useProgram } from "../hooks/useProgram";
+import { useWorkout } from "../hooks/useWorkout";
 import WorkoutList from "../components/workout/WorkoutList";
 import WorkoutLoading from "../components/workout/WorkoutLoading";
 import WorkoutTemplatesButton from "../components/workout/WorkoutTemplatesButton";
 import WorkoutNewButton from "../components/workout/WorkoutNewButton";
 
 export default function WorkoutPage() {
-  const { program, setProgram, programPending } = useProgram();
+  const { userWorkouts, workoutPending, setWorkout, deleteWorkout } =
+    useWorkout();
 
-  if (programPending) {
+  if (workoutPending) {
     return <WorkoutLoading />;
   }
 
   return (
     <Layout>
-      {program.length === 0 ? (
+      {userWorkouts.length === 0 ? (
         <Container>
           <Text pb="sm">Create your Workout(s) to begin.</Text>
           <Group>
-            <WorkoutNewButton program={program} setProgram={setProgram}>
+            <WorkoutNewButton setWorkout={setWorkout}>
               New workout
             </WorkoutNewButton>
-            <WorkoutTemplatesButton program={program} setProgram={setProgram}>
+            <WorkoutTemplatesButton setWorkout={setWorkout}>
               Templates
             </WorkoutTemplatesButton>
           </Group>
         </Container>
       ) : (
         <>
-          {program.map((workout, i) => {
+          {userWorkouts.map((workout, index) => {
             return (
               <WorkoutList
-                key={i}
+                key={workout.id}
                 workout={workout}
-                program={program}
-                setProgram={setProgram}
+                index={index}
+                exerciseMap={workout.exercises}
+                setWorkout={setWorkout}
+                deleteWorkout={deleteWorkout}
               />
             );
           })}

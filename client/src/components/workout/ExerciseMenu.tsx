@@ -8,19 +8,19 @@ export default function ExerciseMenu({
   exerciseName,
   checked,
   open,
-  updateSetTypes,
+  updateExerciseTypes,
 }: {
   exerciseName: string;
   checked: exerciseTypes;
   open: () => void;
-  updateSetTypes: (types: exerciseTypes) => void;
+  updateExerciseTypes: (types: exerciseTypes) => void;
 }) {
   const checkReps = () => {
-    updateSetTypes({ ...checked, reps: !checked.reps });
+    updateExerciseTypes({ ...checked, reps: !checked.reps });
   };
 
   const checkTime = () => {
-    updateSetTypes({ ...checked, time: !checked.time });
+    updateExerciseTypes({ ...checked, time: !checked.time });
   };
 
   return (

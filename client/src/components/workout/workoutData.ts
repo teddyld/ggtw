@@ -1,11 +1,10 @@
 import React from "react";
 import { ButtonProps } from "@mantine/core";
 
-export type workoutState = {
+export type workoutType = {
+  id: string;
   name: string;
-  exercises: {
-    [key: string]: exerciseType;
-  };
+  exercises: Record<string, exerciseType>;
   exerciseOrder: string[];
   exerciseCount: number;
 };
@@ -17,9 +16,7 @@ export type exerciseType = {
   types: exerciseTypes;
   setOrder: string[];
   setCount: number;
-  sets: {
-    [key: string]: setType;
-  };
+  sets: Record<string, setType>;
 };
 
 export type setType = {
@@ -34,9 +31,8 @@ export type setType = {
 export type setInputTypes = "weight" | "reps" | "time";
 export type exerciseTypes = { reps: boolean; time: boolean };
 
-export type programState = workoutState[];
-
-const chestWorkout: workoutState = {
+const chestWorkout: workoutType = {
+  id: "workout-1",
   name: "Chest + Triceps",
   exercises: {
     "exercise-1": {
@@ -146,7 +142,8 @@ const chestWorkout: workoutState = {
   exerciseCount: 3,
 };
 
-const backWorkout: workoutState = {
+const backWorkout: workoutType = {
+  id: "workout-2",
   name: "Back & Biceps",
   exercises: {
     "exercise-1": {
@@ -256,7 +253,8 @@ const backWorkout: workoutState = {
   exerciseCount: 3,
 };
 
-const legsWorkout: workoutState = {
+const legsWorkout: workoutType = {
+  id: "workout-3",
   name: "Legs",
   exercises: {
     "exercise-1": {
@@ -373,7 +371,6 @@ export const templateWorkouts = {
 };
 
 export type WorkoutButtonType = ButtonProps & {
-  program: programState;
-  setProgram: (program: programState) => Promise<void>;
+  setWorkout: (workout: workoutType) => void;
   children?: React.ReactNode;
 };

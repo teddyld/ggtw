@@ -5,8 +5,7 @@ import WorkoutNewModal from "./WorkoutNewModal";
 import { WorkoutButtonType } from "./workoutData";
 
 export default function WorkoutNewButton({
-  program,
-  setProgram,
+  setWorkout,
   children,
   ...rest
 }: WorkoutButtonType) {
@@ -18,12 +17,7 @@ export default function WorkoutNewButton({
       <Button {...rest} color={color} onClick={open}>
         {children}
       </Button>
-      <WorkoutNewModal
-        program={program}
-        setProgram={setProgram}
-        opened={opened}
-        close={close}
-      />
+      <WorkoutNewModal opened={opened} close={close} setWorkout={setWorkout} />
     </>
   );
 }

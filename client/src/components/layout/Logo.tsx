@@ -18,6 +18,7 @@ export default function Logo({ opened }: { opened: boolean }) {
     >
       <Image src={FlameLogo} h={32} alt="ggtw logo" />
       <Text
+        aria-hidden={!opened ? "true" : "false"}
         size="xl"
         variant="gradient"
         gradient={{ from: "red.9", to: "red.4", deg: 90 }}

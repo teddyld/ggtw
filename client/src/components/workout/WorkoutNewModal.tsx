@@ -8,19 +8,18 @@ import {
   Group,
   Divider,
 } from "@mantine/core";
+import { v4 as uuidv4 } from "uuid";
 
-import { programState } from "./workoutData";
+import { workoutType } from "./workoutData";
 
 export default function WorkoutNewModal({
-  program,
-  setProgram,
   opened,
   close,
+  setWorkout,
 }: {
-  program: programState;
-  setProgram: (program: programState) => Promise<void>;
   opened: boolean;
   close: () => void;
+  setWorkout: (workout: workoutType) => void;
 }) {
   const [workoutName, setWorkoutName] = React.useState("");
   const validWorkout = workoutName !== "";
@@ -32,15 +31,15 @@ export default function WorkoutNewModal({
   // Create new empty workout
   const createWorkout = () => {
     close();
-    const newProgram = Array.from(program);
     const newWorkout = {
+      id: uuidv4(),
       name: workoutName,
       exercises: {},
       exerciseOrder: [],
       exerciseCount: 0,
     };
-    newProgram.push(newWorkout);
-    setProgram([...newProgram]);
+
+    setWorkout(newWorkout);
   };
 
   // Create workout on 'Enter' key press
@@ -78,7 +77,7 @@ export default function WorkoutNewModal({
           <Button color="gray" onClick={close} variant="subtle">
             Cancel
           </Button>
-          <Button disabled={!validWorkout} onClick={() => createWorkout()}>
+          <Button disabled={!validWorkout} onClick={createWorkout}>
             Create
           </Button>
         </Group>

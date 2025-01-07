@@ -1,307 +1,59 @@
+import React from "react";
+import axios from "axios";
+import { useUser as useClerkUser } from "@clerk/clerk-react";
+import { useQuery } from "@tanstack/react-query";
+
+import { useAppSelector, useAppDispatch } from "../store";
 import {
-  programState,
-  workoutState,
-  setType,
-  setInputTypes,
-  exerciseTypes,
-} from "../components/workout/workoutData";
+  setUserId,
+  setUserWorkouts,
+  setWorkout,
+  deleteWorkout,
+} from "../store/userReducer";
+import { workoutType } from "../components/workout/workoutData";
 
-export const useWorkout = (
-  workout: workoutState,
-  program: programState,
-  setProgram: (program: programState) => Promise<void>,
-) => {
-  const workoutIndex = program.findIndex((item) => item === workout);
+export const useWorkout = () => {
+  const dispatch = useAppDispatch();
 
-  const updateSetValue = (
-    exerciseId: string,
-    setId: string,
-    newValue: number,
-    type: setInputTypes,
-  ) => {
-    const targetExercise = workout.exercises[exerciseId];
-    const newSets = structuredClone(targetExercise.sets);
+  const id = useAppSelector((state) => state.user.id);
+  const userWorkouts = useAppSelector((state) => state.user.userWorkouts);
 
-    // Return if type value is the same as newValue
-    const newSet = newSets[setId];
-    if (newSet.values[type] === newValue) return;
+  const { user, isSignedIn, isLoaded } = useClerkUser();
 
-    newSet.values[type] = newValue;
+  const { isPending, data } = useQuery({
+    queryKey: ["workouts", id],
+    queryFn: () => axios.get(`/user/workouts/${id}`).then((res) => res.data),
+    enabled: !!id, // Only run the query if the id is set
+  });
 
-    const newWorkout = {
-      ...workout,
-      exercises: {
-        ...workout.exercises,
-        [exerciseId]: {
-          ...targetExercise,
-          sets: {
-            ...targetExercise.sets,
-            [setId]: newSet,
-          },
-        },
-      },
-    };
+  // Set user id from the User object from Clerk
+  React.useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      dispatch(setUserId(user?.id));
+    }
+  }, [isLoaded, isSignedIn]);
 
-    const newProgram = Array.from(program);
-    newProgram[workoutIndex] = newWorkout;
-    setProgram(newProgram);
+  // Set user's program from MongoDB on initial load
+  React.useEffect(() => {
+    if (data && data.workouts) {
+      dispatch(setUserWorkouts(Object.values(data.workouts)));
+    } else {
+      dispatch(setUserWorkouts([]));
+    }
+  }, [isPending]);
+
+  const handleSetWorkout = (workout: workoutType) => {
+    dispatch(setWorkout({ userId: id, workout }));
   };
 
-  const deleteSet = (
-    exerciseId: string,
-    setId: string,
-    setSets: (value: React.SetStateAction<setType[]>) => void,
-  ) => {
-    const targetExercise = workout.exercises[exerciseId];
-
-    const newSetOrder = Array.from(targetExercise.setOrder);
-    const setIndex = newSetOrder.indexOf(setId);
-    newSetOrder.splice(setIndex, 1);
-
-    const newSets = structuredClone(targetExercise.sets);
-    delete newSets[setId];
-
-    const newWorkout = {
-      ...workout,
-      exercises: {
-        ...workout.exercises,
-        [exerciseId]: {
-          ...targetExercise,
-          sets: newSets,
-          setOrder: newSetOrder,
-        },
-      },
-    };
-
-    // Update sets on client state
-    setSets([...Object.values(newSets)]);
-
-    const newProgram = Array.from(program);
-    newProgram[workoutIndex] = newWorkout;
-    setProgram(newProgram);
-  };
-
-  const addBelowSet = (
-    exerciseId: string,
-    setId: string,
-    setSets: (value: React.SetStateAction<setType[]>) => void,
-  ) => {
-    const targetExercise = workout.exercises[exerciseId];
-    const newSetId = `set-${targetExercise.setCount + 1}`;
-
-    const newSetOrder = Array.from(targetExercise.setOrder);
-    const setIndex = newSetOrder.indexOf(setId);
-    newSetOrder.splice(setIndex + 1, 0, newSetId);
-
-    const newSets = {
-      ...targetExercise.sets,
-      [newSetId]: {
-        id: newSetId,
-        values: {
-          weight: 0,
-          reps: 0,
-          time: 0,
-        },
-      },
-    };
-
-    const newWorkout = {
-      ...workout,
-      exercises: {
-        ...workout.exercises,
-        [exerciseId]: {
-          ...targetExercise,
-          setCount: targetExercise.setCount + 1,
-          setOrder: newSetOrder,
-          sets: newSets,
-        },
-      },
-    };
-
-    // Update sets on client state
-    setSets([...Object.values(newSets)]);
-
-    const newProgram = Array.from(program);
-    newProgram[workoutIndex] = newWorkout;
-    setProgram(newProgram);
-  };
-
-  const createSet = (
-    exerciseId: string,
-    setSets: (value: React.SetStateAction<setType[]>) => void,
-  ) => {
-    const targetExercise = workout.exercises[exerciseId];
-    const newSetId = `set-${targetExercise.setCount + 1}`;
-
-    const newSets = {
-      [newSetId]: {
-        id: newSetId,
-        values: {
-          weight: 0,
-          reps: 0,
-          time: 0,
-        },
-      },
-    };
-
-    const newWorkout = {
-      ...workout,
-      exercises: {
-        ...workout.exercises,
-        [exerciseId]: {
-          ...targetExercise,
-          setCount: targetExercise.setCount + 1,
-          setOrder: [newSetId],
-          sets: newSets,
-        },
-      },
-    };
-
-    // Update sets on client state
-    setSets([...Object.values(newSets)]);
-
-    const newProgram = Array.from(program);
-    newProgram[workoutIndex] = newWorkout;
-    setProgram(newProgram);
-  };
-
-  const updateSetType = (exerciseId: string, types: exerciseTypes) => {
-    const newExercise = structuredClone(workout.exercises[exerciseId]);
-    newExercise.types = types;
-
-    const newWorkout = {
-      ...workout,
-      exercises: {
-        ...workout.exercises,
-        [exerciseId]: newExercise,
-      },
-    };
-
-    const newProgram = Array.from(program);
-    newProgram[workoutIndex] = newWorkout;
-    setProgram(newProgram);
-  };
-
-  const updateExerciseDetails = (
-    exerciseId: string,
-    newName: string,
-    newMuscleGroups: string[],
-  ) => {
-    const newExercise = structuredClone(workout.exercises[exerciseId]);
-    newExercise.name = newName;
-    newExercise.muscleGroups = newMuscleGroups;
-    const newWorkout = {
-      ...workout,
-      exercises: {
-        ...workout.exercises,
-        [exerciseId]: newExercise,
-      },
-    };
-
-    const newProgram = Array.from(program);
-    newProgram[workoutIndex] = newWorkout;
-    setProgram(newProgram);
-  };
-
-  const deleteExercise = (exerciseId: string) => {
-    const newExercises = structuredClone(workout.exercises);
-    delete newExercises[exerciseId];
-
-    const newExerciseOrder = Array.from(workout.exerciseOrder);
-    const exerciseIndex = newExerciseOrder.indexOf(exerciseId);
-    newExerciseOrder.splice(exerciseIndex, 1);
-
-    const newWorkout = {
-      ...workout,
-      exercises: newExercises,
-      exerciseOrder: newExerciseOrder,
-      exerciseCount: workout.exerciseCount - 1,
-    };
-
-    const newProgram = Array.from(program);
-    newProgram[workoutIndex] = newWorkout;
-    setProgram(newProgram);
-  };
-
-  const createExercise = () => {
-    const newExerciseId = `exercise-${workout.exerciseCount + 1}`;
-    const newExercises = {
-      ...workout.exercises,
-      [newExerciseId]: {
-        id: newExerciseId,
-        name: "New Exercise",
-        muscleGroups: [],
-        types: { reps: true, time: false },
-        setOrder: ["set-1", "set-2", "set-3"],
-        setCount: 3,
-        sets: {
-          "set-1": {
-            id: "set-1",
-            values: {
-              reps: 0,
-              weight: 0,
-              time: 0,
-            },
-          },
-          "set-2": {
-            id: "set-2",
-            values: {
-              reps: 0,
-              weight: 0,
-              time: 0,
-            },
-          },
-          "set-3": {
-            id: "set-3",
-            values: {
-              reps: 0,
-              weight: 0,
-              time: 0,
-            },
-          },
-        },
-      },
-    };
-
-    const newWorkout = {
-      ...workout,
-      exercises: newExercises,
-      exerciseCount: workout.exerciseCount + 1,
-      exerciseOrder: [...workout.exerciseOrder, newExerciseId],
-    };
-
-    const newProgram = Array.from(program);
-    newProgram[workoutIndex] = newWorkout;
-    setProgram(newProgram);
-  };
-
-  const deleteWorkout = () => {
-    const newProgram = Array.from(program);
-    newProgram.splice(workoutIndex, 1);
-    setProgram(newProgram);
-  };
-
-  const renameWorkout = (newName: string) => {
-    const newWorkout = {
-      ...workout,
-      name: newName,
-    };
-
-    const newProgram = Array.from(program);
-    newProgram[workoutIndex] = newWorkout;
-    setProgram(newProgram);
+  const handleDeleteWorkout = (workoutId: string) => {
+    dispatch(deleteWorkout({ userId: id, workoutId }));
   };
 
   return {
-    updateSetValue,
-    deleteSet,
-    addBelowSet,
-    createSet,
-    updateSetType,
-    updateExerciseDetails,
-    deleteExercise,
-    createExercise,
-    deleteWorkout,
-    renameWorkout,
+    userWorkouts,
+    workoutPending: isPending,
+    setWorkout: handleSetWorkout,
+    deleteWorkout: handleDeleteWorkout,
   };
 };

@@ -1,18 +1,33 @@
 import React from "react";
 
-import { workoutState, programState } from "./workoutData";
+import { exerciseType, workoutType } from "./workoutData";
 import Workout from "./Workout";
 
 type WorkoutListType = {
-  workout: workoutState;
-  program: programState;
-  setProgram: (program: programState) => Promise<void>;
+  workout: workoutType;
+  index: number;
+  exerciseMap: Record<string, exerciseType>;
+  setWorkout: (workout: workoutType) => void;
+  deleteWorkout: (workoutId: string) => void;
 };
 
 const WorkoutList = React.memo(
-  ({ workout, program, setProgram }: WorkoutListType) => {
+  ({
+    workout,
+    index,
+    exerciseMap,
+    setWorkout,
+    deleteWorkout,
+  }: WorkoutListType) => {
+    const exercises = Object.values(exerciseMap);
     return (
-      <Workout workout={workout} program={program} setProgram={setProgram} />
+      <Workout
+        workout={workout}
+        index={index}
+        exercises={exercises}
+        setWorkout={setWorkout}
+        deleteWorkout={deleteWorkout}
+      />
     );
   },
   (prevProps, nextProps) => prevProps.workout === nextProps.workout,

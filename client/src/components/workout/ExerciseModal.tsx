@@ -53,7 +53,7 @@ export default function ExerciseModal({
   // Add new muscle group to exercise when 'Enter' key is pressed
   const handleOnAdd = (key: string) => {
     setMuscleError("");
-    if (newMuscle === "" || key !== "Enter") return;
+    if (!newMuscle || key !== "Enter") return;
     if (editMuscleGroups.includes(newMuscle.toUpperCase())) {
       setMuscleError("Muscle already exists in group");
       return;
@@ -62,6 +62,19 @@ export default function ExerciseModal({
     newMuscleGroups.push(newMuscle.toUpperCase());
     setEditMuscleGroups([...newMuscleGroups]);
     setNewMuscle("");
+  };
+
+  // Submit when 'Enter' key is pressed with focus on TextInput
+  const handleEnterKey = (key: string) => {
+    if (!editName || key !== "Enter") return;
+    handleSubmit();
+  };
+
+  const handleSubmit = () => {
+    close();
+    if (editName !== exerciseName || editMuscleGroups !== muscleGroups) {
+      updateExercise(editName, editMuscleGroups);
+    }
   };
 
   return (
@@ -86,6 +99,7 @@ export default function ExerciseModal({
             label: "pb-2",
           }}
           error={editName === "" ? "Invalid name" : ""}
+          onKeyDown={(event) => handleEnterKey(event.key)}
         />
         <Group className="relative">
           <Tooltip
@@ -132,10 +146,7 @@ export default function ExerciseModal({
           <Button color="gray" onClick={close} variant="subtle">
             Cancel
           </Button>
-          <Button
-            onClick={() => updateExercise(editName, editMuscleGroups)}
-            disabled={editName === ""}
-          >
+          <Button onClick={handleSubmit} disabled={editName === ""}>
             Save
           </Button>
         </Group>
