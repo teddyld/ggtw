@@ -53,7 +53,7 @@ export default function ExerciseModal({
   // Add new muscle group to exercise when 'Enter' key is pressed
   const handleOnAdd = (key: string) => {
     setMuscleError("");
-    if (newMuscle === "" || key !== "Enter") return;
+    if (!newMuscle || key !== "Enter") return;
     if (editMuscleGroups.includes(newMuscle.toUpperCase())) {
       setMuscleError("Muscle already exists in group");
       return;
@@ -63,6 +63,12 @@ export default function ExerciseModal({
     setEditMuscleGroups([...newMuscleGroups]);
     setNewMuscle("");
   };
+
+  // Submit when 'Enter' key is pressed with focus on TextInput
+  const handleSubmit = (key: string) => {
+    if (!editName || key !== "Enter") return;
+    updateExercise(editName, editMuscleGroups)
+  }
 
   return (
     <Modal
@@ -86,6 +92,7 @@ export default function ExerciseModal({
             label: "pb-2",
           }}
           error={editName === "" ? "Invalid name" : ""}
+          onKeyDown={(event) => handleSubmit(event.key)}
         />
         <Group className="relative">
           <Tooltip
