@@ -6,50 +6,90 @@ import { FaPen, FaPlus } from "react-icons/fa";
 import Container from "../layout/Container";
 import ExerciseList from "./ExerciseList";
 import WorkoutModal from "./WorkoutModal";
-import { programState, workoutState } from "./workoutData";
-
-import { useWorkout } from "../../hooks/useWorkout";
+import { exerciseType, workoutType } from "./workoutData";
 
 export default function Workout({
   workout,
-  program,
-  setProgram,
+  index,
+  exercises,
+  setWorkout,
+  deleteWorkout,
 }: {
-  workout: workoutState;
-  program: programState;
-  setProgram: (program: programState) => Promise<void>;
+  workout: workoutType;
+  index: number;
+  exercises: exerciseType[];
+  setWorkout: (workout: workoutType) => void;
+  deleteWorkout: (workoutId: string) => void;
 }) {
-  const exercises = workout.exerciseOrder.map(
-    (exerciseId) => workout.exercises[exerciseId],
-  );
-
-  const {
-    updateSetValue,
-    deleteSet,
-    addBelowSet,
-    createSet,
-    updateSetType,
-    updateExerciseDetails,
-    deleteExercise,
-    createExercise,
-    deleteWorkout,
-    renameWorkout,
-  } = useWorkout(workout, program, setProgram);
-
   const [opened, { open, close }] = useDisclosure();
   const [workoutName, setWorkoutName] = React.useState(workout.name);
 
-  // Wrapper for delete workout
-  const handleDeleteWorkout = () => {
-    close();
-    deleteWorkout();
+  // Create exercise
+  const createExercise = () => {
+    const newExerciseId = `exercise-${workout.exerciseCount + 1}`;
+    const newExercises = {
+      ...workout.exercises,
+      [newExerciseId]: {
+        id: newExerciseId,
+        name: "New Exercise",
+        muscleGroups: [],
+        types: { reps: true, time: false },
+        setOrder: ["set-1", "set-2", "set-3"],
+        setCount: 3,
+        sets: {
+          "set-1": {
+            id: "set-1",
+            values: {
+              reps: 0,
+              weight: 0,
+              time: 0,
+            },
+          },
+          "set-2": {
+            id: "set-2",
+            values: {
+              reps: 0,
+              weight: 0,
+              time: 0,
+            },
+          },
+          "set-3": {
+            id: "set-3",
+            values: {
+              reps: 0,
+              weight: 0,
+              time: 0,
+            },
+          },
+        },
+      },
+    };
+
+    const newWorkout = {
+      ...workout,
+      exercises: newExercises,
+      exerciseCount: workout.exerciseCount + 1,
+      exerciseOrder: [...workout.exerciseOrder, newExerciseId],
+    };
+
+    setWorkout(newWorkout);
   };
 
-  // Wrapper for renaming workout
-  const handleRenameWorkout = (newName: string) => {
+  // Remove exercise
+  const removeWorkout = () => {
+    close();
+    deleteWorkout(workout.id);
+  };
+
+  // Rename workout
+  const renameWorkout = (newName: string) => {
     close();
     setWorkoutName(newName);
-    renameWorkout(newName);
+    const newWorkout = {
+      ...workout,
+      name: newName,
+    };
+    setWorkout(newWorkout);
   };
 
   return (
@@ -75,8 +115,8 @@ export default function Workout({
         </ActionIcon>
         <WorkoutModal
           name={workoutName}
-          deleteWorkout={handleDeleteWorkout}
-          renameWorkout={handleRenameWorkout}
+          removeWorkout={removeWorkout}
+          renameWorkout={renameWorkout}
           opened={opened}
           close={close}
         />
@@ -92,15 +132,9 @@ export default function Workout({
         {exercises.map((exercise) => {
           return (
             <ExerciseList
-              key={exercise.id}
+              key={`${workout.id}-${exercise.id}`}
               exercise={exercise}
-              updateSetValue={updateSetValue}
-              deleteSet={deleteSet}
-              addBelowSet={addBelowSet}
-              updateSetType={updateSetType}
-              updateExerciseDetails={updateExerciseDetails}
-              createSet={createSet}
-              deleteExercise={deleteExercise}
+              index={index}
             />
           );
         })}

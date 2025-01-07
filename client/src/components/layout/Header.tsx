@@ -20,7 +20,7 @@ import { MdLogin, MdLogout } from "react-icons/md";
 import { FaRegUser, FaChevronDown, FaPlus } from "react-icons/fa";
 
 import { useTheme } from "../../hooks/useTheme";
-import { useProgram } from "../../hooks/useProgram";
+import { useWorkout } from "../../hooks/useWorkout";
 
 import WorkoutNewButton from "../workout/WorkoutNewButton";
 import WorkoutTemplatesButton from "../workout/WorkoutTemplatesButton";
@@ -35,8 +35,8 @@ export default function Header({
 }) {
   const { theme, toggleTheme } = useTheme();
   const { isSignedIn, user } = useUser();
-  const { program, setProgram } = useProgram();
   const navigate = useNavigate();
+  const { setWorkout } = useWorkout();
 
   return (
     <>
@@ -66,8 +66,7 @@ export default function Header({
           <Group wrap="nowrap">
             <Button.Group>
               <WorkoutNewButton
-                program={program}
-                setProgram={setProgram}
+                setWorkout={setWorkout}
                 leftSection={<FaPlus />}
                 color="red"
                 radius="lg"
@@ -76,8 +75,7 @@ export default function Header({
                 Create
               </WorkoutNewButton>
               <WorkoutTemplatesButton
-                program={program}
-                setProgram={setProgram}
+                setWorkout={setWorkout}
                 variant="outline"
                 color="red"
                 radius="lg"

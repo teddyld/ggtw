@@ -8,17 +8,18 @@ import {
   Button,
   Group,
 } from "@mantine/core";
+
 import DeleteButton from "../layout/DeleteButton";
 
 export default function WorkoutModal({
   name,
-  deleteWorkout,
+  removeWorkout,
   renameWorkout,
   opened,
   close,
 }: {
   name: string;
-  deleteWorkout: () => void;
+  removeWorkout: () => void;
   renameWorkout: (newName: string) => void;
   opened: boolean;
   close: () => void;
@@ -28,6 +29,12 @@ export default function WorkoutModal({
   React.useEffect(() => {
     setEditName(name);
   }, [opened]);
+
+  // Rename workout when 'Enter' key is pressed with focus on TextInput
+  const handleSubmit = (key: string) => {
+    if (!editName || key !== "Enter") return;
+    renameWorkout(editName);
+  };
 
   return (
     <Modal
@@ -51,8 +58,9 @@ export default function WorkoutModal({
             label: "pb-2",
           }}
           error={editName === "" ? "Invalid name" : ""}
+          onKeyDown={(event) => handleSubmit(event.key)}
         />
-        <DeleteButton item="workout" handleDelete={deleteWorkout} />
+        <DeleteButton item="workout" handleDelete={removeWorkout} />
         <Divider />
         <Group justify="flex-end">
           <Button color="gray" onClick={close} variant="subtle">

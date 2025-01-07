@@ -11,32 +11,28 @@ export default function SetMenu({
   addSetBelow: () => void;
 }) {
   return (
-    <>
-      <Menu>
-        <Menu.Target>
-          <ActionIcon variant="subtle" aria-label="Open set menu">
-            <BsThreeDotsVertical />
-          </ActionIcon>
-        </Menu.Target>
-        <Menu.Dropdown>
-          <Menu.Label>Set</Menu.Label>
-          <Menu.Item
-            leftSection={
-              <MdOutlineSubdirectoryArrowRight className="text-lg" />
-            }
-            onClick={() => addSetBelow()}
-          >
-            Add set below
-          </Menu.Item>
-          <Menu.Item
-            leftSection={<FaRegTrashAlt className="text-lg" />}
-            color="red"
-            onClick={() => deleteSet()}
-          >
-            Delete set
-          </Menu.Item>
-        </Menu.Dropdown>
-      </Menu>
-    </>
+    <Menu>
+      <Menu.Target>
+        <ActionIcon variant="subtle" aria-label="Open set menu">
+          <BsThreeDotsVertical />
+        </ActionIcon>
+      </Menu.Target>
+      <Menu.Dropdown>
+        <Menu.Label>Set</Menu.Label>
+        <Menu.Item
+          leftSection={<MdOutlineSubdirectoryArrowRight className="text-lg" />}
+          onClick={addSetBelow}
+        >
+          Add set below
+        </Menu.Item>
+        <Menu.Item
+          leftSection={<FaRegTrashAlt className="text-lg" />}
+          color="red"
+          onClick={deleteSet}
+        >
+          Delete set
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
   );
 }

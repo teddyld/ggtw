@@ -146,10 +146,7 @@ export default function ExerciseModal({
           <Button color="gray" onClick={close} variant="subtle">
             Cancel
           </Button>
-          <Button
-            onClick={handleSubmit}
-            disabled={editName === ""}
-          >
+          <Button onClick={handleSubmit} disabled={editName === ""}>
             Save
           </Button>
         </Group>

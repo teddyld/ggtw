@@ -49,6 +49,8 @@ export default function WorkoutLoading() {
   return (
     <Layout>
       <WorkoutSkeleton />
+      <WorkoutSkeleton />
+      <WorkoutSkeleton />
     </Layout>
   );
 }

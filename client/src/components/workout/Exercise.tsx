@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Title,
   Group,
@@ -11,113 +10,52 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { FaPlus } from "react-icons/fa";
 
-import {
-  exerciseType,
-  setInputTypes,
-  setType,
-  exerciseTypes,
-} from "./workoutData";
+import { exerciseType, workoutType } from "./workoutData";
 import ExerciseMenu from "./ExerciseMenu";
 import ExerciseModal from "./ExerciseModal";
 import ExercisePill from "./ExercisePill";
-import SetList from "./SetList";
+import Set from "./Set";
 
+import { useAppSelector, useAppDispatch } from "../../store";
+import { setWorkout } from "../../store/userReducer";
 import { useExercise } from "../../hooks/useExercise";
+import { useSet } from "../../hooks/useSet";
 
 export default function Exercise({
   exercise,
-  updateSetValue,
-  deleteSet,
-  addBelowSet,
-  updateSetType,
-  updateExerciseDetails,
-  createSet,
-  deleteExercise,
+  index,
 }: {
   exercise: exerciseType;
-  updateSetValue: (
-    exerciseId: string,
-    setId: string,
-    newValue: number,
-    type: setInputTypes,
-  ) => void;
-  deleteSet: (
-    exerciseId: string,
-    setId: string,
-    setSets: (value: React.SetStateAction<setType[]>) => void,
-  ) => void;
-  addBelowSet: (
-    exerciseId: string,
-    setId: string,
-    setSets: (value: React.SetStateAction<setType[]>) => void,
-  ) => void;
-  updateSetType: (exerciseId: string, types: exerciseTypes) => void;
-  updateExerciseDetails: (
-    exerciseId: string,
-    newNme: string,
-    newMuscleGroups: string[],
-  ) => void;
-  createSet: (
-    exerciseId: string,
-    setSets: (value: React.SetStateAction<setType[]>) => void,
-  ) => void;
-  deleteExercise: (exerciseId: string) => void;
+  index: number;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
 
+  const userWorkouts = useAppSelector((state) => state.user.userWorkouts);
+  const id = useAppSelector((state) => state.user.id);
+  const dispatch = useAppDispatch();
+
+  const handleSetWorkout = (workout: workoutType) => {
+    dispatch(setWorkout({ userId: id, workout }));
+  };
+
+  const workout = userWorkouts[index];
+  const sets = Object.values(exercise.sets);
+
   const {
-    exerciseId,
-    sets,
-    setSets,
     checked,
-    setChecked,
     exerciseName,
-    setExerciseName,
     muscleGroups,
-    setMuscleGroups,
-  } = useExercise(exercise);
+    updateExerciseTypes,
+    updateExercise,
+    deleteExercise,
+    createSet,
+  } = useExercise(exercise, workout, handleSetWorkout);
 
-  // Wrapper for updating set value
-  const handleUpdateSetValue = (
-    setId: string,
-    newValue: number,
-    type: setInputTypes,
-  ) => {
-    updateSetValue(exerciseId, setId, newValue, type);
-  };
-
-  // Wrapper for addBelowSet and deleteSet operations
-  const handleUpdateSets = (setId: string, action: "add" | "delete") => {
-    // Add set below setId in sets
-    if (action === "add") {
-      addBelowSet(exerciseId, setId, setSets);
-    } else {
-      // Remove setId from sets
-      deleteSet(exerciseId, setId, setSets);
-    }
-  };
-
-  // Wrapper for updating set types
-  const handleUpdateSetTypes = (types: exerciseTypes) => {
-    setChecked(types);
-    updateSetType(exerciseId, types);
-  };
-
-  // Wrapper for updating the exercise name and muscle groups
-  const handleUpdateExercise = (newName: string, newMuscleGroups: string[]) => {
-    close();
-    setExerciseName(newName);
-    setMuscleGroups(newMuscleGroups);
-    if (newName !== exerciseName || newMuscleGroups !== muscleGroups) {
-      updateExerciseDetails(exerciseId, newName, newMuscleGroups);
-    }
-  };
-
-  // Wrapper for delete exercise
-  const handleDeleteExercise = () => {
-    close();
-    deleteExercise(exerciseId);
-  };
+  const { deleteSet, addSetBelow, updateSetValue } = useSet(
+    exercise,
+    workout,
+    handleSetWorkout,
+  );
 
   return (
     <>
@@ -131,7 +69,7 @@ export default function Exercise({
               exerciseName={exerciseName}
               checked={checked}
               open={open}
-              updateSetTypes={handleUpdateSetTypes}
+              updateExerciseTypes={updateExerciseTypes}
             />
           </Group>
           <ScrollArea
@@ -175,27 +113,30 @@ export default function Exercise({
             className="min-w-fit self-center"
             variant="light"
             leftSection={<FaPlus />}
-            onClick={() => createSet(exerciseId, setSets)}
+            onClick={createSet}
           >
             New set
           </Button>
         )}
-        {sets.map((set, i) => (
-          <SetList
-            key={`set-${i}`}
-            set={set}
-            checked={checked}
-            updateSetValue={handleUpdateSetValue}
-            updateSets={handleUpdateSets}
-          />
-        ))}
+        {sets.map((set) => {
+          return (
+            <Set
+              key={set.id}
+              set={set}
+              checked={checked}
+              deleteSet={() => deleteSet(set.id)}
+              addSetBelow={() => addSetBelow(set.id)}
+              updateSetValue={updateSetValue}
+            />
+          );
+        })}
         <Divider />
       </Stack>
       <ExerciseModal
         exerciseName={exerciseName}
         muscleGroups={muscleGroups}
-        updateExercise={handleUpdateExercise}
-        deleteExercise={handleDeleteExercise}
+        updateExercise={updateExercise}
+        deleteExercise={deleteExercise}
         opened={opened}
         close={close}
       />
