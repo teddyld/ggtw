@@ -24,6 +24,11 @@ export default function DashboardPage() {
   const { isSignedIn } = useUser();
   const navigate = useNavigate();
 
+  // Navigate to /workout if user is signed in
+  React.useEffect(() => {
+    handleIsSignedIn()
+  }, [isSignedIn])
+
   const handleIsSignedIn = () => {
     if (isSignedIn) {
       navigate("/workout");
