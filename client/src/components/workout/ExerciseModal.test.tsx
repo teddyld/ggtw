@@ -55,7 +55,7 @@ describe("ExerciseModal component", () => {
 
     // Validate current exercise name input
     const nameInput = screen.getByRole("textbox", { name: /exercise name/i });
-    expect(nameInput).toHaveAttribute("value", exerciseName);
+    expect(nameInput).toHaveValue(exerciseName);
 
     // Clear exercise name
     await user.clear(nameInput);
@@ -63,7 +63,7 @@ describe("ExerciseModal component", () => {
     // Modify exercise name
     await user.type(nameInput, "New Exercise Name");
     await waitFor(() => {
-      expect(nameInput).toHaveAttribute("value", "New Exercise Name");
+      expect(nameInput).toHaveValue("New Exercise Name");
     });
 
     // Validate current muscle groups input
@@ -116,7 +116,7 @@ describe("ExerciseModal component", () => {
 
     // Validate current exercise name input
     const nameInput = screen.getByRole("textbox", { name: /exercise name/i });
-    expect(nameInput).toHaveAttribute("value", exerciseName);
+    expect(nameInput).toHaveValue(exerciseName);
 
     // Clear exercise name
     await user.clear(nameInput);
