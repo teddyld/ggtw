@@ -20,13 +20,13 @@ describe("ExerciseMenu component", () => {
     );
 
     // Open menu dropdown
-    const menuBtn = screen.getByRole("button", { name: /Edit Exercise/i });
+    const menuBtn = screen.getByRole("button", { name: /edit Exercise/i });
     await user.click(menuBtn);
 
     // Wait for dropdown to appear
     await waitFor(async () => {
       const editExerciseBtn = screen.getByRole("menuitem", {
-        name: /Edit exercise details/i,
+        name: /edit exercise details/i,
       });
 
       // Open exercise modal
@@ -47,16 +47,16 @@ describe("ExerciseMenu component", () => {
     );
 
     // Open menu dropdown
-    const menuBtn = screen.getByRole("button", { name: /Edit Exercise/i });
+    const menuBtn = screen.getByRole("button", { name: /edit Exercise/i });
     await user.click(menuBtn);
 
     // Wait for dropdown to appear
     await waitFor(async () => {
       const repsCheckbox = screen.getByRole("checkbox", {
-        name: /Reps checkbox/i,
+        name: /reps checkbox/i,
       });
       const timeCheckbox = screen.getByRole("checkbox", {
-        name: /Time checkbox/i,
+        name: /time checkbox/i,
       });
       expect(repsCheckbox).toBeTruthy();
       expect(timeCheckbox).toBeTruthy();
