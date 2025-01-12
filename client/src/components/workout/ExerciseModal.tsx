@@ -115,6 +115,7 @@ export default function ExerciseModal({
             </ActionIcon>
           </Tooltip>
           <PillsInput
+            aria-label="Muscle groups input"
             label="Muscle groups"
             classNames={{
               label: "pb-2 relative",

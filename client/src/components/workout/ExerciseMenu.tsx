@@ -35,6 +35,7 @@ export default function ExerciseMenu({
         <Menu.Item
           leftSection={<CgDetailsMore className="text-xl" />}
           onClick={open}
+          aria-label="Edit exercise details"
         >
           Edit details
         </Menu.Item>
@@ -45,6 +46,7 @@ export default function ExerciseMenu({
             checked={checked.reps}
             onChange={() => checkReps()}
             withBorder={false}
+            aria-label="Reps checkbox"
           >
             <Group gap="xs" wrap="nowrap">
               <Checkbox.Indicator />
@@ -58,6 +60,7 @@ export default function ExerciseMenu({
             checked={checked.time}
             onChange={() => checkTime()}
             withBorder={false}
+            aria-label="Time checkbox"
           >
             <Group gap="xs" wrap="nowrap">
               <Checkbox.Indicator />
