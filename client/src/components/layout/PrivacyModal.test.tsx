@@ -8,13 +8,13 @@ describe("PrivacyModal component", () => {
     const { user } = setupRender(
       <PrivacyModal opened={true} close={closeFn} />,
     );
-    const modal = screen.getByRole("dialog");
-    expect(modal).toBeTruthy();
+
+    expect(screen.getByRole("dialog")).toBeTruthy();
 
     // Close with button
     const closeBtn = screen.getAllByRole("button")[0];
     await user.click(closeBtn);
-    expect(closeFn).toHaveBeenCalledTimes(1);
+    expect(closeFn).toHaveBeenCalledOnce();
   });
 
   it("is closed when opened is false", () => {
