@@ -13,7 +13,7 @@ export default function SetMenu({
   return (
     <Menu>
       <Menu.Target>
-        <ActionIcon variant="subtle" aria-label="Open set menu">
+        <ActionIcon variant="subtle" aria-label="Edit set">
           <BsThreeDotsVertical />
         </ActionIcon>
       </Menu.Target>
