@@ -47,7 +47,7 @@ describe("WorkoutNewModal component", () => {
     expect(nameInput).toHaveValue(newWorkoutName);
 
     await user.click(createBtn);
-    await user.type(nameInput, "{enter}")
+    await user.type(nameInput, "{enter}");
 
     expect(setWorkoutFn).toHaveBeenCalledTimes(2);
   });

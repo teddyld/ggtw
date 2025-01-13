@@ -64,7 +64,7 @@ describe("WorkoutModal component", () => {
     // Save new workout name
     const saveBtn = screen.getByRole("button", { name: /save/i });
     await user.click(saveBtn);
-    await user.type(renameInput, "{enter}")
+    await user.type(renameInput, "{enter}");
 
     expect(renameWorkoutFn).toHaveBeenCalledTimes(2);
   });
