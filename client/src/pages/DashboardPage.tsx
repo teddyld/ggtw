@@ -11,29 +11,19 @@ import {
   Group,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { SignInButton, useUser } from "@clerk/clerk-react";
+import { SignInButton } from "@clerk/clerk-react";
 import { FaPen, FaDumbbell, FaChartLine } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 
 import Layout from "../components/layout/Layout";
 import PrivacyModal from "../components/layout/PrivacyModal";
 
+import { useSignedIn } from "../hooks/useSignedIn";
+
 export default function DashboardPage() {
   const [active, setActive] = React.useState(-1);
   const [opened, { open, close }] = useDisclosure();
-  const { isSignedIn } = useUser();
-  const navigate = useNavigate();
 
-  // Navigate to /workout if user is signed in
-  React.useEffect(() => {
-    handleIsSignedIn()
-  }, [isSignedIn])
-
-  const handleIsSignedIn = () => {
-    if (isSignedIn) {
-      navigate("/workout");
-    }
-  };
+  const { handleSignedIn } = useSignedIn()
 
   return (
     <Layout>
@@ -57,7 +47,7 @@ export default function DashboardPage() {
             w={150}
             radius="xl"
             variant="light"
-            onClick={handleIsSignedIn}
+            onClick={handleSignedIn}
           >
             Get started
           </Button>
