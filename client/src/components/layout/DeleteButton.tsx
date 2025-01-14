@@ -6,9 +6,11 @@ import { useDisclosure } from "@mantine/hooks";
 export default function DeleteButton({
   item,
   handleDelete,
+  disabled,
 }: {
   item: string;
   handleDelete: () => void;
+  disabled: boolean;
 }) {
   const [deleteCard, setDeleteCard] = React.useState(false);
   const [loading, { toggle }] = useDisclosure();
@@ -22,6 +24,7 @@ export default function DeleteButton({
         <Button
           className={deleteCard ? "hidden" : "w-fit"}
           onClick={() => setDeleteCard(true)}
+          disabled={disabled}
         >
           Delete {item}
         </Button>
@@ -53,6 +56,7 @@ export default function DeleteButton({
                 toggle();
                 handleDelete();
               }}
+              disabled={disabled}
             >
               Delete {item}
             </Button>

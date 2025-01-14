@@ -5,8 +5,13 @@ import WorkoutNewModal from "./WorkoutNewModal";
 describe("WorkoutNewModal component", () => {
   it("closes when close function is called", async () => {
     const closeFn = vi.fn();
+    const setWorkoutFn = vi.fn(() => Promise.resolve());
     const { user } = setupRender(
-      <WorkoutNewModal opened={true} close={closeFn} setWorkout={() => {}} />,
+      <WorkoutNewModal
+        opened={true}
+        close={closeFn}
+        setWorkout={setWorkoutFn}
+      />,
     );
 
     expect(screen.getByRole("dialog")).toBeTruthy();
@@ -18,15 +23,20 @@ describe("WorkoutNewModal component", () => {
   });
 
   it("is closed when opened is false", () => {
+    const setWorkoutFn = vi.fn(() => Promise.resolve());
     setupRender(
-      <WorkoutNewModal opened={false} close={() => {}} setWorkout={() => {}} />,
+      <WorkoutNewModal
+        opened={false}
+        close={() => {}}
+        setWorkout={setWorkoutFn}
+      />,
     );
 
     expect(screen.queryByRole("dialog")).toBeFalsy();
   });
 
   it("calls setWorkout when create button is clicked", async () => {
-    const setWorkoutFn = vi.fn();
+    const setWorkoutFn = vi.fn(() => Promise.resolve());
     const { user } = setupRender(
       <WorkoutNewModal
         opened={true}

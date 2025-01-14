@@ -8,7 +8,7 @@ import {
 export const useExercise = (
   exercise: exerciseType,
   workout: workoutType,
-  setWorkout: (workout: workoutType, message: string) => void,
+  setWorkout: (workout: workoutType, message: string) => Promise<void>,
 ) => {
   const [checked, setChecked] = React.useState({
     reps: exercise.types.reps,
@@ -39,10 +39,11 @@ export const useExercise = (
   };
 
   // Update exercise name and musclegroups
-  const updateExercise = (newName: string, newMuscleGroups: string[]) => {
-    setExerciseName(newName);
-    setMuscleGroups(newMuscleGroups);
-
+  const updateExercise = (
+    newName: string,
+    newMuscleGroups: string[],
+    close: () => void,
+  ) => {
     const newExercise = structuredClone(exercise);
     newExercise.name = newName;
     newExercise.muscleGroups = newMuscleGroups;
@@ -57,7 +58,11 @@ export const useExercise = (
       },
     };
 
-    setWorkout(newWorkout, "Exercise updated successfully.");
+    setWorkout(newWorkout, "Exercise updated successfully.").then(() => {
+      setExerciseName(newName);
+      setMuscleGroups(newMuscleGroups);
+      close();
+    });
   };
 
   // Delete exercise

@@ -18,7 +18,7 @@ export default function Workout({
   workout: workoutType;
   index: number;
   exercises: exerciseType[];
-  setWorkout: (workout: workoutType, message: string) => void;
+  setWorkout: (workout: workoutType, message: string) => Promise<void>;
   deleteWorkout: (workoutId: string) => void;
 }) {
   const [opened, { open, close }] = useDisclosure();
@@ -83,13 +83,20 @@ export default function Workout({
 
   // Rename workout
   const renameWorkout = (newName: string) => {
-    close();
-    setWorkoutName(newName);
+    if (workoutName === newName) {
+      close();
+      return;
+    }
+
     const newWorkout = {
       ...workout,
       name: newName,
     };
-    setWorkout(newWorkout, "Workout updated successfully.");
+
+    setWorkout(newWorkout, "Workout updated successfully.").then(() => {
+      setWorkoutName(newName);
+      close();
+    });
   };
 
   return (

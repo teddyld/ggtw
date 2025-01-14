@@ -28,7 +28,11 @@ export default function ExerciseModal({
 }: {
   exerciseName: string;
   muscleGroups: string[];
-  updateExercise: (newName: string, newMuscleGroups: string[]) => void;
+  updateExercise: (
+    newName: string,
+    newMuscleGroups: string[],
+    close: () => void,
+  ) => void;
   deleteExercise: () => void;
   opened: boolean;
   close: () => void;
@@ -38,9 +42,18 @@ export default function ExerciseModal({
   const [newMuscle, setNewMuscle] = React.useState("");
   const [muscleError, setMuscleError] = React.useState("");
 
+  const [loading, { toggle }] = useDisclosure();
+
   React.useEffect(() => {
     setEditName(exerciseName);
     setEditMuscleGroups(muscleGroups);
+
+    return () => {
+      // Reset loading prop
+      if (loading) {
+        toggle();
+      }
+    };
   }, [opened]);
 
   // Remove muscle from muscle group
@@ -72,9 +85,11 @@ export default function ExerciseModal({
   };
 
   const handleSubmit = () => {
-    close();
     if (editName !== exerciseName || editMuscleGroups !== muscleGroups) {
-      updateExercise(editName, editMuscleGroups);
+      toggle();
+      updateExercise(editName, editMuscleGroups, close);
+    } else {
+      close();
     }
   };
 
@@ -101,6 +116,7 @@ export default function ExerciseModal({
           }}
           error={editName === "" ? "Invalid name" : ""}
           onKeyDown={(event) => handleEnterKey(event.key)}
+          disabled={loading}
         />
         <Group className="relative">
           <Tooltip
@@ -138,17 +154,26 @@ export default function ExerciseModal({
                 value={newMuscle}
                 onChange={(event) => setNewMuscle(event.currentTarget.value)}
                 onKeyDown={(event) => handleOnAdd(event.key)}
+                disabled={loading}
               />
             </Pill.Group>
           </PillsInput>
         </Group>
-        <DeleteButton item="exercise" handleDelete={deleteExercise} />
+        <DeleteButton
+          item="exercise"
+          handleDelete={deleteExercise}
+          disabled={loading}
+        />
         <Divider />
         <Group justify="flex-end">
           <Button color="gray" onClick={close} variant="subtle">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={editName === ""}>
+          <Button
+            loading={loading}
+            onClick={handleSubmit}
+            disabled={editName === ""}
+          >
             Save
           </Button>
         </Group>

@@ -43,7 +43,14 @@ export const useWorkout = () => {
   }, [isPending]);
 
   const handleSetWorkout = (workout: workoutType, message: string) => {
-    dispatch(setWorkout({ userId: id, workout, message }));
+    return new Promise<void>((resolve, reject) => {
+      try {
+        dispatch(setWorkout({ userId: id, workout, message }));
+        resolve();
+      } catch (_) {
+        reject();
+      }
+    });
   };
 
   const handleDeleteWorkout = (workoutId: string) => {

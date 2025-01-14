@@ -7,7 +7,7 @@ type WorkoutListType = {
   workout: workoutType;
   index: number;
   exerciseMap: Record<string, exerciseType>;
-  setWorkout: (workout: workoutType, message: string) => void;
+  setWorkout: (workout: workoutType, message: string) => Promise<void>;
   deleteWorkout: (workoutId: string) => void;
 };
 

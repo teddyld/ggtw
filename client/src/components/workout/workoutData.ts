@@ -371,6 +371,6 @@ export const templateWorkouts = {
 };
 
 export type WorkoutButtonType = ButtonProps & {
-  setWorkout: (workout: workoutType, message: string) => void;
+  setWorkout: (workout: workoutType, message: string) => Promise<void>;
   children?: React.ReactNode;
 };
