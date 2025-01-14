@@ -3,7 +3,7 @@ import { useUser } from "@clerk/clerk-react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export const useSignedIn = () => {
-  const { isSignedIn } = useUser()
+  const { isSignedIn, isLoaded } = useUser()
   const navigate = useNavigate()
   const location = useLocation()
   
@@ -17,8 +17,10 @@ export const useSignedIn = () => {
   }
 
   React.useEffect(() => {
-    handleSignedIn()
-  }, [isSignedIn])
+    if (isLoaded) {
+      handleSignedIn()
+    }
+  }, [isSignedIn, isLoaded])
 
   return { handleSignedIn }
 }
