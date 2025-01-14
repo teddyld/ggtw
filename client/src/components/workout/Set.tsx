@@ -3,6 +3,7 @@ import { Group } from "@mantine/core";
 import SetMenu from "./SetMenu";
 import SetInput from "./SetInput";
 import { setType, setInputTypes } from "./workoutData";
+import SetLog from "./SetLog";
 
 export default function Set({
   set,
@@ -52,6 +53,7 @@ export default function Set({
           updateSetValue={updateSetValue}
         />
       )}
+      <SetLog />
     </Group>
   );
 }

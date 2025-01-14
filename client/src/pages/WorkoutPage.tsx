@@ -15,7 +15,7 @@ export default function WorkoutPage() {
   const { userWorkouts, workoutPending, setWorkout, deleteWorkout } =
     useWorkout();
 
-  useSignedIn()
+  useSignedIn();
 
   if (workoutPending) {
     return <WorkoutLoading />;

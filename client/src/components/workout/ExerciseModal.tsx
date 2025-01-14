@@ -16,6 +16,7 @@ import { FaInfoCircle } from "react-icons/fa";
 
 import ExercisePill from "./ExercisePill";
 import DeleteButton from "../layout/DeleteButton";
+import { useDisclosure } from "@mantine/hooks";
 
 export default function ExerciseModal({
   exerciseName,

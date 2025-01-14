@@ -42,8 +42,8 @@ export const useWorkout = () => {
     }
   }, [isPending]);
 
-  const handleSetWorkout = (workout: workoutType) => {
-    dispatch(setWorkout({ userId: id, workout }));
+  const handleSetWorkout = (workout: workoutType, message: string) => {
+    dispatch(setWorkout({ userId: id, workout, message }));
   };
 
   const handleDeleteWorkout = (workoutId: string) => {

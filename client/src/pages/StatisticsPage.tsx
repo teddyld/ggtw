@@ -3,7 +3,7 @@ import Layout from "../components/layout/Layout";
 import { useSignedIn } from "../hooks/useSignedIn";
 
 export default function StatisticsPage() {
-  useSignedIn()
+  useSignedIn();
 
   return (
     <Layout>

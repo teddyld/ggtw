@@ -34,8 +34,8 @@ export default function Exercise({
   const id = useAppSelector((state) => state.user.id);
   const dispatch = useAppDispatch();
 
-  const handleSetWorkout = (workout: workoutType) => {
-    dispatch(setWorkout({ userId: id, workout }));
+  const handleSetWorkout = (workout: workoutType, message: string) => {
+    dispatch(setWorkout({ userId: id, workout, message }));
   };
 
   const workout = userWorkouts[index];
@@ -105,6 +105,9 @@ export default function Exercise({
                 TIME (s)
               </Text>
             )}
+            <Text fw={700} c="dimmed" className="min-w-11">
+              LOG
+            </Text>
           </Group>
         ) : (
           <Button

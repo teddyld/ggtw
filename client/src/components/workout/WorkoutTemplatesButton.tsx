@@ -14,7 +14,7 @@ export default function WorkoutTemplatesButton({
 }: WorkoutButtonType) {
   // Add template workout defined in workoutData to program
   const addTemplateWorkout = async (template: workoutType) => {
-    setWorkout(template);
+    setWorkout(template, "Workout created successfully!");
   };
 
   return (

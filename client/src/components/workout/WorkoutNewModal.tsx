@@ -19,7 +19,7 @@ export default function WorkoutNewModal({
 }: {
   opened: boolean;
   close: () => void;
-  setWorkout: (workout: workoutType) => void;
+  setWorkout: (workout: workoutType, message: string) => void;
 }) {
   const [workoutName, setWorkoutName] = React.useState("");
   const validWorkout = workoutName !== "";
@@ -39,7 +39,7 @@ export default function WorkoutNewModal({
       exerciseCount: 0,
     };
 
-    setWorkout(newWorkout);
+    setWorkout(newWorkout, "Workout created successfully!");
   };
 
   // Create workout on 'Enter' key press

@@ -1,6 +1,7 @@
 import React from "react";
 import Container from "./Container";
 import { Stack, Text, Group, Button } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 
 export default function DeleteButton({
   item,
@@ -10,6 +11,7 @@ export default function DeleteButton({
   handleDelete: () => void;
 }) {
   const [deleteCard, setDeleteCard] = React.useState(false);
+  const [loading, { toggle }] = useDisclosure();
 
   return (
     <>
@@ -45,7 +47,15 @@ export default function DeleteButton({
             >
               Cancel
             </Button>
-            <Button onClick={() => handleDelete()}>Delete {item}</Button>
+            <Button
+              loading={loading}
+              onClick={() => {
+                toggle();
+                handleDelete();
+              }}
+            >
+              Delete {item}
+            </Button>
           </Group>
         </Stack>
       </Container>

@@ -18,7 +18,7 @@ export default function Workout({
   workout: workoutType;
   index: number;
   exercises: exerciseType[];
-  setWorkout: (workout: workoutType) => void;
+  setWorkout: (workout: workoutType, message: string) => void;
   deleteWorkout: (workoutId: string) => void;
 }) {
   const [opened, { open, close }] = useDisclosure();
@@ -72,7 +72,7 @@ export default function Workout({
       exerciseOrder: [...workout.exerciseOrder, newExerciseId],
     };
 
-    setWorkout(newWorkout);
+    setWorkout(newWorkout, "");
   };
 
   // Remove exercise
@@ -89,7 +89,7 @@ export default function Workout({
       ...workout,
       name: newName,
     };
-    setWorkout(newWorkout);
+    setWorkout(newWorkout, "Workout updated successfully.");
   };
 
   return (

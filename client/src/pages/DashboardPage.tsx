@@ -23,7 +23,7 @@ export default function DashboardPage() {
   const [active, setActive] = React.useState(-1);
   const [opened, { open, close }] = useDisclosure();
 
-  const { handleSignedIn } = useSignedIn()
+  const { handleSignedIn } = useSignedIn();
 
   return (
     <Layout>
@@ -43,12 +43,7 @@ export default function DashboardPage() {
           platform for free to start tracking your workout today.
         </Highlight>
         <SignInButton mode="modal" forceRedirectUrl="/workout">
-          <Button
-            w={150}
-            radius="xl"
-            variant="light"
-            onClick={handleSignedIn}
-          >
+          <Button w={150} radius="xl" variant="light" onClick={handleSignedIn}>
             Get started
           </Button>
         </SignInButton>

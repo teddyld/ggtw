@@ -8,7 +8,7 @@ import {
 export const useExercise = (
   exercise: exerciseType,
   workout: workoutType,
-  setWorkout: (workout: workoutType) => void,
+  setWorkout: (workout: workoutType, message: string) => void,
 ) => {
   const [checked, setChecked] = React.useState({
     reps: exercise.types.reps,
@@ -35,7 +35,7 @@ export const useExercise = (
       },
     };
 
-    setWorkout(newWorkout);
+    setWorkout(newWorkout, "");
   };
 
   // Update exercise name and musclegroups
@@ -57,7 +57,7 @@ export const useExercise = (
       },
     };
 
-    setWorkout(newWorkout);
+    setWorkout(newWorkout, "Exercise updated successfully.");
   };
 
   // Delete exercise
@@ -77,7 +77,7 @@ export const useExercise = (
       exerciseOrder: newExerciseOrder,
     };
 
-    setWorkout(newWorkout);
+    setWorkout(newWorkout, "Exercise deleted successfully.");
   };
 
   // Create set
@@ -108,7 +108,7 @@ export const useExercise = (
       },
     };
 
-    setWorkout(newWorkout);
+    setWorkout(newWorkout, "");
   };
 
   return {
