@@ -35,7 +35,7 @@ export default function DashboardPage() {
       >
         <Title>Workout tracking made fast</Title>
         <Highlight
-          w={420}
+          w={{ sm: 420 }}
           color="red"
           highlight={["workout plans", "track your progress"]}
         >
