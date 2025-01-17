@@ -51,7 +51,7 @@ export default function DashboardPage() {
       <Divider w="100%" />
       <Stack
         py={100}
-        px={{ base: 10, sm: 100 }}
+        px={{ base: 20, sm: 100 }}
         className="text-center"
         align="center"
       >
