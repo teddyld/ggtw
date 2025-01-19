@@ -33,7 +33,7 @@ export const useWorkout = () => {
     }
   }, [isLoaded, isSignedIn]);
 
-  // Set user's program from MongoDB on initial load
+  // Set user's workout from MongoDB on initial load
   React.useEffect(() => {
     if (data && data.workouts) {
       dispatch(setUserWorkouts(Object.values(data.workouts)));
