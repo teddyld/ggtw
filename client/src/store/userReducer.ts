@@ -11,7 +11,7 @@ type userState = {
 
 const initialState: userState = {
   id: "",
-  userWorkouts: [], // Facilitate client fetching of boards
+  userWorkouts: [], // Facilitate client fetching of user workouts
   status: "idle",
 };
 
