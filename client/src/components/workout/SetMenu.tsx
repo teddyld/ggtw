@@ -25,6 +25,7 @@ export default function SetMenu({
         >
           Add set below
         </Menu.Item>
+        <Menu.Divider />
         <Menu.Item
           leftSection={<FaRegTrashAlt className="text-lg" />}
           color="red"
