@@ -49,6 +49,7 @@ export default function ExerciseModal({
     setEditMuscleGroups(muscleGroups);
 
     return () => {
+      setNewMuscle("");
       // Reset loading prop
       if (loading) {
         toggle();
@@ -138,6 +139,7 @@ export default function ExerciseModal({
               label: "pb-2 relative",
             }}
             error={muscleError}
+            w="100%"
           >
             <Pill.Group>
               {editMuscleGroups.map((muscle, i) => (
@@ -159,6 +161,13 @@ export default function ExerciseModal({
             </Pill.Group>
           </PillsInput>
         </Group>
+        <Button
+          color="gray"
+          variant="light"
+          onClick={() => handleOnAdd("Enter")}
+        >
+          Add
+        </Button>
         <DeleteButton
           item="exercise"
           handleDelete={deleteExercise}
