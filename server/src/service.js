@@ -41,3 +41,52 @@ export const deleteWorkout = async (userId, workoutId) =>
       return reject(new AccessError(err.message));
     }
   });
+
+export const getUserStatistics = async (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const collection = db.collection("users");
+      const user = await collection.findOne({ user: id });
+      return resolve({ statistics: user.statistics });
+    } catch (err) {
+      return reject(new AccessError(err.message));
+    }
+  });
+
+export const updateStatisticsLog = async (userId, logData) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const collection = db.collection("users");
+      const dateField = logData.date;
+      const exerciseField = logData.exerciseName;
+      const field = `statistics.${dateField}.${exerciseField}`;
+      const arrayField = `${field}.sets`;
+
+      await collection.updateOne(
+        { user: userId },
+        {
+          $set: {
+            [`${field}.muscleGroups`]: { muscleGroups: logData.muscleGroups },
+          },
+          $push: { [arrayField]: { $each: logData.sets } },
+        },
+      );
+      return resolve();
+    } catch (err) {
+      return reject(new AccessError(err.message));
+    }
+  });
+
+export const deleteUserStatistics = async (userId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const collection = db.collection("users");
+      await collection.updateOne(
+        { user: userId },
+        { $set: { statistics: {} } },
+      );
+      return resolve();
+    } catch (err) {
+      return reject(new AccessError(err.message));
+    }
+  });

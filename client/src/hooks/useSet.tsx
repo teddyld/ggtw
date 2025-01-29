@@ -50,6 +50,7 @@ export const useSet = (
           reps: 0,
           time: 0,
         },
+        logged: false,
       },
     };
 

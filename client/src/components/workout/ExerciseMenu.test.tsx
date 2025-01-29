@@ -16,6 +16,7 @@ describe("ExerciseMenu component", () => {
         checked={checkedState}
         open={openFn}
         updateExerciseTypes={() => {}}
+        logAllSets={() => {}}
       />,
     );
 
@@ -43,6 +44,7 @@ describe("ExerciseMenu component", () => {
         checked={checkedState}
         open={() => {}}
         updateExerciseTypes={updateExerciseTypesFn}
+        logAllSets={() => {}}
       />,
     );
 
@@ -66,6 +68,36 @@ describe("ExerciseMenu component", () => {
       await user.click(timeCheckbox);
 
       expect(updateExerciseTypesFn).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("logs all sets when clicked", async () => {
+    const logAllSetsFn = vi.fn();
+    const { user } = setupRender(
+      <ExerciseMenu
+        exerciseName="Exercise"
+        checked={checkedState}
+        open={() => {}}
+        updateExerciseTypes={() => {}}
+        logAllSets={logAllSetsFn}
+      />,
+    );
+
+    // Open menu dropdown
+    const menuBtn = screen.getByRole("button", { name: /edit Exercise/i });
+    await user.click(menuBtn);
+
+    // Wait for dropdown to appear
+    await waitFor(async () => {
+      const logItem = screen.getByRole("menuitem", {
+        name: /log all sets/i,
+      });
+      expect(logItem).toBeTruthy();
+
+      // Call logAllSets
+      await user.click(logItem);
+
+      expect(logAllSetsFn).toHaveBeenCalledTimes(2);
     });
   });
 });

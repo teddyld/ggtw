@@ -15,7 +15,7 @@ const initialState: userState = {
   status: "idle",
 };
 
-type PayloadType = {
+type WorkoutPayloadType = {
   workout: workoutType;
   message: string;
 };
@@ -68,7 +68,7 @@ const userSlice = createSlice({
       })
       .addCase(
         setWorkout.fulfilled,
-        (state, action: PayloadAction<PayloadType>) => {
+        (state, action: PayloadAction<WorkoutPayloadType>) => {
           state.status = "succeeded";
           const newWorkouts = Array.from(state.userWorkouts);
           const workoutIndex = newWorkouts.findIndex(
@@ -119,9 +119,10 @@ const userSlice = createSlice({
         notifications.show({
           message: "An error occurred. Please try again later.",
         });
-      });
+      })
   },
 });
 
-export const { setUserId, setUserWorkouts } = userSlice.actions;
+export const { setUserId, setUserWorkouts } =
+  userSlice.actions;
 export default userSlice.reducer;

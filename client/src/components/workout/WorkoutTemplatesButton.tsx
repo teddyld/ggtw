@@ -1,11 +1,7 @@
 import { Menu, Button, Group } from "@mantine/core";
 import { FaChevronDown } from "react-icons/fa";
 
-import {
-  workoutType,
-  templateWorkouts as templates,
-  WorkoutButtonType,
-} from "./workoutData";
+import { workoutType, WorkoutButtonType, getTemplate } from "./workoutData";
 
 export default function WorkoutTemplatesButton({
   setWorkout,
@@ -30,16 +26,16 @@ export default function WorkoutTemplatesButton({
       <Menu.Dropdown>
         <Menu.Label>Templates</Menu.Label>
         <Menu.Item
-          onClick={() => addTemplateWorkout(templates["Back + Biceps"])}
+          onClick={() => addTemplateWorkout(getTemplate("Back + Biceps"))}
         >
           Back + Biceps
         </Menu.Item>
         <Menu.Item
-          onClick={() => addTemplateWorkout(templates["Chest + Triceps"])}
+          onClick={() => addTemplateWorkout(getTemplate("Chest + Triceps"))}
         >
           Chest + Triceps
         </Menu.Item>
-        <Menu.Item onClick={() => addTemplateWorkout(templates["Legs"])}>
+        <Menu.Item onClick={() => addTemplateWorkout(getTemplate("Legs"))}>
           Legs
         </Menu.Item>
       </Menu.Dropdown>

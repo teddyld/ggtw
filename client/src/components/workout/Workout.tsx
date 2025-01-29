@@ -1,78 +1,83 @@
-import React from "react";
-import { Title, Divider, Flex, Group, ActionIcon, Button } from "@mantine/core";
+import { Title, Divider, Flex, Group, ActionIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { FaPen, FaPlus } from "react-icons/fa";
+import { FaPen } from "react-icons/fa";
+import { LayoutGroup } from "framer-motion";
 
 import Container from "../layout/Container";
 import ExerciseList from "./ExerciseList";
+import ExerciseNewModal from "./ExerciseNewModal";
 import WorkoutModal from "./WorkoutModal";
 import { exerciseType, workoutType } from "./workoutData";
 
 export default function Workout({
   workout,
-  index,
   exercises,
   setWorkout,
   deleteWorkout,
 }: {
   workout: workoutType;
-  index: number;
   exercises: exerciseType[];
   setWorkout: (workout: workoutType, message: string) => Promise<void>;
   deleteWorkout: (workoutId: string) => void;
 }) {
   const [opened, { open, close }] = useDisclosure();
-  const [workoutName, setWorkoutName] = React.useState(workout.name);
 
   // Create exercise
-  const createExercise = () => {
-    const newExerciseId = `exercise-${workout.exerciseCount + 1}`;
-    const newExercises = {
-      ...workout.exercises,
-      [newExerciseId]: {
-        id: newExerciseId,
-        name: "New Exercise",
-        muscleGroups: [],
-        types: { reps: true, time: false },
-        setOrder: ["set-1", "set-2", "set-3"],
-        setCount: 3,
-        sets: {
-          "set-1": {
-            id: "set-1",
-            values: {
-              reps: 0,
-              weight: 0,
-              time: 0,
+  const createExercise = async (exerciseName: string) => {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        const newExerciseId = `exercise-${workout.exerciseCount + 1}`;
+        const newExercises = {
+          ...workout.exercises,
+          [newExerciseId]: {
+            id: newExerciseId,
+            name: exerciseName,
+            muscleGroups: [],
+            types: { reps: true, time: false },
+            setOrder: ["set-1", "set-2", "set-3"],
+            setCount: 3,
+            sets: {
+              "set-1": {
+                id: "set-1",
+                values: {
+                  reps: 0,
+                  weight: 0,
+                  time: 0,
+                },
+              },
+              "set-2": {
+                id: "set-2",
+                values: {
+                  reps: 0,
+                  weight: 0,
+                  time: 0,
+                },
+              },
+              "set-3": {
+                id: "set-3",
+                values: {
+                  reps: 0,
+                  weight: 0,
+                  time: 0,
+                },
+              },
             },
           },
-          "set-2": {
-            id: "set-2",
-            values: {
-              reps: 0,
-              weight: 0,
-              time: 0,
-            },
-          },
-          "set-3": {
-            id: "set-3",
-            values: {
-              reps: 0,
-              weight: 0,
-              time: 0,
-            },
-          },
-        },
-      },
-    };
+        };
 
-    const newWorkout = {
-      ...workout,
-      exercises: newExercises,
-      exerciseCount: workout.exerciseCount + 1,
-      exerciseOrder: [...workout.exerciseOrder, newExerciseId],
-    };
+        const newWorkout = {
+          ...workout,
+          exercises: newExercises,
+          exerciseCount: workout.exerciseCount + 1,
+          exerciseOrder: [...workout.exerciseOrder, newExerciseId],
+        };
 
-    setWorkout(newWorkout, "");
+        setWorkout(newWorkout, "");
+        resolve();
+      } catch (_) {
+        reject();
+      }
+    });
   };
 
   // Remove exercise
@@ -83,7 +88,7 @@ export default function Workout({
 
   // Rename workout
   const renameWorkout = (newName: string) => {
-    if (workoutName === newName) {
+    if (workout.name === newName) {
       close();
       return;
     }
@@ -94,7 +99,6 @@ export default function Workout({
     };
 
     setWorkout(newWorkout, "Workout updated successfully.").then(() => {
-      setWorkoutName(newName);
       close();
     });
   };
@@ -110,7 +114,7 @@ export default function Workout({
       >
         <span />
         <Title order={2} size="xl" className="flex justify-center">
-          {workoutName}
+          {workout.name}
         </Title>
         <ActionIcon
           color="gray"
@@ -121,7 +125,7 @@ export default function Workout({
           <FaPen />
         </ActionIcon>
         <WorkoutModal
-          name={workoutName}
+          name={workout.name}
           removeWorkout={removeWorkout}
           renameWorkout={renameWorkout}
           opened={opened}
@@ -136,24 +140,19 @@ export default function Workout({
         gap="xs"
         wrap="wrap"
       >
-        {exercises.map((exercise) => {
-          return (
-            <ExerciseList
-              key={`${workout.id}-${exercise.id}`}
-              exercise={exercise}
-              index={index}
-            />
-          );
-        })}
-        <Button
-          w="100%"
-          color="gray"
-          variant="outline"
-          leftSection={<FaPlus />}
-          onClick={() => createExercise()}
-        >
-          New Exercise
-        </Button>
+        <LayoutGroup>
+          {exercises.map((exercise) => {
+            return (
+              <ExerciseList
+                key={`${workout.id}-${exercise.id}`}
+                workout={workout}
+                setWorkout={setWorkout}
+                exercise={exercise}
+              />
+            );
+          })}
+        </LayoutGroup>
+        <ExerciseNewModal createExercise={createExercise} />
       </Flex>
     </Container>
   );

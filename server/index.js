@@ -10,6 +10,9 @@ import {
   deleteWorkout,
   getUserWorkouts,
   updateWorkout,
+  getUserStatistics,
+  updateStatisticsLog,
+  deleteUserStatistics,
 } from "./src/service.js";
 
 const app = express();
@@ -85,6 +88,39 @@ app.put(
     return res.json({
       success: true,
       message: "Successfully removed user workout",
+    });
+  }),
+);
+
+app.get(
+  "/user/statistics/:id",
+  catchErrors(async (req, res) => {
+    const { id } = req.params;
+    const { statistics } = await getUserStatistics(id);
+    return res.json({ statistics, success: true });
+  }),
+);
+
+app.put(
+  "/user/statistics/log",
+  catchErrors(async (req, res) => {
+    const { userId, logData } = req.body;
+    await updateStatisticsLog(userId, logData);
+    return res.json({
+      success: true,
+      message: "Successfully updated user statistics",
+    });
+  }),
+);
+
+app.put(
+  "/user/statistics/delete",
+  catchErrors(async (req, res) => {
+    const { userId } = req.body;
+    await deleteUserStatistics(userId);
+    return res.json({
+      success: true,
+      message: "Successfully deleted user statistics",
     });
   }),
 );

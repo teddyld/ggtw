@@ -1,13 +1,18 @@
 import Layout from "../components/layout/Layout";
+import StatisticsLoading from "../components/statistics/StatisticsLoading";
 
-import { useSignedIn } from "../hooks/useSignedIn";
+import { useStatistics } from "../hooks/useStatistics";
 
 export default function StatisticsPage() {
-  useSignedIn();
+  const { userStatistics, statisticsPending } = useStatistics();
+
+  if (statisticsPending) {
+    return <StatisticsLoading />;
+  }
 
   return (
     <Layout>
-      <div>Statistics</div>
+      <div>{JSON.stringify(userStatistics)}</div>
     </Layout>
   );
 }

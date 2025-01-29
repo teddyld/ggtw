@@ -1,5 +1,6 @@
 import { Group, Menu, ActionIcon, Checkbox, Text } from "@mantine/core";
 import { FaPen } from "react-icons/fa";
+import { MdFastForward } from "react-icons/md";
 import { CgDetailsMore } from "react-icons/cg";
 
 import { exerciseTypes } from "./workoutData";
@@ -9,11 +10,13 @@ export default function ExerciseMenu({
   checked,
   open,
   updateExerciseTypes,
+  logAllSets,
 }: {
   exerciseName: string;
   checked: exerciseTypes;
   open: () => void;
   updateExerciseTypes: (types: exerciseTypes) => void;
+  logAllSets: () => void;
 }) {
   const checkReps = () => {
     updateExerciseTypes({ ...checked, reps: !checked.reps });
@@ -38,6 +41,13 @@ export default function ExerciseMenu({
           aria-label="Edit exercise details"
         >
           Edit details
+        </Menu.Item>
+        <Menu.Item
+          leftSection={<MdFastForward className="text-xl" />}
+          onClick={logAllSets}
+          aria-label="Log all sets"
+        >
+          Log all sets
         </Menu.Item>
         <Menu.Label>Set type</Menu.Label>
         <Menu.Item closeMenuOnClick={false} p={0} component="div">

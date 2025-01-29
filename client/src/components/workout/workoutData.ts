@@ -1,5 +1,6 @@
 import React from "react";
 import { ButtonProps } from "@mantine/core";
+import { v4 as uuidv4 } from "uuid";
 
 export type workoutType = {
   id: string;
@@ -364,10 +365,17 @@ const legsWorkout: workoutType = {
   exerciseCount: 3,
 };
 
-export const templateWorkouts = {
+const templateWorkouts: Record<string, workoutType> = {
   "Back + Biceps": backWorkout,
   "Chest + Triceps": chestWorkout,
   Legs: legsWorkout,
+};
+
+export const getTemplate = (name: string) => {
+  const template = structuredClone(templateWorkouts[name]);
+  // Update id with a generated uuid
+  template.id = uuidv4();
+  return template;
 };
 
 export type WorkoutButtonType = ButtonProps & {

@@ -1,9 +1,12 @@
 import React from "react";
+import axios from "axios";
 import { useUser as useClerkUser } from "@clerk/clerk-react";
+import { useQuery } from "@tanstack/react-query";
 
 import { useAppSelector, useAppDispatch } from "../store";
 import {
   setUserId,
+  setUserWorkouts,
   setWorkout,
   deleteWorkout,
 } from "../store/userReducer";
@@ -14,6 +17,23 @@ export const useWorkout = () => {
 
   const id = useAppSelector((state) => state.user.id);
   const { user, isSignedIn, isLoaded } = useClerkUser();
+
+  const userWorkouts = useAppSelector((state) => state.user.userWorkouts);
+
+  const { isPending, data } = useQuery({
+    queryKey: ["workouts", id],
+    queryFn: () => axios.get(`/user/workouts/${id}`).then((res) => res.data),
+    enabled: !!id, // Only run when id is valid
+  });
+
+  // Set user's workout from MongoDB
+  React.useEffect(() => {
+    if (data && data.workouts) {
+      dispatch(setUserWorkouts(Object.values(data.workouts)));
+    } else {
+      dispatch(setUserWorkouts([]));
+    }
+  }, [isPending]);
 
   // Set user id from the User object from Clerk
   React.useEffect(() => {
@@ -38,7 +58,8 @@ export const useWorkout = () => {
   };
 
   return {
-    id,
+    userWorkouts,
+    workoutPending: isPending,
     setWorkout: handleSetWorkout,
     deleteWorkout: handleDeleteWorkout,
   };
