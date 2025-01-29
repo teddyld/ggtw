@@ -13,7 +13,7 @@ export default function SetMenu({
   return (
     <Menu>
       <Menu.Target>
-        <ActionIcon variant="subtle" aria-label="Open set menu">
+        <ActionIcon variant="subtle" aria-label="Edit set">
           <BsThreeDotsVertical />
         </ActionIcon>
       </Menu.Target>
@@ -25,6 +25,7 @@ export default function SetMenu({
         >
           Add set below
         </Menu.Item>
+        <Menu.Divider />
         <Menu.Item
           leftSection={<FaRegTrashAlt className="text-lg" />}
           color="red"

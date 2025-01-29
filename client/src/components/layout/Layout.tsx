@@ -7,14 +7,13 @@ import NavBar from "./NavBar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { opened, toggle } = useNavbar();
-  const size = opened ? 250 : 60;
 
   return (
     <AppShell
       layout="alt"
       header={{ height: 55 }}
       navbar={{
-        width: size,
+        width: opened ? 250 : 60,
         breakpoint: "sm",
         collapsed: {
           mobile: !opened,

@@ -2,17 +2,21 @@ import { Group } from "@mantine/core";
 
 import SetMenu from "./SetMenu";
 import SetInput from "./SetInput";
-import { setType, setInputTypes } from "./workoutData";
+import SetLog from "./SetLog";
+import { setType, setInputTypes, exerciseTypes } from "./workoutData";
 
 export default function Set({
   set,
   checked,
+  logged,
   deleteSet,
   addSetBelow,
   updateSetValue,
+  logSet,
 }: {
   set: setType;
-  checked: { reps: boolean; time: boolean };
+  checked: exerciseTypes;
+  logged: Record<string, boolean>;
   deleteSet: () => void;
   addSetBelow: () => void;
   updateSetValue: (
@@ -20,25 +24,26 @@ export default function Set({
     newValue: number,
     type: setInputTypes,
   ) => void;
+  logSet: () => void;
 }) {
-  const initialValue = {
-    weight: set.values.weight,
-    reps: set.values.reps,
-    time: set.values.time,
+  const handleLog = () => {
+    if (!logged[set.id]) {
+      logSet();
+    }
   };
 
   return (
     <Group gap="xs" wrap="nowrap" justify="center">
       <SetMenu deleteSet={deleteSet} addSetBelow={addSetBelow} />
       <SetInput
-        initialValue={initialValue.weight}
+        initialValue={set.values.weight}
         setId={set.id}
         type="weight"
         updateSetValue={updateSetValue}
       />
       {checked.reps && (
         <SetInput
-          initialValue={initialValue.reps}
+          initialValue={set.values.reps}
           setId={set.id}
           type="reps"
           updateSetValue={updateSetValue}
@@ -46,12 +51,13 @@ export default function Set({
       )}
       {checked.time && (
         <SetInput
-          initialValue={initialValue.time}
+          initialValue={set.values.time}
           setId={set.id}
           type="time"
           updateSetValue={updateSetValue}
         />
       )}
+      <SetLog logged={logged[set.id]} handleLog={handleLog} />
     </Group>
   );
 }

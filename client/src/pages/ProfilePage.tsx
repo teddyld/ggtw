@@ -6,7 +6,7 @@ import { FaRegUser } from "react-icons/fa";
 import { CiSettings } from "react-icons/ci";
 
 import { useTheme } from "../hooks/useTheme";
-import Container from "../components/layout/Container";
+import Settings from "../components/settings/Settings";
 import Layout from "../components/layout/Layout";
 
 export default function ProfilePage() {
@@ -46,7 +46,7 @@ export default function ProfilePage() {
           }}
         />
       ) : (
-        <Container>Settings</Container>
+        <Settings />
       )}
     </Layout>
   );

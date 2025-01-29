@@ -1,16 +1,19 @@
 import React from "react";
 
-import { exerciseType } from "./workoutData";
+import { exerciseType, workoutType } from "./workoutData";
 import Exercise from "./Exercise";
 
 type ExerciseListType = {
+  workout: workoutType;
+  setWorkout: (workout: workoutType, message: string) => Promise<void>;
   exercise: exerciseType;
-  index: number;
 };
 
 const ExerciseList = React.memo(
-  ({ exercise, index }: ExerciseListType) => {
-    return <Exercise exercise={exercise} index={index} />;
+  ({ workout, setWorkout, exercise }: ExerciseListType) => {
+    return (
+      <Exercise workout={workout} setWorkout={setWorkout} exercise={exercise} />
+    );
   },
   (prevProps, nextProps) => prevProps.exercise === nextProps.exercise,
 );

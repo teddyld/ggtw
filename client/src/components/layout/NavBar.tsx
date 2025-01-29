@@ -25,7 +25,7 @@ export default function NavBar({
   return (
     <>
       <AppShell.Section p="md">
-        <Group justify="space-between">
+        <Group justify="space-between" wrap="nowrap">
           <Logo opened={opened} />
           {opened && (
             <Tooltip label="Collapse Sidebar">
@@ -42,7 +42,11 @@ export default function NavBar({
         </Group>
       </AppShell.Section>
       <AppShell.Section grow>
-        {!isSignedIn ? <span /> : <NavBarPages opened={opened} />}
+        {!isSignedIn ? (
+          <span />
+        ) : (
+          <NavBarPages opened={opened} toggle={toggle} />
+        )}
       </AppShell.Section>
       {!opened && isSignedIn && (
         <AppShell.Section>

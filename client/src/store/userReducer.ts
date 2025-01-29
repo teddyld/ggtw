@@ -1,29 +1,41 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { workoutType } from "../components/workout/workoutData";
 import axios from "axios";
+import { notifications } from "@mantine/notifications";
 
 type userState = {
   id: string;
   userWorkouts: workoutType[];
   status: "idle" | "pending" | "succeeded" | "failed";
-  error: string | null;
 };
 
 const initialState: userState = {
   id: "",
-  userWorkouts: [], // Facilitate client fetching of boards
+  userWorkouts: [], // Facilitate client fetching of user workouts
   status: "idle",
-  error: null,
+};
+
+type WorkoutPayloadType = {
+  workout: workoutType;
+  message: string;
 };
 
 export const setWorkout = createAsyncThunk(
   "workout/update",
-  async ({ userId, workout }: { userId: string; workout: workoutType }) => {
+  async ({
+    userId,
+    workout,
+    message,
+  }: {
+    userId: string;
+    workout: workoutType;
+    message: string;
+  }) => {
     await axios.put("user/workout/update", {
       userId,
       workout,
     });
-    return workout;
+    return { workout, message };
   },
 );
 
@@ -56,26 +68,33 @@ const userSlice = createSlice({
       })
       .addCase(
         setWorkout.fulfilled,
-        (state, action: PayloadAction<workoutType>) => {
+        (state, action: PayloadAction<WorkoutPayloadType>) => {
           state.status = "succeeded";
           const newWorkouts = Array.from(state.userWorkouts);
           const workoutIndex = newWorkouts.findIndex(
-            (workout) => workout.id === action.payload.id,
+            (workout) => workout.id === action.payload.workout.id,
           );
 
           // Add to userWorkouts if workout does not exist
           if (workoutIndex === -1) {
-            newWorkouts.push(action.payload);
+            newWorkouts.push(action.payload.workout);
           } else {
-            newWorkouts[workoutIndex] = action.payload;
+            newWorkouts[workoutIndex] = action.payload.workout;
           }
 
           state.userWorkouts = newWorkouts;
+
+          // Create notification
+          if (action.payload.message) {
+            notifications.show({ message: action.payload.message });
+          }
         },
       )
-      .addCase(setWorkout.rejected, (state, action) => {
+      .addCase(setWorkout.rejected, (state, _) => {
         state.status = "failed";
-        state.error = action.error.message ?? "Unknown error";
+        notifications.show({
+          message: "An error occurred. Please try again later.",
+        });
       })
       .addCase(deleteWorkout.pending, (state, _) => {
         state.status = "pending";
@@ -90,14 +109,20 @@ const userSlice = createSlice({
           );
           newWorkouts.splice(workoutIndex, 1);
           state.userWorkouts = newWorkouts;
+          notifications.show({
+            message: "Workout deleted successfully.",
+          });
         },
       )
-      .addCase(deleteWorkout.rejected, (state, action) => {
+      .addCase(deleteWorkout.rejected, (state, _) => {
         state.status = "failed";
-        state.error = action.error.message ?? "Unknown error";
-      });
+        notifications.show({
+          message: "An error occurred. Please try again later.",
+        });
+      })
   },
 });
 
-export const { setUserId, setUserWorkouts } = userSlice.actions;
+export const { setUserId, setUserWorkouts } =
+  userSlice.actions;
 export default userSlice.reducer;

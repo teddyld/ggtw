@@ -20,6 +20,11 @@ export default function SetInput({
 }) {
   const [value, setValue] = React.useState<string | number>(initialValue);
 
+  // On page load the initialValue will change if the workout is in Redux store
+  React.useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
   return (
     <NumberInput
       classNames={{
@@ -29,6 +34,7 @@ export default function SetInput({
       allowLeadingZeros={false}
       variant="filled"
       allowNegative={false}
+      placeholder={type.toUpperCase()}
       value={value}
       onChange={setValue}
       onBlur={() => updateSetValue(setId, Number(value), type)}

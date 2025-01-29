@@ -7,7 +7,7 @@ import {
 export const useSet = (
   exercise: exerciseType,
   workout: workoutType,
-  setWorkout: (workout: workoutType) => void,
+  setWorkout: (workout: workoutType, message: string) => void,
 ) => {
   // Delete setId
   const deleteSet = (setId: string) => {
@@ -30,7 +30,7 @@ export const useSet = (
       },
     };
 
-    setWorkout(newWorkout);
+    setWorkout(newWorkout, "");
   };
 
   // Add set below setId
@@ -50,6 +50,7 @@ export const useSet = (
           reps: 0,
           time: 0,
         },
+        logged: false,
       },
     };
 
@@ -66,7 +67,7 @@ export const useSet = (
       },
     };
 
-    setWorkout(newWorkout);
+    setWorkout(newWorkout, "");
   };
 
   // Update setId value of type with newValue
@@ -97,7 +98,7 @@ export const useSet = (
       },
     };
 
-    setWorkout(newWorkout);
+    setWorkout(newWorkout, "");
   };
 
   return {

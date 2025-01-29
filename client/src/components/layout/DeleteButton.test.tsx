@@ -4,13 +4,15 @@ import DeleteButton from "./DeleteButton";
 
 describe("DeleteButton component", () => {
   it("renders item name as string in component", () => {
-    setupRender(<DeleteButton item="exercise" handleDelete={() => {}} />);
+    setupRender(
+      <DeleteButton item="exercise" handleDelete={() => {}} disabled={false} />,
+    );
     expect(screen.queryAllByText(/Delete exercise/i).length).toBeGreaterThan(0);
   });
 
   it("opens delete card when delete button is clicked", async () => {
     const { user } = setupRender(
-      <DeleteButton item="workout" handleDelete={() => {}} />,
+      <DeleteButton item="workout" handleDelete={() => {}} disabled={false} />,
     );
 
     const deleteCard = screen.getByTestId("deleteCard");
@@ -18,7 +20,7 @@ describe("DeleteButton component", () => {
 
     // Display delete card
     const deleteBtn = screen.getByRole("button", {
-      name: /Delete workout/i,
+      name: /delete workout/i,
     });
     await user.click(deleteBtn);
 
@@ -28,23 +30,35 @@ describe("DeleteButton component", () => {
   it("calls handleDelete when delete confirmation button is clicked", async () => {
     const deleteFn = vi.fn();
     const { user } = setupRender(
-      <DeleteButton item="workout" handleDelete={deleteFn} />,
+      <DeleteButton item="workout" handleDelete={deleteFn} disabled={false} />,
     );
 
     // Display delete card
     const deleteBtn = screen.getAllByRole("button", {
-      name: /Delete workout/i,
+      name: /delete workout/i,
     })[0];
 
     await user.click(deleteBtn);
 
     const deleteConfirm = screen.getAllByRole("button", {
-      name: /Delete workout/i,
+      name: /delete workout/i,
     })[1];
 
     // Click confirm delete button
     await user.click(deleteConfirm);
-    // screen.debug()
+
     expect(deleteFn).toHaveBeenCalledOnce();
+  });
+
+  it("disables delete buttons when disabled is asserted", () => {
+    setupRender(
+      <DeleteButton item="workout" handleDelete={() => {}} disabled={true} />,
+    );
+
+    const deleteBtn = screen.getAllByRole("button", {
+      name: /delete workout/i,
+    })[0];
+
+    expect(deleteBtn).toHaveAttribute("data-disabled", "true");
   });
 });

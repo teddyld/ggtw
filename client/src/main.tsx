@@ -5,6 +5,7 @@ import App from "./App.tsx";
 
 import { ClerkProvider } from "@clerk/clerk-react";
 import { MantineProvider } from "@mantine/core";
+import { Notifications } from '@mantine/notifications';
 import { Provider as ReduxProvider } from "react-redux";
 import store from "./store/index.ts";
 import { theme } from "./mantineTheme.ts";
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")!).render(
     <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
       <ReduxProvider store={store}>
         <MantineProvider theme={theme} defaultColorScheme="auto">
+          <Notifications />
           <App />
         </MantineProvider>
       </ReduxProvider>

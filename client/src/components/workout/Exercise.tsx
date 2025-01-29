@@ -14,47 +14,38 @@ import { exerciseType, workoutType } from "./workoutData";
 import ExerciseMenu from "./ExerciseMenu";
 import ExerciseModal from "./ExerciseModal";
 import ExercisePill from "./ExercisePill";
-import Set from "./Set";
+import SetList from "./SetList";
 
-import { useAppSelector, useAppDispatch } from "../../store";
-import { setWorkout } from "../../store/userReducer";
 import { useExercise } from "../../hooks/useExercise";
 import { useSet } from "../../hooks/useSet";
 
 export default function Exercise({
+  workout,
+  setWorkout,
   exercise,
-  index,
 }: {
+  workout: workoutType;
+  setWorkout: (workout: workoutType, message: string) => Promise<void>;
   exercise: exerciseType;
-  index: number;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
 
-  const userWorkouts = useAppSelector((state) => state.user.userWorkouts);
-  const id = useAppSelector((state) => state.user.id);
-  const dispatch = useAppDispatch();
-
-  const handleSetWorkout = (workout: workoutType) => {
-    dispatch(setWorkout({ userId: id, workout }));
-  };
-
-  const workout = userWorkouts[index];
-  const sets = Object.values(exercise.sets);
+  const sets = exercise.setOrder.map((setId) => exercise.sets[setId]);
 
   const {
-    checked,
-    exerciseName,
-    muscleGroups,
+    logged,
     updateExerciseTypes,
     updateExercise,
     deleteExercise,
     createSet,
-  } = useExercise(exercise, workout, handleSetWorkout);
+    logAllSets,
+    logSet,
+  } = useExercise(exercise, workout, setWorkout);
 
   const { deleteSet, addSetBelow, updateSetValue } = useSet(
     exercise,
     workout,
-    handleSetWorkout,
+    setWorkout,
   );
 
   return (
@@ -63,24 +54,25 @@ export default function Exercise({
         <Stack justify="space-between">
           <Group justify="space-between" wrap="nowrap">
             <Title order={3} size="md">
-              {exerciseName}
+              {exercise.name}
             </Title>
             <ExerciseMenu
-              exerciseName={exerciseName}
-              checked={checked}
+              exerciseName={exercise.name}
+              checked={exercise.types}
               open={open}
               updateExerciseTypes={updateExerciseTypes}
+              logAllSets={logAllSets}
             />
           </Group>
           <ScrollArea
             offsetScrollbars
             type="hover"
             scrollHideDelay={0}
-            className={muscleGroups.length === 0 ? "hidden" : ""}
+            className={exercise.muscleGroups.length === 0 ? "hidden" : ""}
             w="100%"
           >
             <Group w="100%" gap="xs" wrap="nowrap">
-              {muscleGroups.map((muscleGroup, i) => (
+              {exercise.muscleGroups.map((muscleGroup, i) => (
                 <ExercisePill key={`muscleGroup-${i}`}>
                   {muscleGroup.toUpperCase()}
                 </ExercisePill>
@@ -95,16 +87,19 @@ export default function Exercise({
             <Text fw={700} c="dimmed" className="w-full min-w-16">
               WEIGHT
             </Text>
-            {checked.reps && (
+            {exercise.types.reps && (
               <Text fw={700} c="dimmed" className="w-full min-w-16">
                 REPS
               </Text>
             )}
-            {checked.time && (
+            {exercise.types.time && (
               <Text fw={700} c="dimmed" className="w-full min-w-16">
                 TIME (s)
               </Text>
             )}
+            <Text fw={700} c="dimmed" className="min-w-14">
+              LOG
+            </Text>
           </Group>
         ) : (
           <Button
@@ -118,23 +113,20 @@ export default function Exercise({
             New set
           </Button>
         )}
-        {sets.map((set) => {
-          return (
-            <Set
-              key={set.id}
-              set={set}
-              checked={checked}
-              deleteSet={() => deleteSet(set.id)}
-              addSetBelow={() => addSetBelow(set.id)}
-              updateSetValue={updateSetValue}
-            />
-          );
-        })}
+        <SetList
+          sets={sets}
+          checked={exercise.types}
+          logged={logged}
+          deleteSet={deleteSet}
+          addSetBelow={addSetBelow}
+          updateSetValue={updateSetValue}
+          logSet={logSet}
+        />
         <Divider />
       </Stack>
       <ExerciseModal
-        exerciseName={exerciseName}
-        muscleGroups={muscleGroups}
+        exerciseName={exercise.name}
+        muscleGroups={exercise.muscleGroups}
         updateExercise={updateExercise}
         deleteExercise={deleteExercise}
         opened={opened}

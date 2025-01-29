@@ -11,24 +11,19 @@ import {
   Group,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { SignInButton, useUser } from "@clerk/clerk-react";
+import { SignInButton } from "@clerk/clerk-react";
 import { FaPen, FaDumbbell, FaChartLine } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 
 import Layout from "../components/layout/Layout";
 import PrivacyModal from "../components/layout/PrivacyModal";
 
+import { useSignedIn } from "../hooks/useSignedIn";
+
 export default function DashboardPage() {
   const [active, setActive] = React.useState(-1);
   const [opened, { open, close }] = useDisclosure();
-  const { isSignedIn } = useUser();
-  const navigate = useNavigate();
 
-  const handleIsSignedIn = () => {
-    if (isSignedIn) {
-      navigate("/workout");
-    }
-  };
+  const { handleSignedIn } = useSignedIn();
 
   return (
     <Layout>
@@ -40,7 +35,7 @@ export default function DashboardPage() {
       >
         <Title>Workout tracking made fast</Title>
         <Highlight
-          w={420}
+          w={{ sm: 420 }}
           color="red"
           highlight={["workout plans", "track your progress"]}
         >
@@ -48,12 +43,7 @@ export default function DashboardPage() {
           platform for free to start tracking your workout today.
         </Highlight>
         <SignInButton mode="modal" forceRedirectUrl="/workout">
-          <Button
-            w={150}
-            radius="xl"
-            variant="light"
-            onClick={handleIsSignedIn}
-          >
+          <Button w={150} radius="xl" variant="light" onClick={handleSignedIn}>
             Get started
           </Button>
         </SignInButton>
@@ -61,7 +51,7 @@ export default function DashboardPage() {
       <Divider w="100%" />
       <Stack
         py={100}
-        px={{ base: 10, sm: 100 }}
+        px={{ base: 20, sm: 100 }}
         className="text-center"
         align="center"
       >

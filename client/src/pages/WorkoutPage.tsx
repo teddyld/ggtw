@@ -3,15 +3,19 @@ import { Text, Group } from "@mantine/core";
 import Layout from "../components/layout/Layout";
 import Container from "../components/layout/Container";
 
-import { useWorkout } from "../hooks/useWorkout";
 import WorkoutList from "../components/workout/WorkoutList";
 import WorkoutLoading from "../components/workout/WorkoutLoading";
 import WorkoutTemplatesButton from "../components/workout/WorkoutTemplatesButton";
 import WorkoutNewButton from "../components/workout/WorkoutNewButton";
 
+import { useSignedIn } from "../hooks/useSignedIn";
+import { useWorkout } from "../hooks/useWorkout";
+
 export default function WorkoutPage() {
   const { userWorkouts, workoutPending, setWorkout, deleteWorkout } =
     useWorkout();
+
+  useSignedIn();
 
   if (workoutPending) {
     return <WorkoutLoading />;
@@ -33,12 +37,11 @@ export default function WorkoutPage() {
         </Container>
       ) : (
         <>
-          {userWorkouts.map((workout, index) => {
+          {userWorkouts.map((workout) => {
             return (
               <WorkoutList
                 key={workout.id}
                 workout={workout}
-                index={index}
                 exerciseMap={workout.exercises}
                 setWorkout={setWorkout}
                 deleteWorkout={deleteWorkout}
