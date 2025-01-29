@@ -11,12 +11,7 @@ type WorkoutListType = {
 };
 
 const WorkoutList = React.memo(
-  ({
-    workout,
-    exerciseMap,
-    setWorkout,
-    deleteWorkout,
-  }: WorkoutListType) => {
+  ({ workout, exerciseMap, setWorkout, deleteWorkout }: WorkoutListType) => {
     const exercises = Object.values(exerciseMap);
     return (
       <Workout
