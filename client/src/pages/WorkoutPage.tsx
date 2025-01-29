@@ -37,12 +37,11 @@ export default function WorkoutPage() {
         </Container>
       ) : (
         <>
-          {userWorkouts.map((workout, index) => {
+          {userWorkouts.map((workout) => {
             return (
               <WorkoutList
                 key={workout.id}
                 workout={workout}
-                index={index}
                 exerciseMap={workout.exercises}
                 setWorkout={setWorkout}
                 deleteWorkout={deleteWorkout}

@@ -5,7 +5,6 @@ import Workout from "./Workout";
 
 type WorkoutListType = {
   workout: workoutType;
-  index: number;
   exerciseMap: Record<string, exerciseType>;
   setWorkout: (workout: workoutType, message: string) => Promise<void>;
   deleteWorkout: (workoutId: string) => void;
@@ -14,7 +13,6 @@ type WorkoutListType = {
 const WorkoutList = React.memo(
   ({
     workout,
-    index,
     exerciseMap,
     setWorkout,
     deleteWorkout,
@@ -23,7 +21,6 @@ const WorkoutList = React.memo(
     return (
       <Workout
         workout={workout}
-        index={index}
         exercises={exercises}
         setWorkout={setWorkout}
         deleteWorkout={deleteWorkout}
