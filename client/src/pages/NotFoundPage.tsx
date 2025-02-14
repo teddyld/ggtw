@@ -1,4 +1,3 @@
-import React from "react";
 import { Center, Button, Stack, Title, Text, Group } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@mantine/hooks";
