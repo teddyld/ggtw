@@ -10,23 +10,6 @@ describe("DeleteButton component", () => {
     expect(screen.queryAllByText(/Delete exercise/i).length).toBeGreaterThan(0);
   });
 
-  it("opens delete card when delete button is clicked", async () => {
-    const { user } = setupRender(
-      <DeleteButton item="workout" handleDelete={() => {}} disabled={false} />,
-    );
-
-    const deleteCard = screen.getByTestId("deleteCard");
-    expect(deleteCard).toHaveAttribute("aria-hidden", "true");
-
-    // Display delete card
-    const deleteBtn = screen.getByRole("button", {
-      name: /delete workout/i,
-    });
-    await user.click(deleteBtn);
-
-    expect(deleteCard).toHaveAttribute("aria-hidden", "false");
-  });
-
   it("calls handleDelete when delete confirmation button is clicked", async () => {
     const deleteFn = vi.fn();
     const { user } = setupRender(

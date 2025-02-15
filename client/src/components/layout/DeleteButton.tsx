@@ -31,7 +31,6 @@ export default function DeleteButton({
       </Stack>
       <Container
         data-testid="deleteCard"
-        aria-hidden={!deleteCard ? "true" : "false"}
         className={!deleteCard ? "hidden" : ""}
         p="sm"
       >
