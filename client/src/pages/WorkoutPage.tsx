@@ -1,7 +1,6 @@
-import { Text, Group } from "@mantine/core";
+import { Text, Group, Center, Stack } from "@mantine/core";
 
 import Layout from "../components/layout/Layout";
-import Container from "../components/layout/Container";
 
 import WorkoutList from "../components/workout/WorkoutList";
 import WorkoutLoading from "../components/workout/WorkoutLoading";
@@ -24,17 +23,19 @@ export default function WorkoutPage() {
   return (
     <Layout>
       {userWorkouts.length === 0 ? (
-        <Container>
-          <Text pb="sm">Create your Workout(s) to begin.</Text>
-          <Group>
-            <WorkoutNewButton setWorkout={setWorkout}>
-              New workout
-            </WorkoutNewButton>
-            <WorkoutTemplatesButton setWorkout={setWorkout}>
-              Templates
-            </WorkoutTemplatesButton>
-          </Group>
-        </Container>
+        <Center h="80vh">
+          <Stack gap={0} align="center">
+            <Text pb="sm">Create your Workout to begin.</Text>
+            <Group>
+              <WorkoutNewButton setWorkout={setWorkout}>
+                New workout
+              </WorkoutNewButton>
+              <WorkoutTemplatesButton setWorkout={setWorkout}>
+                Templates
+              </WorkoutTemplatesButton>
+            </Group>
+          </Stack>
+        </Center>
       ) : (
         <>
           {userWorkouts.map((workout) => {
