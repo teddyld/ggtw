@@ -18,9 +18,11 @@ describe("WorkoutModal component", () => {
     );
     expect(screen.getByRole("dialog")).toBeTruthy();
 
+    screen.debug();
+
     // Close with cancel button
-    const cancelBtn = screen.getByRole("button", { name: /cancel/i });
-    await user.click(cancelBtn);
+    const cancelBtn = screen.getAllByRole("button", { name: /cancel/i });
+    await user.click(cancelBtn[1]);
     expect(closeFn).toHaveBeenCalledOnce();
   });
 
