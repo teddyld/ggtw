@@ -2,22 +2,21 @@ import { Text, Group, Center, Stack } from "@mantine/core";
 
 import Layout from "../components/layout/Layout";
 
-import WorkoutList from "../components/workout/WorkoutList";
-import WorkoutLoading from "../components/workout/WorkoutLoading";
+import WorkoutCardsLoading from "../components/workout/WorkoutCardsLoading";
 import WorkoutTemplatesButton from "../components/workout/WorkoutTemplatesButton";
 import WorkoutNewButton from "../components/workout/WorkoutNewButton";
 
 import { useSignedIn } from "../hooks/useSignedIn";
 import { useWorkout } from "../hooks/useWorkout";
+import WorkoutCard from "../components/workout/WorkoutCard";
 
 export default function WorkoutPage() {
-  const { userWorkouts, workoutPending, setWorkout, deleteWorkout } =
-    useWorkout();
+  const { userWorkouts, workoutPending, setWorkout } = useWorkout();
 
   useSignedIn();
 
   if (workoutPending) {
-    return <WorkoutLoading />;
+    return <WorkoutCardsLoading />;
   }
 
   return (
@@ -37,19 +36,11 @@ export default function WorkoutPage() {
           </Stack>
         </Center>
       ) : (
-        <>
+        <Stack gap="lg" w="100%">
           {userWorkouts.map((workout) => {
-            return (
-              <WorkoutList
-                key={workout.id}
-                workout={workout}
-                exerciseMap={workout.exercises}
-                setWorkout={setWorkout}
-                deleteWorkout={deleteWorkout}
-              />
-            );
+            return <WorkoutCard key={workout.id} workout={workout} />;
           })}
-        </>
+        </Stack>
       )}
     </Layout>
   );

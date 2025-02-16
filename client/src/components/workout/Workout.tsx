@@ -1,26 +1,39 @@
 import { Title, Divider, Flex, Group, ActionIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useParams } from "react-router-dom";
 import { FaPen } from "react-icons/fa";
 import { LayoutGroup } from "framer-motion";
 
+import Layout from "../layout/Layout";
 import Container from "../layout/Container";
+import WorkoutModal from "./WorkoutModal";
+import WorkoutLoading from "./WorkoutLoading";
 import ExerciseList from "./ExerciseList";
 import ExerciseNewModal from "./ExerciseNewModal";
-import WorkoutModal from "./WorkoutModal";
-import { exerciseType, workoutType } from "./workoutData";
 
-export default function Workout({
-  workout,
-  exercises,
-  setWorkout,
-  deleteWorkout,
-}: {
-  workout: workoutType;
-  exercises: exerciseType[];
-  setWorkout: (workout: workoutType, message: string) => Promise<void>;
-  deleteWorkout: (workoutId: string) => void;
-}) {
+import { useWorkout } from "../../hooks/useWorkout";
+
+export default function Workout() {
   const [opened, { open, close }] = useDisclosure();
+  const params = useParams();
+
+  const { userWorkouts, workoutPending, setWorkout, deleteWorkout } =
+    useWorkout();
+
+  if (workoutPending) {
+    return <WorkoutLoading />;
+  }
+
+  const workoutIndex = userWorkouts.findIndex(
+    (workout) => workout.id === params.id,
+  );
+  const workout = userWorkouts[workoutIndex];
+
+  if (!workout) {
+    return <WorkoutLoading />;
+  }
+
+  const exercises = Object.values(workout.exercises);
 
   // Create exercise
   const createExercise = async (exerciseName: string) => {
@@ -104,56 +117,58 @@ export default function Workout({
   };
 
   return (
-    <Container>
-      <Group
-        wrap="nowrap"
-        align="center"
-        py="xs"
-        justify="space-between"
-        gap="xs"
-      >
-        <span />
-        <Title order={2} size="xl" className="flex justify-center">
-          {workout.name}
-        </Title>
-        <ActionIcon
-          color="gray"
-          variant="subtle"
-          aria-label="Edit workout"
-          onClick={open}
+    <Layout>
+      <Container>
+        <Group
+          wrap="nowrap"
+          align="center"
+          py="xs"
+          justify="space-between"
+          gap="xs"
         >
-          <FaPen />
-        </ActionIcon>
-        <WorkoutModal
-          name={workout.name}
-          removeWorkout={removeWorkout}
-          renameWorkout={renameWorkout}
-          opened={opened}
-          close={close}
-        />
-      </Group>
-      <Divider mb="lg" />
-      <Flex
-        justify="center"
-        align="center"
-        direction="column"
-        gap="xs"
-        wrap="wrap"
-      >
-        <LayoutGroup>
-          {exercises.map((exercise) => {
-            return (
-              <ExerciseList
-                key={`${workout.id}-${exercise.id}`}
-                workout={workout}
-                setWorkout={setWorkout}
-                exercise={exercise}
-              />
-            );
-          })}
-        </LayoutGroup>
-        <ExerciseNewModal createExercise={createExercise} />
-      </Flex>
-    </Container>
+          <span />
+          <Title order={2} size="xl" className="flex justify-center">
+            {workout.name}
+          </Title>
+          <ActionIcon
+            color="gray"
+            variant="subtle"
+            aria-label="Edit workout"
+            onClick={open}
+          >
+            <FaPen />
+          </ActionIcon>
+          <WorkoutModal
+            name={workout.name}
+            removeWorkout={removeWorkout}
+            renameWorkout={renameWorkout}
+            opened={opened}
+            close={close}
+          />
+        </Group>
+        <Divider mb="lg" />
+        <Flex
+          justify="center"
+          align="center"
+          direction="column"
+          gap="xs"
+          wrap="wrap"
+        >
+          <LayoutGroup>
+            {exercises.map((exercise) => {
+              return (
+                <ExerciseList
+                  key={`${workout.id}-${exercise.id}`}
+                  workout={workout}
+                  setWorkout={setWorkout}
+                  exercise={exercise}
+                />
+              );
+            })}
+          </LayoutGroup>
+          <ExerciseNewModal createExercise={createExercise} />
+        </Flex>
+      </Container>
+    </Layout>
   );
 }

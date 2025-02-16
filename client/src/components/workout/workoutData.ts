@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 export type workoutType = {
   id: string;
   name: string;
+  lastAccessed: string;
   exercises: Record<string, exerciseType>;
   exerciseOrder: string[];
   exerciseCount: number;
@@ -35,6 +36,7 @@ export type exerciseTypes = { reps: boolean; time: boolean };
 const chestWorkout: workoutType = {
   id: "workout-1",
   name: "Chest + Triceps",
+  lastAccessed: "",
   exercises: {
     "exercise-1": {
       id: "exercise-1",
@@ -146,6 +148,7 @@ const chestWorkout: workoutType = {
 const backWorkout: workoutType = {
   id: "workout-2",
   name: "Back & Biceps",
+  lastAccessed: "",
   exercises: {
     "exercise-1": {
       id: "exercise-1",
@@ -257,6 +260,7 @@ const backWorkout: workoutType = {
 const legsWorkout: workoutType = {
   id: "workout-3",
   name: "Legs",
+  lastAccessed: "",
   exercises: {
     "exercise-1": {
       id: "exercise-1",

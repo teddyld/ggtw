@@ -33,7 +33,7 @@ export const useWorkout = () => {
     } else {
       dispatch(setUserWorkouts([]));
     }
-  }, [isPending]);
+  }, [isPending, data]);
 
   // Set user id from the User object from Clerk
   React.useEffect(() => {
