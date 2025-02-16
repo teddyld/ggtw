@@ -10,6 +10,16 @@ import {
 import { logType, logValueType } from "../components/statistics/statisticsData";
 import { useAppSelector } from "../store";
 
+// Get the current date in the format dd/mm/yyyy
+export const getCurrentDate = () => {
+  const now = new Date();
+  const dd = String(now.getDate()).padStart(2, "0");
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const yyyy = now.getFullYear();
+
+  return `${dd}/${mm}/${yyyy}`;
+};
+
 export const useExercise = (
   exercise: exerciseType,
   workout: workoutType,
@@ -44,16 +54,6 @@ export const useExercise = (
       }, 300); // 0.3 second layout transition delay
     }
   }, [playAnimation]);
-
-  // Get the current date in the format dd/mm/yyyy
-  const getCurrentDate = () => {
-    const now = new Date();
-    const dd = String(now.getDate()).padStart(2, "0");
-    const mm = String(now.getMonth() + 1).padStart(2, "0");
-    const yyyy = now.getFullYear();
-
-    return `${dd}/${mm}/${yyyy}`;
-  };
 
   // Update type of exercise
   const updateExerciseTypes = (types: exerciseTypes) => {
@@ -225,6 +225,7 @@ export const useExercise = (
 
     const newWorkout = {
       ...workout,
+      lastAccessed: getCurrentDate(),
       exercises: {
         ...workout.exercises,
         [exercise.id]: {
