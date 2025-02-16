@@ -12,6 +12,7 @@ import ExerciseList from "./ExerciseList";
 import ExerciseNewModal from "./ExerciseNewModal";
 
 import { useWorkout } from "../../hooks/useWorkout";
+import NotFoundPage from "../../pages/NotFoundPage";
 
 export default function Workout() {
   const [opened, { open, close }] = useDisclosure();
@@ -29,7 +30,9 @@ export default function Workout() {
   );
   const workout = userWorkouts[workoutIndex];
 
-  if (!workout) {
+  if (userWorkouts.length > 0 && workoutIndex === -1) {
+    return <NotFoundPage />;
+  } else if (!workout) {
     return <WorkoutLoading />;
   }
 
