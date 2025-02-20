@@ -17,13 +17,10 @@ import {
   Box,
 } from "@mantine/core";
 import { MdLogin, MdLogout } from "react-icons/md";
-import { FaRegUser, FaChevronDown, FaPlus } from "react-icons/fa";
+import { FaRegUser, FaChevronDown } from "react-icons/fa";
 
 import { useTheme } from "../../hooks/useTheme";
-import { useWorkout } from "../../hooks/useWorkout";
 
-import WorkoutNewButton from "../workout/WorkoutNewButton";
-import WorkoutTemplatesButton from "../workout/WorkoutTemplatesButton";
 import Logo from "./Logo";
 
 export default function Header({
@@ -36,7 +33,6 @@ export default function Header({
   const { theme, toggleTheme } = useTheme();
   const { isSignedIn, user } = useUser();
   const navigate = useNavigate();
-  const { setWorkout } = useWorkout();
 
   return (
     <>
