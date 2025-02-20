@@ -1,4 +1,5 @@
-import { Text, Group, Center, Stack } from "@mantine/core";
+import { Text, Group, Center, Stack, Button } from "@mantine/core";
+import { FaPlus } from "react-icons/fa";
 
 import Layout from "../components/layout/Layout";
 
@@ -40,6 +41,23 @@ export default function WorkoutPage() {
           {userWorkouts.map((workout) => {
             return <WorkoutCard key={workout.id} workout={workout} />;
           })}
+          <Button.Group className="self-center">
+            <WorkoutNewButton
+              setWorkout={setWorkout}
+              leftSection={<FaPlus />}
+              color="red"
+              radius="lg"
+              variant="outline"
+            >
+              Create
+            </WorkoutNewButton>
+            <WorkoutTemplatesButton
+              setWorkout={setWorkout}
+              variant="outline"
+              color="red"
+              radius="lg"
+            />
+          </Button.Group>
         </Stack>
       )}
     </Layout>

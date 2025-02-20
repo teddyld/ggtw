@@ -63,76 +63,57 @@ export default function Header({
         </SignedOut>
 
         <SignedIn>
-          <Group wrap="nowrap">
-            <Button.Group>
-              <WorkoutNewButton
-                setWorkout={setWorkout}
-                leftSection={<FaPlus />}
-                color="red"
-                radius="lg"
-                variant="outline"
+          <Menu>
+            <Menu.Target>
+              <Button
+                h={{ base: 30, sm: 40 }}
+                p={{ base: "0", sm: "10" }}
+                py="0"
+                variant="gradient"
+                className="h-min"
+                radius="xl"
+                gradient={{ from: "red.9", to: "red.4", deg: 150 }}
               >
-                Create
-              </WorkoutNewButton>
-              <WorkoutTemplatesButton
-                setWorkout={setWorkout}
-                variant="outline"
-                color="red"
-                radius="lg"
-              />
-            </Button.Group>
-            <Menu>
-              <Menu.Target>
-                <Button
-                  h={{ base: 30, sm: 40 }}
-                  p={{ base: "0", sm: "10" }}
-                  py="0"
-                  variant="gradient"
-                  className="h-min"
-                  radius="xl"
-                  gradient={{ from: "red.9", to: "red.4", deg: 150 }}
-                >
-                  <Group justify="space-between" wrap="nowrap" gap="xs">
-                    <Avatar
-                      src={user?.imageUrl}
-                      alt="Profile avatar"
-                      className="border-2 border-secondary hover:border-transparent"
-                      size={30}
-                    />
-                    <Text visibleFrom="sm">You</Text>
-                    <Box visibleFrom="sm">
-                      <FaChevronDown />
-                    </Box>
-                  </Group>
-                </Button>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item
-                  leftSection={<FaRegUser className="text-xl" />}
-                  onClick={() => navigate("/profile")}
-                >
-                  Profile
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item closeMenuOnClick={false}>
-                  <Switch
-                    label="Dark mode"
-                    checked={theme === "dark"}
-                    onChange={() => toggleTheme()}
+                <Group justify="space-between" wrap="nowrap" gap="xs">
+                  <Avatar
+                    src={user?.imageUrl}
+                    alt="Profile avatar"
+                    className="border-2 border-secondary hover:border-transparent"
+                    size={30}
                   />
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item color="red">
-                  <SignOutButton>
-                    <Group gap="xs">
-                      <MdLogout className="text-xl" />
-                      Sign out
-                    </Group>
-                  </SignOutButton>
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          </Group>
+                  <Text visibleFrom="sm">You</Text>
+                  <Box visibleFrom="sm">
+                    <FaChevronDown />
+                  </Box>
+                </Group>
+              </Button>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item
+                leftSection={<FaRegUser className="text-xl" />}
+                onClick={() => navigate("/profile")}
+              >
+                Profile
+              </Menu.Item>
+              <Menu.Divider />
+              <Menu.Item closeMenuOnClick={false}>
+                <Switch
+                  label="Dark mode"
+                  checked={theme === "dark"}
+                  onChange={() => toggleTheme()}
+                />
+              </Menu.Item>
+              <Menu.Divider />
+              <Menu.Item color="red">
+                <SignOutButton>
+                  <Group gap="xs">
+                    <MdLogout className="text-xl" />
+                    Sign out
+                  </Group>
+                </SignOutButton>
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
         </SignedIn>
       </Group>
     </>
