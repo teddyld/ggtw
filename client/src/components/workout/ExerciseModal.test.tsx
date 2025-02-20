@@ -1,4 +1,10 @@
-import { setupRender, screen, waitFor, act } from "../../testing";
+import {
+  setupRender,
+  screen,
+  waitFor,
+  act,
+  RouterWrapper,
+} from "../../testing";
 
 import ExerciseModal from "./ExerciseModal";
 
@@ -9,14 +15,16 @@ describe("ExerciseModal component", () => {
   it("closes when close function is called", async () => {
     const closeFn = vi.fn();
     const { user } = setupRender(
-      <ExerciseModal
-        exerciseName={exerciseName}
-        muscleGroups={muscleGroups}
-        updateExercise={() => {}}
-        deleteExercise={() => {}}
-        opened={true}
-        close={closeFn}
-      />,
+      <RouterWrapper>
+        <ExerciseModal
+          exerciseName={exerciseName}
+          muscleGroups={muscleGroups}
+          updateExercise={() => {}}
+          deleteExercise={() => {}}
+          opened={true}
+          close={closeFn}
+        />
+      </RouterWrapper>,
     );
     expect(screen.getByRole("dialog")).toBeTruthy();
 
@@ -28,14 +36,16 @@ describe("ExerciseModal component", () => {
 
   it("is closed when opened is false", () => {
     setupRender(
-      <ExerciseModal
-        exerciseName={exerciseName}
-        muscleGroups={muscleGroups}
-        updateExercise={() => {}}
-        deleteExercise={() => {}}
-        opened={false}
-        close={() => {}}
-      />,
+      <RouterWrapper>
+        <ExerciseModal
+          exerciseName={exerciseName}
+          muscleGroups={muscleGroups}
+          updateExercise={() => {}}
+          deleteExercise={() => {}}
+          opened={false}
+          close={() => {}}
+        />
+      </RouterWrapper>,
     );
     expect(screen.queryByRole("dialog")).toBeFalsy();
   });
@@ -43,14 +53,16 @@ describe("ExerciseModal component", () => {
   it("correctly displays exercise name and muscle groups and updates exercise details", async () => {
     const updateExerciseFn = vi.fn();
     const { user } = setupRender(
-      <ExerciseModal
-        exerciseName={exerciseName}
-        muscleGroups={muscleGroups}
-        updateExercise={updateExerciseFn}
-        deleteExercise={() => {}}
-        opened={true}
-        close={() => {}}
-      />,
+      <RouterWrapper>
+        <ExerciseModal
+          exerciseName={exerciseName}
+          muscleGroups={muscleGroups}
+          updateExercise={updateExerciseFn}
+          deleteExercise={() => {}}
+          opened={true}
+          close={() => {}}
+        />
+      </RouterWrapper>,
     );
 
     // Validate current exercise name input
@@ -104,14 +116,16 @@ describe("ExerciseModal component", () => {
 
   it("disables save button when exercise name is invalid", async () => {
     const { user } = setupRender(
-      <ExerciseModal
-        exerciseName={exerciseName}
-        muscleGroups={muscleGroups}
-        updateExercise={() => {}}
-        deleteExercise={() => {}}
-        opened={true}
-        close={() => {}}
-      />,
+      <RouterWrapper>
+        <ExerciseModal
+          exerciseName={exerciseName}
+          muscleGroups={muscleGroups}
+          updateExercise={() => {}}
+          deleteExercise={() => {}}
+          opened={true}
+          close={() => {}}
+        />
+      </RouterWrapper>,
     );
 
     // Validate current exercise name input
