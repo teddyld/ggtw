@@ -5,7 +5,7 @@ import SetInput from "./SetInput";
 const initialValue = 10;
 
 describe("SetInput component", () => {
-  it("calls updateSetValue on set input blur", async () => {
+  it("calls updateSetValue on set input change", async () => {
     const updateSetValueFn = vi.fn();
     const { user } = setupRender(
       <SetInput
@@ -30,8 +30,7 @@ describe("SetInput component", () => {
     await user.type(setInput, newValue.toString());
     expect(setInput).toHaveValue(newValue.toString());
 
-    // Blur set input
-    await user.click(document.body);
-    expect(updateSetValueFn).toHaveBeenCalledOnce();
+    // Called once for clearing input, called three more times for 3 digits
+    expect(updateSetValueFn).toHaveBeenCalledTimes(4);
   });
 });
