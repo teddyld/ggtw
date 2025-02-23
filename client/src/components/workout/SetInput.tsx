@@ -21,7 +21,6 @@ export default function SetInput({
   const [value, setValue] = React.useState<string | number>(initialValue);
 
   const handleChange = (value: string | number) => {
-    console.log("called");
     setValue(value);
     updateSetValue(setId, Number(value), type);
   };
