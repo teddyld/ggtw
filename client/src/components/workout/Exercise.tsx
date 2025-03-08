@@ -13,7 +13,7 @@ import { FaPlus } from "react-icons/fa";
 import { exerciseType, workoutType } from "./workoutData";
 import ExerciseMenu from "./ExerciseMenu";
 import ExerciseModal from "./ExerciseModal";
-import ExercisePill from "./ExercisePill";
+import ExercisePillGroup from "./ExercisePillGroup";
 import SetList from "./SetList";
 
 import { useExercise } from "../../hooks/useExercise";
@@ -71,13 +71,7 @@ export default function Exercise({
             className={exercise.muscleGroups.length === 0 ? "hidden" : ""}
             w="100%"
           >
-            <Group w="100%" gap="xs" wrap="nowrap">
-              {exercise.muscleGroups.map((muscleGroup, i) => (
-                <ExercisePill key={`muscleGroup-${i}`}>
-                  {muscleGroup.toUpperCase()}
-                </ExercisePill>
-              ))}
-            </Group>
+            <ExercisePillGroup muscleGroups={exercise.muscleGroups} />
           </ScrollArea>
         </Stack>
         <Divider />
