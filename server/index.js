@@ -26,7 +26,7 @@ app.use(
   cors({
     credentials: true,
     origin: process.env.CLIENT_URL,
-  }),
+  })
 );
 app.use(express.json());
 app.use(clerkMiddleware({ clerkClient: clerkClient }));
@@ -56,7 +56,7 @@ app.post(
     const headers = req.headers;
     const payload = JSON.stringify(req.body);
     await clerkWebHook(headers, payload);
-  }),
+  })
 );
 
 app.get(
@@ -65,7 +65,7 @@ app.get(
     const { id } = req.params;
     const { workouts } = await getUserWorkouts(id);
     return res.json({ workouts, success: true });
-  }),
+  })
 );
 
 app.put(
@@ -77,7 +77,7 @@ app.put(
       success: true,
       message: "Successfully updated user workout",
     });
-  }),
+  })
 );
 
 app.put(
@@ -89,7 +89,7 @@ app.put(
       success: true,
       message: "Successfully removed user workout",
     });
-  }),
+  })
 );
 
 app.get(
@@ -98,7 +98,7 @@ app.get(
     const { id } = req.params;
     const { statistics } = await getUserStatistics(id);
     return res.json({ statistics, success: true });
-  }),
+  })
 );
 
 app.put(
@@ -110,7 +110,7 @@ app.put(
       success: true,
       message: "Successfully updated user statistics",
     });
-  }),
+  })
 );
 
 app.put(
@@ -122,9 +122,9 @@ app.put(
       success: true,
       message: "Successfully deleted user statistics",
     });
-  }),
+  })
 );
 
 app.listen(port, () =>
-  console.log(`🚀 Server is listening on port ${port}...`),
+  console.log(`🚀 Server is listening on port ${port}...`)
 );
