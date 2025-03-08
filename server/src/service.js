@@ -19,7 +19,7 @@ export const updateWorkout = async (userId, workout) =>
       const workoutField = `workouts.${workout.id}`;
       await collection.updateOne(
         { user: userId },
-        { $set: { [workoutField]: workout } },
+        { $set: { [workoutField]: workout } }
       );
       return resolve();
     } catch (err) {
@@ -34,7 +34,7 @@ export const deleteWorkout = async (userId, workoutId) =>
       const workoutField = `workouts.${workoutId}`;
       await collection.updateOne(
         { user: userId },
-        { $unset: { [workoutField]: "" } },
+        { $unset: { [workoutField]: "" } }
       );
       return resolve();
     } catch (err) {
@@ -47,7 +47,10 @@ export const getUserStatistics = async (id) =>
     try {
       const collection = db.collection("users");
       const user = await collection.findOne({ user: id });
-      return resolve({ statistics: user.statistics });
+
+      return resolve({
+        statistics: user.statistics,
+      });
     } catch (err) {
       return reject(new AccessError(err.message));
     }
@@ -58,18 +61,20 @@ export const updateStatisticsLog = async (userId, logData) =>
     try {
       const collection = db.collection("users");
       const dateField = logData.date;
-      const exerciseField = logData.exerciseName;
-      const field = `statistics.${dateField}.${exerciseField}`;
-      const arrayField = `${field}.sets`;
+      const exerciseName = logData.exerciseName;
+      const activityField = `statistics.activity.${dateField}.${exerciseName}`;
+      const exerciseField = `statistics.exercises.${exerciseName}`;
 
       await collection.updateOne(
         { user: userId },
         {
           $set: {
-            [`${field}.muscleGroups`]: { muscleGroups: logData.muscleGroups },
+            [exerciseField]: logData.muscleGroups,
           },
-          $push: { [arrayField]: { $each: logData.sets } },
-        },
+          $push: {
+            [activityField]: { $each: logData.sets },
+          },
+        }
       );
       return resolve();
     } catch (err) {
@@ -83,7 +88,7 @@ export const deleteUserStatistics = async (userId) =>
       const collection = db.collection("users");
       await collection.updateOne(
         { user: userId },
-        { $set: { statistics: {} } },
+        { $set: { statistics: {} } }
       );
       return resolve();
     } catch (err) {
