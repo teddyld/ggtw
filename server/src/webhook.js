@@ -18,7 +18,16 @@ export const clerkWebHook = (headers, payload) =>
       if (eventType === "user.created") {
         await collection.updateOne(
           { user: id },
-          { $setOnInsert: { workouts: {}, statistics: {} } },
+          {
+            $setOnInsert: {
+              workouts: {},
+              statistics: {
+                startDate: new Date(),
+                activity: {},
+                exercises: {},
+              },
+            },
+          },
           { upsert: true }
         );
       } else if (eventType === "user.deleted") {

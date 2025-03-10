@@ -88,7 +88,11 @@ export const deleteUserStatistics = async (userId) =>
       const collection = db.collection("users");
       await collection.updateOne(
         { user: userId },
-        { $set: { statistics: {} } }
+        {
+          $set: {
+            statistics: { startDate: new Date(), activity: {}, exercises: {} },
+          },
+        }
       );
       return resolve();
     } catch (err) {
