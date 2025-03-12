@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useAppSelector, useAppDispatch } from "../store";
 import { setUserId } from "../store/userReducer";
+import { statisticsType } from "../components/statistics/statisticsData";
 
 export const useStatistics = () => {
   const dispatch = useAppDispatch();
@@ -26,7 +27,7 @@ export const useStatistics = () => {
   }, [isLoaded, isSignedIn]);
 
   return {
-    userStatistics: !isPending ? data.statistics : null,
+    userStatistics: !isPending ? (data.statistics as statisticsType) : null,
     statisticsPending: isPending,
   };
 };
