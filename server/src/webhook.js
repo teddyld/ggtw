@@ -25,6 +25,7 @@ export const clerkWebHook = (headers, payload) =>
                 startDate: new Date(),
                 activity: {},
                 exercises: {},
+                personalBests: {},
               },
             },
           },

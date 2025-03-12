@@ -64,18 +64,54 @@ export const updateStatisticsLog = async (userId, logData) =>
       const exerciseName = logData.exerciseName;
       const activityField = `statistics.activity.${dateField}.${exerciseName}`;
       const exerciseField = `statistics.exercises.${exerciseName}`;
+      const personalBestField = `statistics.personalBests.${exerciseName}`;
 
-      await collection.updateOne(
-        { user: userId },
-        {
-          $set: {
-            [exerciseField]: logData.muscleGroups,
-          },
-          $push: {
-            [activityField]: { $each: logData.sets },
-          },
-        }
+      const user = await collection.findOne({ user: userId });
+      const personalBests = user.statistics.personalBests;
+
+      // Sort sets by max weight
+      const orderedSets = Array.from(logData.sets);
+      orderedSets.sort(
+        (a, b) =>
+          b.weight - a.weight ||
+          (b.reps ?? 0) - (a.reps ?? 0) ||
+          (b.time ?? 0) - (a.time ?? 0)
       );
+
+      const bestSet = orderedSets[0];
+
+      if (
+        !personalBests[exerciseName] ||
+        personalBests[exerciseName].weight < bestSet.weight
+      ) {
+        await collection.updateOne(
+          { user: userId },
+          {
+            $set: {
+              [exerciseField]: logData.muscleGroups,
+            },
+            $set: {
+              [personalBestField]: bestSet,
+            },
+            $push: {
+              [activityField]: { $each: logData.sets },
+            },
+          }
+        );
+      } else {
+        await collection.updateOne(
+          { user: userId },
+          {
+            $set: {
+              [exerciseField]: logData.muscleGroups,
+            },
+            $push: {
+              [activityField]: { $each: logData.sets },
+            },
+          }
+        );
+      }
+
       return resolve();
     } catch (err) {
       return reject(new AccessError(err.message));
@@ -90,7 +126,12 @@ export const deleteUserStatistics = async (userId) =>
         { user: userId },
         {
           $set: {
-            statistics: { startDate: new Date(), activity: {}, exercises: {} },
+            statistics: {
+              startDate: new Date(),
+              activity: {},
+              exercises: {},
+              personalBests: {},
+            },
           },
         }
       );
