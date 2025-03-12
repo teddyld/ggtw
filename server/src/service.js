@@ -69,6 +69,13 @@ export const updateStatisticsLog = async (userId, logData) =>
       const user = await collection.findOne({ user: userId });
       const personalBests = user.statistics.personalBests;
 
+      let date = new Date(dateField.split("/").reverse().join("-"));
+      date = date.toLocaleString("en-us", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+
       // Sort sets by max weight
       const orderedSets = Array.from(logData.sets);
       orderedSets.sort(
@@ -91,7 +98,7 @@ export const updateStatisticsLog = async (userId, logData) =>
               [exerciseField]: logData.muscleGroups,
             },
             $set: {
-              [personalBestField]: bestSet,
+              [personalBestField]: { ...bestSet, date: date },
             },
             $push: {
               [activityField]: { $each: logData.sets },
