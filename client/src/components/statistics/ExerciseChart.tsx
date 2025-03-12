@@ -3,7 +3,11 @@ import { LineChart } from "@mantine/charts";
 
 import ExercisePillGroup from "../workout/ExercisePillGroup";
 
-import { activityType, exerciseRecordType, orderSets } from "./statisticsData";
+import {
+  activityType,
+  createMaxRecord,
+  exerciseRecordType,
+} from "./statisticsData";
 
 export default function ExerciseChart({
   exerciseName,
@@ -52,26 +56,7 @@ export default function ExerciseChart({
       continue;
     }
 
-    const orderedSets = orderSets(record.activity[exerciseName], sortOrder);
-    const maxSet = orderedSets[0];
-
-    const exerciseRecord: exerciseRecordType = {
-      date: record.date.toLocaleString("en-us", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }),
-      "MAX Weight": maxSet.weight,
-    };
-
-    if (maxSet.reps !== -1) {
-      exerciseRecord["MAX Reps"] = maxSet.reps;
-    }
-
-    if (maxSet.time !== -1) {
-      exerciseRecord["MAX Time"] = maxSet.time;
-    }
-
+    const exerciseRecord = createMaxRecord(record, exerciseName, sortOrder);
     data.push(exerciseRecord);
   }
 

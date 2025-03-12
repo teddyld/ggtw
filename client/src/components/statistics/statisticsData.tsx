@@ -67,6 +67,35 @@ export const orderSets = (sets: logValueType[], sortOrder: string | null) => {
   return orderedSets;
 };
 
+// Return the max exerciseRecord ordered by sortOrder for exerciseName
+export const createMaxRecord = (
+  record: activityType,
+  exerciseName: string,
+  sortOrder: string | null,
+) => {
+  const orderedSets = orderSets(record.activity[exerciseName], sortOrder);
+  const maxSet = orderedSets[0];
+
+  const exerciseRecord: exerciseRecordType = {
+    date: record.date.toLocaleString("en-us", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }),
+    "MAX Weight": maxSet.weight,
+  };
+
+  if (maxSet.reps !== -1) {
+    exerciseRecord["MAX Reps"] = maxSet.reps;
+  }
+
+  if (maxSet.time !== -1) {
+    exerciseRecord["MAX Time"] = maxSet.time;
+  }
+
+  return exerciseRecord;
+};
+
 export const mockExerciseData: exerciseRecordType[] = [
   { date: "15 Jan, 2023", "MAX Weight": 90, "MAX Reps": 12 },
   { date: "20 Feb, 2023", "MAX Weight": 95, "MAX Reps": 10 },
