@@ -8,7 +8,7 @@ import Layout from "../layout/Layout";
 import Container from "../layout/Container";
 import WorkoutModal from "./WorkoutModal";
 import WorkoutLoading from "./WorkoutLoading";
-import ExerciseList from "./ExerciseList";
+import Exercise from "./Exercise";
 import ExerciseNewModal from "./ExerciseNewModal";
 
 import { useWorkout } from "../../hooks/useWorkout";
@@ -160,7 +160,7 @@ export default function Workout() {
           <LayoutGroup>
             {exercises.map((exercise) => {
               return (
-                <ExerciseList
+                <Exercise
                   key={`${workout.id}-${exercise.id}`}
                   workout={workout}
                   setWorkout={setWorkout}
