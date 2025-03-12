@@ -3,11 +3,7 @@ import { LineChart } from "@mantine/charts";
 
 import ExercisePillGroup from "../workout/ExercisePillGroup";
 
-import {
-  activityType,
-  exerciseRecordType,
-  logValueType,
-} from "./statisticsData";
+import { activityType, exerciseRecordType, orderSets } from "./statisticsData";
 
 export default function ExerciseChart({
   exerciseName,
@@ -22,35 +18,6 @@ export default function ExerciseChart({
   timePeriod: string | null;
   sortOrder: string | null;
 }) {
-  // Sort sets by sortOrder
-  const orderSets = (sets: logValueType[]) => {
-    const orderedSets = Array.from(sets);
-    if (sortOrder === "Weight") {
-      orderedSets.sort(
-        (a, b) =>
-          b.weight - a.weight ||
-          (b.reps ?? 0) - (a.reps ?? 0) ||
-          (b.time ?? 0) - (a.time ?? 0),
-      );
-    } else if (sortOrder === "Reps") {
-      orderedSets.sort(
-        (a, b) =>
-          (b.reps ?? 0) - (a.reps ?? 0) ||
-          b.weight - a.weight ||
-          (b.time ?? 0) - (a.time ?? 0),
-      );
-    } else {
-      orderedSets.sort(
-        (a, b) =>
-          (b.time ?? 0) - (a.time ?? 0) ||
-          b.weight - a.weight ||
-          (b.reps ?? 0) - (a.reps ?? 0),
-      );
-    }
-
-    return orderedSets;
-  };
-
   // Get all activity in timePeriod
   const activityInTimePeriod = () => {
     if (timePeriod === "All time") {
@@ -85,7 +52,7 @@ export default function ExerciseChart({
       continue;
     }
 
-    const orderedSets = orderSets(record.activity[exerciseName]);
+    const orderedSets = orderSets(record.activity[exerciseName], sortOrder);
     const maxSet = orderedSets[0];
 
     const exerciseRecord: exerciseRecordType = {
@@ -97,11 +64,11 @@ export default function ExerciseChart({
       "MAX Weight": maxSet.weight,
     };
 
-    if (maxSet.reps) {
+    if (maxSet.reps !== -1) {
       exerciseRecord["MAX Reps"] = maxSet.reps;
     }
 
-    if (maxSet.time) {
+    if (maxSet.time !== -1) {
       exerciseRecord["MAX Time"] = maxSet.time;
     }
 

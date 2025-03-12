@@ -33,9 +33,38 @@ export type exerciseRecordType = {
 
 export type summaryType = {
   exerciseName: string;
-  previousRecord: exerciseRecordType;
+  previousBest: exerciseRecordType;
   currentRecord: exerciseRecordType;
   status: "UP" | "DOWN" | "NO CHANGE";
+};
+
+// Sort sets by sortOrder
+export const orderSets = (sets: logValueType[], sortOrder: string | null) => {
+  const orderedSets = Array.from(sets);
+  if (sortOrder === "Weight") {
+    orderedSets.sort(
+      (a, b) =>
+        b.weight - a.weight ||
+        (b.reps ?? 0) - (a.reps ?? 0) ||
+        (b.time ?? 0) - (a.time ?? 0),
+    );
+  } else if (sortOrder === "Reps") {
+    orderedSets.sort(
+      (a, b) =>
+        (b.reps ?? 0) - (a.reps ?? 0) ||
+        b.weight - a.weight ||
+        (b.time ?? 0) - (a.time ?? 0),
+    );
+  } else {
+    orderedSets.sort(
+      (a, b) =>
+        (b.time ?? 0) - (a.time ?? 0) ||
+        b.weight - a.weight ||
+        (b.reps ?? 0) - (a.reps ?? 0),
+    );
+  }
+
+  return orderedSets;
 };
 
 export const mockExerciseData: exerciseRecordType[] = [
