@@ -1,7 +1,10 @@
+import { unitType } from "../workout/workoutData";
+
 export type logValueType = {
   weight: number;
   reps?: number;
   time?: number;
+  units: unitType;
 };
 
 export type logType = {
