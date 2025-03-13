@@ -96,7 +96,10 @@ export const updateStatisticsLog = async (userId, logData) =>
           {
             $set: {
               [exerciseField]: logData.muscleGroups,
-              [personalBestField]: { ...bestSet, date: date },
+              [personalBestField]: {
+                ...bestSet,
+                date: date,
+              },
             },
             $push: {
               [activityField]: { $each: logData.sets },

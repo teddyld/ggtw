@@ -50,6 +50,7 @@ export default function Workout() {
             name: exerciseName,
             muscleGroups: [],
             types: { reps: true, time: false },
+            units: "kg" as const,
             setOrder: ["set-1", "set-2", "set-3"],
             setCount: 3,
             sets: {

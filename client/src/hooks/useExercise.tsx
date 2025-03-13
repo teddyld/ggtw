@@ -5,6 +5,7 @@ import { notifications } from "@mantine/notifications";
 import {
   exerciseType,
   exerciseTypes,
+  unitType,
   workoutType,
 } from "../components/workout/workoutData";
 import { logType, logValueType } from "../components/statistics/statisticsData";
@@ -149,11 +150,11 @@ export const useExercise = (
     setWorkout(newWorkout, "");
   };
 
-  const getLoggedSets = (setIds: string[]) => {
+  const getLoggedSets = (setIds: string[], units: unitType) => {
     const sets = [];
     for (const setId of setIds) {
       const setValues = exercise.sets[setId].values;
-      const values: logValueType = { weight: setValues.weight };
+      const values: logValueType = { weight: setValues.weight, units };
 
       // Add values which are types of the exercise
       if (exercise.types.reps) {
@@ -186,7 +187,7 @@ export const useExercise = (
 
     // Log all sets which are unlogged
     const today = getCurrentDate();
-    const sets = getLoggedSets(unloggedSetIds);
+    const sets = getLoggedSets(unloggedSetIds, exercise.units);
 
     const logData = {
       exerciseName: exercise.name,
@@ -207,7 +208,7 @@ export const useExercise = (
 
     // Log current set
     const today = getCurrentDate();
-    const sets = getLoggedSets([setId]);
+    const sets = getLoggedSets([setId], exercise.units);
 
     const logData = {
       exerciseName: exercise.name,
@@ -238,6 +239,21 @@ export const useExercise = (
     setWorkout(newWorkout, "");
   };
 
+  const changeUnits = (value: "kg" | "lbs") => {
+    const newWorkout = {
+      ...workout,
+      exercises: {
+        ...workout.exercises,
+        [exercise.id]: {
+          ...exercise,
+          units: value,
+        },
+      },
+    };
+
+    setWorkout(newWorkout, "");
+  };
+
   return {
     logged,
     updateExerciseTypes,
@@ -246,5 +262,6 @@ export const useExercise = (
     createSet,
     logAllSets,
     logSet,
+    changeUnits,
   };
 };

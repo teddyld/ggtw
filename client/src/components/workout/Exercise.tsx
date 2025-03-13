@@ -18,6 +18,7 @@ import SetList from "./SetList";
 
 import { useExercise } from "../../hooks/useExercise";
 import { useSet } from "../../hooks/useSet";
+import ChangeUnits from "./ChangeUnits";
 
 export default function Exercise({
   workout,
@@ -40,6 +41,7 @@ export default function Exercise({
     createSet,
     logAllSets,
     logSet,
+    changeUnits,
   } = useExercise(exercise, workout, setWorkout);
 
   const { deleteSet, addSetBelow, updateSetValue } = useSet(
@@ -64,15 +66,20 @@ export default function Exercise({
               logAllSets={logAllSets}
             />
           </Group>
-          <ScrollArea
-            offsetScrollbars
-            type="hover"
-            scrollHideDelay={0}
-            className={exercise.muscleGroups.length === 0 ? "hidden" : ""}
-            w="100%"
-          >
-            <ExercisePillGroup muscleGroups={exercise.muscleGroups} />
-          </ScrollArea>
+          <Group justify="space-between">
+            <ScrollArea
+              offsetScrollbars
+              type="hover"
+              scrollHideDelay={0}
+              className={exercise.muscleGroups.length === 0 ? "hidden" : ""}
+            >
+              <ExercisePillGroup muscleGroups={exercise.muscleGroups} />
+            </ScrollArea>
+            <ChangeUnits
+              initialUnits={exercise.units}
+              changeUnits={changeUnits}
+            />
+          </Group>
         </Stack>
         <Divider />
         {sets.length !== 0 ? (
