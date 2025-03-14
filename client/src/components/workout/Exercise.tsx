@@ -67,14 +67,14 @@ export default function Exercise({
             />
           </Group>
           <Group justify="space-between">
-            <ScrollArea
-              offsetScrollbars
-              type="hover"
-              scrollHideDelay={0}
-              className={exercise.muscleGroups.length === 0 ? "hidden" : ""}
-            >
-              <ExercisePillGroup muscleGroups={exercise.muscleGroups} />
-            </ScrollArea>
+            {exercise.muscleGroups.length !== 0 ? (
+              <ScrollArea offsetScrollbars type="hover" scrollHideDelay={0}>
+                <ExercisePillGroup muscleGroups={exercise.muscleGroups} />
+              </ScrollArea>
+            ) : (
+              <span />
+            )}
+
             <ChangeUnits
               initialUnits={exercise.units}
               changeUnits={changeExerciseUnits}
