@@ -239,7 +239,7 @@ export const useExercise = (
     setWorkout(newWorkout, "");
   };
 
-  const changeUnits = (value: "kg" | "lbs") => {
+  const changeExerciseUnits = (value: "kg" | "lbs") => {
     const newWorkout = {
       ...workout,
       exercises: {
@@ -262,6 +262,6 @@ export const useExercise = (
     createSet,
     logAllSets,
     logSet,
-    changeUnits,
+    changeExerciseUnits,
   };
 };

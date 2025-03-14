@@ -41,7 +41,7 @@ export default function Exercise({
     createSet,
     logAllSets,
     logSet,
-    changeUnits,
+    changeExerciseUnits,
   } = useExercise(exercise, workout, setWorkout);
 
   const { deleteSet, addSetBelow, updateSetValue } = useSet(
@@ -77,7 +77,7 @@ export default function Exercise({
             </ScrollArea>
             <ChangeUnits
               initialUnits={exercise.units}
-              changeUnits={changeUnits}
+              changeUnits={changeExerciseUnits}
             />
           </Group>
         </Stack>
