@@ -4,7 +4,7 @@ axios.defaults.headers.put["Content-Type"] = "application/json";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.delete["Content-Type"] = "application/json";
 
-axios.defaults.baseURL = "https://ggtw-api.vercel.app/";
+axios.defaults.baseURL = "http://localhost:5050";
 
 // Ensures cookie is sent
 axios.defaults.withCredentials = true;
