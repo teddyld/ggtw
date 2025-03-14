@@ -1,7 +1,9 @@
 import React from "react";
-import Container from "./Container";
+import { useNavigate } from "react-router-dom";
 import { Stack, Text, Group, Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+
+import Container from "./Container";
 
 export default function DeleteButton({
   item,
@@ -14,6 +16,7 @@ export default function DeleteButton({
 }) {
   const [deleteCard, setDeleteCard] = React.useState(false);
   const [loading, { toggle }] = useDisclosure();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -31,7 +34,6 @@ export default function DeleteButton({
       </Stack>
       <Container
         data-testid="deleteCard"
-        aria-hidden={!deleteCard ? "true" : "false"}
         className={!deleteCard ? "hidden" : ""}
         p="sm"
       >
@@ -55,6 +57,11 @@ export default function DeleteButton({
               onClick={() => {
                 toggle();
                 handleDelete();
+
+                // Navigate back to WorkoutPage
+                if (item === "workout") {
+                  navigate("/workout");
+                }
               }}
               disabled={disabled}
             >

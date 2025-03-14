@@ -19,7 +19,7 @@ export const updateWorkout = async (userId, workout) =>
       const workoutField = `workouts.${workout.id}`;
       await collection.updateOne(
         { user: userId },
-        { $set: { [workoutField]: workout } },
+        { $set: { [workoutField]: workout } }
       );
       return resolve();
     } catch (err) {
@@ -34,7 +34,7 @@ export const deleteWorkout = async (userId, workoutId) =>
       const workoutField = `workouts.${workoutId}`;
       await collection.updateOne(
         { user: userId },
-        { $unset: { [workoutField]: "" } },
+        { $unset: { [workoutField]: "" } }
       );
       return resolve();
     } catch (err) {
@@ -47,30 +47,79 @@ export const getUserStatistics = async (id) =>
     try {
       const collection = db.collection("users");
       const user = await collection.findOne({ user: id });
-      return resolve({ statistics: user.statistics });
+
+      return resolve({
+        statistics: user.statistics,
+      });
     } catch (err) {
       return reject(new AccessError(err.message));
     }
   });
 
-export const updateStatisticsLog = async (userId, logData) =>
+export const updateStatistics = async (userId, logData) =>
   new Promise(async (resolve, reject) => {
     try {
       const collection = db.collection("users");
       const dateField = logData.date;
-      const exerciseField = logData.exerciseName;
-      const field = `statistics.${dateField}.${exerciseField}`;
-      const arrayField = `${field}.sets`;
+      const exerciseName = logData.exerciseName;
+      const activityField = `statistics.activity.${dateField}.${exerciseName}`;
+      const exerciseField = `statistics.exercises.${exerciseName}`;
+      const personalBestField = `statistics.personalBests.${exerciseName}`;
 
-      await collection.updateOne(
-        { user: userId },
-        {
-          $set: {
-            [`${field}.muscleGroups`]: { muscleGroups: logData.muscleGroups },
-          },
-          $push: { [arrayField]: { $each: logData.sets } },
-        },
+      const user = await collection.findOne({ user: userId });
+      const personalBests = user.statistics.personalBests;
+
+      let date = new Date(dateField.split("/").reverse().join("-"));
+      date = date.toLocaleString("en-us", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+
+      // Sort sets by max weight
+      const orderedSets = Array.from(logData.sets);
+      orderedSets.sort(
+        (a, b) =>
+          b.weight - a.weight ||
+          (b.reps ?? 0) - (a.reps ?? 0) ||
+          (b.time ?? 0) - (a.time ?? 0)
       );
+
+      const bestSet = orderedSets[0];
+
+      if (
+        !personalBests[exerciseName] ||
+        personalBests[exerciseName].weight < bestSet.weight
+      ) {
+        await collection.updateOne(
+          { user: userId },
+          {
+            $set: {
+              [exerciseField]: logData.muscleGroups,
+              [personalBestField]: {
+                ...bestSet,
+                date: date,
+              },
+            },
+            $push: {
+              [activityField]: { $each: logData.sets },
+            },
+          }
+        );
+      } else {
+        await collection.updateOne(
+          { user: userId },
+          {
+            $set: {
+              [exerciseField]: logData.muscleGroups,
+            },
+            $push: {
+              [activityField]: { $each: logData.sets },
+            },
+          }
+        );
+      }
+
       return resolve();
     } catch (err) {
       return reject(new AccessError(err.message));
@@ -83,7 +132,46 @@ export const deleteUserStatistics = async (userId) =>
       const collection = db.collection("users");
       await collection.updateOne(
         { user: userId },
-        { $set: { statistics: {} } },
+        {
+          $set: {
+            statistics: {
+              startDate: new Date(),
+              activity: {},
+              exercises: {},
+              personalBests: {},
+            },
+          },
+        }
+      );
+      return resolve();
+    } catch (err) {
+      return reject(new AccessError(err.message));
+    }
+  });
+
+export const getUserSettings = async (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const collection = db.collection("users");
+      const user = await collection.findOne({ user: id });
+      console.log(user);
+
+      return resolve({
+        settings: user.settings,
+      });
+    } catch (err) {
+      return reject(new AccessError(err.message));
+    }
+  });
+
+export const updateUserSettings = async (userId, settings) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const collection = db.collection("users");
+
+      await collection.updateOne(
+        { user: userId },
+        { $set: { settings: settings } }
       );
       return resolve();
     } catch (err) {

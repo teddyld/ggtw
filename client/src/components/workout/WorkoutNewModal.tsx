@@ -43,6 +43,7 @@ export default function WorkoutNewModal({
     const newWorkout = {
       id: uuidv4(),
       name: workoutName,
+      lastAccessed: "",
       exercises: {},
       exerciseOrder: [],
       exerciseCount: 0,

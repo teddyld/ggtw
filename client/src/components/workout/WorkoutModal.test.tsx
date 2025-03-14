@@ -1,4 +1,4 @@
-import { setupRender, screen } from "../../testing";
+import { setupRender, screen, RouterWrapper } from "../../testing";
 
 import WorkoutModal from "./WorkoutModal";
 
@@ -8,19 +8,21 @@ describe("WorkoutModal component", () => {
   it("closes when close function is called", async () => {
     const closeFn = vi.fn();
     const { user } = setupRender(
-      <WorkoutModal
-        name={workoutName}
-        removeWorkout={() => {}}
-        renameWorkout={() => {}}
-        opened={true}
-        close={closeFn}
-      />,
+      <RouterWrapper>
+        <WorkoutModal
+          name={workoutName}
+          removeWorkout={() => {}}
+          renameWorkout={() => {}}
+          opened={true}
+          close={closeFn}
+        />
+      </RouterWrapper>,
     );
     expect(screen.getByRole("dialog")).toBeTruthy();
 
     // Close with cancel button
-    const cancelBtn = screen.getByRole("button", { name: /cancel/i });
-    await user.click(cancelBtn);
+    const cancelBtn = screen.getAllByRole("button", { name: /cancel/i });
+    await user.click(cancelBtn[1]);
     expect(closeFn).toHaveBeenCalledOnce();
   });
 
@@ -40,13 +42,15 @@ describe("WorkoutModal component", () => {
   it("renames workout when save button is clicked with valid workout name", async () => {
     const renameWorkoutFn = vi.fn();
     const { user } = setupRender(
-      <WorkoutModal
-        name={workoutName}
-        removeWorkout={() => {}}
-        renameWorkout={renameWorkoutFn}
-        opened={true}
-        close={() => {}}
-      />,
+      <RouterWrapper>
+        <WorkoutModal
+          name={workoutName}
+          removeWorkout={() => {}}
+          renameWorkout={renameWorkoutFn}
+          opened={true}
+          close={() => {}}
+        />
+      </RouterWrapper>,
     );
 
     // Assert initial workout name
@@ -70,13 +74,15 @@ describe("WorkoutModal component", () => {
 
   it("disables save button when workout name is invalid", async () => {
     const { user } = setupRender(
-      <WorkoutModal
-        name={workoutName}
-        removeWorkout={() => {}}
-        renameWorkout={() => {}}
-        opened={true}
-        close={() => {}}
-      />,
+      <RouterWrapper>
+        <WorkoutModal
+          name={workoutName}
+          removeWorkout={() => {}}
+          renameWorkout={() => {}}
+          opened={true}
+          close={() => {}}
+        />
+      </RouterWrapper>,
     );
 
     // Assert initial workout name

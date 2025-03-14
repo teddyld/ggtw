@@ -5,10 +5,21 @@ import { notifications } from "@mantine/notifications";
 import {
   exerciseType,
   exerciseTypes,
+  unitType,
   workoutType,
 } from "../components/workout/workoutData";
 import { logType, logValueType } from "../components/statistics/statisticsData";
 import { useAppSelector } from "../store";
+
+// Get the current date in the format dd/mm/yyyy
+export const getCurrentDate = () => {
+  const now = new Date();
+  const dd = String(now.getDate()).padStart(2, "0");
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const yyyy = now.getFullYear();
+
+  return `${dd}/${mm}/${yyyy}`;
+};
 
 export const useExercise = (
   exercise: exerciseType,
@@ -44,16 +55,6 @@ export const useExercise = (
       }, 300); // 0.3 second layout transition delay
     }
   }, [playAnimation]);
-
-  // Get the current date in the format dd/mm/yyyy
-  const getCurrentDate = () => {
-    const now = new Date();
-    const dd = String(now.getDate()).padStart(2, "0");
-    const mm = String(now.getMonth() + 1).padStart(2, "0");
-    const yyyy = now.getFullYear();
-
-    return `${dd}/${mm}/${yyyy}`;
-  };
 
   // Update type of exercise
   const updateExerciseTypes = (types: exerciseTypes) => {
@@ -149,11 +150,11 @@ export const useExercise = (
     setWorkout(newWorkout, "");
   };
 
-  const getLoggedSets = (setIds: string[]) => {
+  const getLoggedSets = (setIds: string[], units: unitType) => {
     const sets = [];
     for (const setId of setIds) {
       const setValues = exercise.sets[setId].values;
-      const values: logValueType = { weight: setValues.weight };
+      const values: logValueType = { weight: setValues.weight, units };
 
       // Add values which are types of the exercise
       if (exercise.types.reps) {
@@ -186,7 +187,7 @@ export const useExercise = (
 
     // Log all sets which are unlogged
     const today = getCurrentDate();
-    const sets = getLoggedSets(unloggedSetIds);
+    const sets = getLoggedSets(unloggedSetIds, exercise.units);
 
     const logData = {
       exerciseName: exercise.name,
@@ -207,7 +208,7 @@ export const useExercise = (
 
     // Log current set
     const today = getCurrentDate();
-    const sets = getLoggedSets([setId]);
+    const sets = getLoggedSets([setId], exercise.units);
 
     const logData = {
       exerciseName: exercise.name,
@@ -225,11 +226,27 @@ export const useExercise = (
 
     const newWorkout = {
       ...workout,
+      lastAccessed: getCurrentDate(),
       exercises: {
         ...workout.exercises,
         [exercise.id]: {
           ...exercise,
           setOrder: [...newSetOrder],
+        },
+      },
+    };
+
+    setWorkout(newWorkout, "");
+  };
+
+  const changeExerciseUnits = (value: unitType) => {
+    const newWorkout = {
+      ...workout,
+      exercises: {
+        ...workout.exercises,
+        [exercise.id]: {
+          ...exercise,
+          units: value,
         },
       },
     };
@@ -245,5 +262,6 @@ export const useExercise = (
     createSet,
     logAllSets,
     logSet,
+    changeExerciseUnits,
   };
 };

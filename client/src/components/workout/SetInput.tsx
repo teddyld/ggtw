@@ -20,10 +20,10 @@ export default function SetInput({
 }) {
   const [value, setValue] = React.useState<string | number>(initialValue);
 
-  // On page load the initialValue will change if the workout is in Redux store
-  React.useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
+  const handleChange = (value: string | number) => {
+    setValue(value);
+    updateSetValue(setId, Number(value), type);
+  };
 
   return (
     <NumberInput
@@ -36,8 +36,7 @@ export default function SetInput({
       allowNegative={false}
       placeholder={type.toUpperCase()}
       value={value}
-      onChange={setValue}
-      onBlur={() => updateSetValue(setId, Number(value), type)}
+      onChange={handleChange}
       hideControls
       className="w-full min-w-16"
     />

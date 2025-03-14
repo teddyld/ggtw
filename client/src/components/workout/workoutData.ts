@@ -5,16 +5,20 @@ import { v4 as uuidv4 } from "uuid";
 export type workoutType = {
   id: string;
   name: string;
+  lastAccessed: string;
   exercises: Record<string, exerciseType>;
   exerciseOrder: string[];
   exerciseCount: number;
 };
+
+export type unitType = "kg" | "lbs";
 
 export type exerciseType = {
   id: string;
   name: string;
   muscleGroups: string[];
   types: exerciseTypes;
+  units: unitType;
   setOrder: string[];
   setCount: number;
   sets: Record<string, setType>;
@@ -35,12 +39,14 @@ export type exerciseTypes = { reps: boolean; time: boolean };
 const chestWorkout: workoutType = {
   id: "workout-1",
   name: "Chest + Triceps",
+  lastAccessed: "",
   exercises: {
     "exercise-1": {
       id: "exercise-1",
       name: "Incline Bench Press",
       muscleGroups: ["CHEST"],
       types: { reps: true, time: false },
+      units: "kg",
       setOrder: ["set-1", "set-2", "set-3"],
       setCount: 3,
       sets: {
@@ -75,6 +81,7 @@ const chestWorkout: workoutType = {
       name: "Cable Flys",
       muscleGroups: ["CHEST"],
       types: { reps: true, time: false },
+      units: "kg",
       setOrder: ["set-1", "set-2", "set-3"],
       setCount: 3,
       sets: {
@@ -109,6 +116,7 @@ const chestWorkout: workoutType = {
       name: "Tricep Pushdowns",
       muscleGroups: ["TRICEPS"],
       types: { reps: true, time: false },
+      units: "kg",
       setOrder: ["set-1", "set-2", "set-3"],
       setCount: 3,
       sets: {
@@ -146,12 +154,14 @@ const chestWorkout: workoutType = {
 const backWorkout: workoutType = {
   id: "workout-2",
   name: "Back & Biceps",
+  lastAccessed: "",
   exercises: {
     "exercise-1": {
       id: "exercise-1",
       name: "Pullups",
       muscleGroups: ["BACK", "BICEPS"],
       types: { reps: true, time: false },
+      units: "kg",
       setOrder: ["set-1", "set-2", "set-3"],
       setCount: 3,
       sets: {
@@ -186,6 +196,7 @@ const backWorkout: workoutType = {
       name: "Chest-Supported Rows",
       muscleGroups: ["BACK"],
       types: { reps: true, time: false },
+      units: "kg",
       setOrder: ["set-1", "set-2", "set-3"],
       setCount: 3,
       sets: {
@@ -220,6 +231,7 @@ const backWorkout: workoutType = {
       name: "Bicep Curls",
       muscleGroups: ["BICEPS"],
       types: { reps: true, time: false },
+      units: "kg",
       setOrder: ["set-1", "set-2", "set-3"],
       setCount: 3,
       sets: {
@@ -257,12 +269,14 @@ const backWorkout: workoutType = {
 const legsWorkout: workoutType = {
   id: "workout-3",
   name: "Legs",
+  lastAccessed: "",
   exercises: {
     "exercise-1": {
       id: "exercise-1",
       name: "Calf Raises",
       muscleGroups: ["CALVES"],
       types: { reps: true, time: false },
+      units: "kg",
       setOrder: ["set-1", "set-2", "set-3"],
       setCount: 3,
       sets: {
@@ -297,6 +311,7 @@ const legsWorkout: workoutType = {
       name: "Seated Hamstring Curls",
       muscleGroups: ["HAMSTRINGS"],
       types: { reps: true, time: false },
+      units: "kg",
       setOrder: ["set-1", "set-2", "set-3"],
       setCount: 3,
       sets: {
@@ -331,6 +346,7 @@ const legsWorkout: workoutType = {
       name: "Hacksquats",
       muscleGroups: ["QUADS", "GLUTES"],
       types: { reps: true, time: false },
+      units: "kg",
       setOrder: ["set-1", "set-2", "set-3"],
       setCount: 3,
       sets: {

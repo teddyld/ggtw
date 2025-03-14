@@ -7,6 +7,7 @@ export const RouterWrapper = ({ children }: { children: React.ReactNode }) => {
       <Routes>
         <Route path="/" element={children} />
         <Route path="/workout" element={<div>Workout</div>} />
+        <Route path="/workout/:name/:id" element={<div>Workout</div>} />
         <Route path="/profile" element={<div>Profile</div>} />
         <Route path="/statistics" element={<div>Statistics</div>} />
       </Routes>

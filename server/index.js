@@ -11,8 +11,10 @@ import {
   getUserWorkouts,
   updateWorkout,
   getUserStatistics,
-  updateStatisticsLog,
+  updateStatistics,
   deleteUserStatistics,
+  getUserSettings,
+  updateUserSettings,
 } from "./src/service.js";
 
 const app = express();
@@ -26,7 +28,7 @@ app.use(
   cors({
     credentials: true,
     origin: process.env.CLIENT_URL,
-  }),
+  })
 );
 app.use(express.json());
 app.use(clerkMiddleware({ clerkClient: clerkClient }));
@@ -56,7 +58,7 @@ app.post(
     const headers = req.headers;
     const payload = JSON.stringify(req.body);
     await clerkWebHook(headers, payload);
-  }),
+  })
 );
 
 app.get(
@@ -65,7 +67,7 @@ app.get(
     const { id } = req.params;
     const { workouts } = await getUserWorkouts(id);
     return res.json({ workouts, success: true });
-  }),
+  })
 );
 
 app.put(
@@ -77,7 +79,7 @@ app.put(
       success: true,
       message: "Successfully updated user workout",
     });
-  }),
+  })
 );
 
 app.put(
@@ -89,7 +91,7 @@ app.put(
       success: true,
       message: "Successfully removed user workout",
     });
-  }),
+  })
 );
 
 app.get(
@@ -98,19 +100,19 @@ app.get(
     const { id } = req.params;
     const { statistics } = await getUserStatistics(id);
     return res.json({ statistics, success: true });
-  }),
+  })
 );
 
 app.put(
   "/user/statistics/log",
   catchErrors(async (req, res) => {
     const { userId, logData } = req.body;
-    await updateStatisticsLog(userId, logData);
+    await updateStatistics(userId, logData);
     return res.json({
       success: true,
       message: "Successfully updated user statistics",
     });
-  }),
+  })
 );
 
 app.put(
@@ -122,9 +124,30 @@ app.put(
       success: true,
       message: "Successfully deleted user statistics",
     });
-  }),
+  })
+);
+
+app.get(
+  "/user/settings/:id",
+  catchErrors(async (req, res) => {
+    const { id } = req.params;
+    const { settings } = await getUserSettings(id);
+    return res.json({ settings, success: true });
+  })
+);
+
+app.put(
+  "/user/settings/update",
+  catchErrors(async (req, res) => {
+    const { userId, settings } = req.body;
+    await updateUserSettings(userId, settings);
+    return res.json({
+      success: true,
+      message: "Successfully updated user settings unit",
+    });
+  })
 );
 
 app.listen(port, () =>
-  console.log(`🚀 Server is listening on port ${port}...`),
+  console.log(`🚀 Server is listening on port ${port}...`)
 );

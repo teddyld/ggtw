@@ -13,11 +13,12 @@ import { FaPlus } from "react-icons/fa";
 import { exerciseType, workoutType } from "./workoutData";
 import ExerciseMenu from "./ExerciseMenu";
 import ExerciseModal from "./ExerciseModal";
-import ExercisePill from "./ExercisePill";
+import ExercisePillGroup from "./ExercisePillGroup";
 import SetList from "./SetList";
 
 import { useExercise } from "../../hooks/useExercise";
 import { useSet } from "../../hooks/useSet";
+import ChangeUnits from "./ChangeUnits";
 
 export default function Exercise({
   workout,
@@ -40,6 +41,7 @@ export default function Exercise({
     createSet,
     logAllSets,
     logSet,
+    changeExerciseUnits,
   } = useExercise(exercise, workout, setWorkout);
 
   const { deleteSet, addSetBelow, updateSetValue } = useSet(
@@ -64,21 +66,20 @@ export default function Exercise({
               logAllSets={logAllSets}
             />
           </Group>
-          <ScrollArea
-            offsetScrollbars
-            type="hover"
-            scrollHideDelay={0}
-            className={exercise.muscleGroups.length === 0 ? "hidden" : ""}
-            w="100%"
-          >
-            <Group w="100%" gap="xs" wrap="nowrap">
-              {exercise.muscleGroups.map((muscleGroup, i) => (
-                <ExercisePill key={`muscleGroup-${i}`}>
-                  {muscleGroup.toUpperCase()}
-                </ExercisePill>
-              ))}
-            </Group>
-          </ScrollArea>
+          <Group justify="space-between">
+            {exercise.muscleGroups.length !== 0 ? (
+              <ScrollArea offsetScrollbars type="hover" scrollHideDelay={0}>
+                <ExercisePillGroup muscleGroups={exercise.muscleGroups} />
+              </ScrollArea>
+            ) : (
+              <span />
+            )}
+
+            <ChangeUnits
+              initialUnits={exercise.units}
+              changeUnits={changeExerciseUnits}
+            />
+          </Group>
         </Stack>
         <Divider />
         {sets.length !== 0 ? (

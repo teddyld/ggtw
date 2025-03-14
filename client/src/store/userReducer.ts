@@ -2,22 +2,29 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { workoutType } from "../components/workout/workoutData";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
+import { settingsType } from "../components/settings/settingsData";
 
 type userState = {
   id: string;
   userWorkouts: workoutType[];
+  settings: settingsType;
   status: "idle" | "pending" | "succeeded" | "failed";
 };
 
 const initialState: userState = {
   id: "",
   userWorkouts: [], // Facilitate client fetching of user workouts
+  settings: { units: "kg" },
   status: "idle",
 };
 
 type WorkoutPayloadType = {
   workout: workoutType;
   message: string;
+};
+
+type SettingsPayloadType = {
+  settings: settingsType;
 };
 
 export const setWorkout = createAsyncThunk(
@@ -50,6 +57,17 @@ export const deleteWorkout = createAsyncThunk(
   },
 );
 
+export const updateSettings = createAsyncThunk(
+  "settings/update",
+  async ({ userId, settings }: { userId: string; settings: settingsType }) => {
+    await axios.put("user/settings/update", {
+      userId,
+      settings,
+    });
+    return { settings };
+  },
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -59,6 +77,9 @@ const userSlice = createSlice({
     },
     setUserWorkouts: (state, action: PayloadAction<workoutType[]>) => {
       state.userWorkouts = action.payload;
+    },
+    setUserSettings: (state, action: PayloadAction<settingsType>) => {
+      state.settings = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -120,9 +141,28 @@ const userSlice = createSlice({
           message: "An error occurred. Please try again later.",
         });
       })
+      .addCase(updateSettings.pending, (state, _) => {
+        state.status = "pending";
+      })
+      .addCase(
+        updateSettings.fulfilled,
+        (state, action: PayloadAction<SettingsPayloadType>) => {
+          state.status = "succeeded";
+          state.settings = action.payload.settings;
+          notifications.show({
+            message: "Settings updated successfully.",
+          });
+        },
+      )
+      .addCase(updateSettings.rejected, (state, _) => {
+        state.status = "failed";
+        notifications.show({
+          message: "An error occurred. Please try again later.",
+        });
+      });
   },
 });
 
-export const { setUserId, setUserWorkouts } =
+export const { setUserId, setUserWorkouts, setUserSettings } =
   userSlice.actions;
 export default userSlice.reducer;

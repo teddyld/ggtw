@@ -1,10 +1,10 @@
 import React from "react";
 import { Button } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
 import { useNavigate, useLocation } from "react-router-dom";
 import clsx from "clsx";
 
 import { pageType } from "../../pages/pageInfo";
+import { useMedia } from "../../hooks/useMedia";
 
 type NavBarButtonType = {
   toggle: () => void;
@@ -18,13 +18,12 @@ const NavBarButton = (
 ) => {
   const { children, page, toggle } = props;
 
-  const matches = useMediaQuery("(max-width: 48em)");
-
+  const { isMobile } = useMedia();
   const location = useLocation();
   const navigate = useNavigate();
 
   const handleNavigate = (route: string) => {
-    if (matches) {
+    if (isMobile) {
       toggle();
     }
     navigate(route);
