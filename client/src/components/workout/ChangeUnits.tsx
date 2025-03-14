@@ -8,7 +8,7 @@ export default function ChangeUnits({
   changeUnits,
 }: {
   initialUnits: string;
-  changeUnits: (value: "kg" | "lbs") => void;
+  changeUnits: (value: unitType) => void;
 }) {
   const [units, setUnits] = React.useState(initialUnits);
 

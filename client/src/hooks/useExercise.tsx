@@ -239,7 +239,7 @@ export const useExercise = (
     setWorkout(newWorkout, "");
   };
 
-  const changeExerciseUnits = (value: "kg" | "lbs") => {
+  const changeExerciseUnits = (value: unitType) => {
     const newWorkout = {
       ...workout,
       exercises: {
