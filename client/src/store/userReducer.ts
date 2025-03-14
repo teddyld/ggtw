@@ -119,10 +119,9 @@ const userSlice = createSlice({
         notifications.show({
           message: "An error occurred. Please try again later.",
         });
-      })
+      });
   },
 });
 
-export const { setUserId, setUserWorkouts } =
-  userSlice.actions;
+export const { setUserId, setUserWorkouts } = userSlice.actions;
 export default userSlice.reducer;
