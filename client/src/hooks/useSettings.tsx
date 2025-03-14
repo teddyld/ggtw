@@ -4,7 +4,10 @@ import { useUser as useClerkUser } from "@clerk/clerk-react";
 import { useQuery } from "@tanstack/react-query";
 
 import { useAppSelector, useAppDispatch } from "../store";
-import { setUserId } from "../store/userReducer";
+import {
+  setUserId,
+  updateSettings as _updateSettings,
+} from "../store/userReducer";
 
 import { settingsType } from "../components/settings/settingsData";
 
@@ -28,10 +31,7 @@ export const useSettings = () => {
   }, [isLoaded, isSignedIn]);
 
   const updateSettings = async (settings: settingsType) => {
-    await axios.put("user/settings/update", {
-      userId: id,
-      settings,
-    });
+    dispatch(_updateSettings({ userId: id, settings }));
   };
 
   return {

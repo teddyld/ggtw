@@ -2,22 +2,29 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { workoutType } from "../components/workout/workoutData";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
+import { settingsType } from "../components/settings/settingsData";
 
 type userState = {
   id: string;
   userWorkouts: workoutType[];
+  settings: settingsType | {};
   status: "idle" | "pending" | "succeeded" | "failed";
 };
 
 const initialState: userState = {
   id: "",
   userWorkouts: [], // Facilitate client fetching of user workouts
+  settings: {},
   status: "idle",
 };
 
 type WorkoutPayloadType = {
   workout: workoutType;
   message: string;
+};
+
+type SettingsPayloadType = {
+  settings: settingsType;
 };
 
 export const setWorkout = createAsyncThunk(
@@ -47,6 +54,17 @@ export const deleteWorkout = createAsyncThunk(
       workoutId,
     });
     return workoutId;
+  },
+);
+
+export const updateSettings = createAsyncThunk(
+  "settings/update",
+  async ({ userId, settings }: { userId: string; settings: settingsType }) => {
+    await axios.put("user/settings/update", {
+      userId,
+      settings,
+    });
+    return { settings };
   },
 );
 
@@ -115,6 +133,25 @@ const userSlice = createSlice({
         },
       )
       .addCase(deleteWorkout.rejected, (state, _) => {
+        state.status = "failed";
+        notifications.show({
+          message: "An error occurred. Please try again later.",
+        });
+      })
+      .addCase(updateSettings.pending, (state, _) => {
+        state.status = "pending";
+      })
+      .addCase(
+        updateSettings.fulfilled,
+        (state, action: PayloadAction<SettingsPayloadType>) => {
+          state.status = "succeeded";
+          state.settings = action.payload.settings;
+          notifications.show({
+            message: "Settings updated successfully.",
+          });
+        },
+      )
+      .addCase(updateSettings.rejected, (state, _) => {
         state.status = "failed";
         notifications.show({
           message: "An error occurred. Please try again later.",
