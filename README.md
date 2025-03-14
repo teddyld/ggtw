@@ -10,6 +10,8 @@
 - TailwindCSS
 - Redux state management
 - Clerk
+- Vitest
+- Vercel
 
 ## About
 
