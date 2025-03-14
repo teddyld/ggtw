@@ -3,8 +3,9 @@ import { SegmentedControl, Group, Title, Text, Stack } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 
 import Container from "../layout/Container";
+import ActivitySummary from "./ActivitySummary";
 
-import { activityType } from "./statisticsData";
+import { activityType, pbType } from "./statisticsData";
 
 import { useMedia } from "../../hooks/useMedia";
 import { useActivity } from "../../hooks/useActivity";
@@ -13,10 +14,12 @@ export default function ActivityStatistics({
   startDate,
   activity,
   datesWithActivity,
+  personalBests,
 }: {
   startDate: Date;
   activity: activityType[];
   datesWithActivity: Set<string>;
+  personalBests: pbType;
 }) {
   const { isMobile } = useMedia();
   const { period, control, selected, handleControl, handleSelect } =
@@ -76,6 +79,11 @@ export default function ActivityStatistics({
                   : period.startDate}
               </Text>
             </Stack>
+            <ActivitySummary
+              period={period}
+              activity={activity}
+              personalBests={personalBests}
+            />
           </Stack>
         </Group>
       </Stack>

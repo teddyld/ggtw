@@ -4,12 +4,14 @@ import ExerciseStatistics from "../components/statistics/ExerciseStatistics";
 import StatisticsLoading from "../components/statistics/StatisticsLoading";
 
 import { activityType } from "../components/statistics/statisticsData";
+import { useSettings } from "../hooks/useSettings";
 import { useStatistics } from "../hooks/useStatistics";
 
 export default function StatisticsPage() {
   const { userStatistics, statisticsPending } = useStatistics();
+  const { settingsPending } = useSettings();
 
-  if (statisticsPending || !userStatistics) {
+  if (statisticsPending || settingsPending || !userStatistics) {
     return <StatisticsLoading />;
   }
 
@@ -43,6 +45,7 @@ export default function StatisticsPage() {
         startDate={userStatistics.startDate}
         activity={userActivity}
         datesWithActivity={datesWithActivity}
+        personalBests={userStatistics.personalBests}
       />
       <ExerciseStatistics
         activity={userActivity}

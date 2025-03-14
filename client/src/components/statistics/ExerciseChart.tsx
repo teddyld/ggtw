@@ -1,5 +1,6 @@
 import { Stack, Text } from "@mantine/core";
 import { LineChart } from "@mantine/charts";
+import { useAppSelector } from "../../store";
 
 import ExercisePillGroup from "../workout/ExercisePillGroup";
 
@@ -22,6 +23,8 @@ export default function ExerciseChart({
   timePeriod: string | null;
   sortOrder: string | null;
 }) {
+  const settings = useAppSelector((state) => state.user.settings);
+
   // Get all activity in timePeriod
   const activityInTimePeriod = () => {
     if (timePeriod === "All time") {
@@ -56,7 +59,12 @@ export default function ExerciseChart({
       continue;
     }
 
-    const exerciseRecord = createMaxRecord(record, exerciseName, sortOrder);
+    const exerciseRecord = createMaxRecord(
+      record,
+      exerciseName,
+      sortOrder,
+      settings.units,
+    );
     data.push(exerciseRecord);
   }
 

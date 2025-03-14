@@ -7,6 +7,7 @@ import { useAppSelector, useAppDispatch } from "../store";
 import {
   setUserId,
   updateSettings as _updateSettings,
+  setUserSettings,
 } from "../store/userReducer";
 
 import { settingsType } from "../components/settings/settingsData";
@@ -22,6 +23,15 @@ export const useSettings = () => {
     queryFn: () => axios.get(`/user/settings/${id}`).then((res) => res.data),
     enabled: !!id, // Only run when id is valid
   });
+
+  // Set user's settings from MongoDB
+  React.useEffect(() => {
+    if (data && data.settings) {
+      dispatch(setUserSettings(data.settings));
+    } else {
+      dispatch(setUserSettings({ units: "kg" }));
+    }
+  }, [isPending, data]);
 
   // Set user id from the User object from Clerk
   React.useEffect(() => {

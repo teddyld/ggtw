@@ -1,3 +1,4 @@
+import { convertUnits } from "../../utils/unitConversion";
 import { unitType } from "../workout/workoutData";
 
 export type logValueType = {
@@ -44,29 +45,36 @@ export type summaryType = {
 };
 
 // Sort sets by sortOrder
-export const orderSets = (sets: logValueType[], sortOrder: string | null) => {
+export const orderSets = (
+  sets: logValueType[],
+  sortOrder: string | null,
+  units: unitType,
+) => {
   const orderedSets = Array.from(sets);
   if (sortOrder === "Weight") {
-    orderedSets.sort(
-      (a, b) =>
-        b.weight - a.weight ||
-        (b.reps ?? 0) - (a.reps ?? 0) ||
-        (b.time ?? 0) - (a.time ?? 0),
-    );
+    orderedSets.sort((a, b) => {
+      const x = convertUnits(a.weight, a.units, units);
+      const y = convertUnits(b.weight, b.units, units);
+      return (
+        y - x || (b.reps ?? 0) - (a.reps ?? 0) || (b.time ?? 0) - (a.time ?? 0)
+      );
+    });
   } else if (sortOrder === "Reps") {
-    orderedSets.sort(
-      (a, b) =>
-        (b.reps ?? 0) - (a.reps ?? 0) ||
-        b.weight - a.weight ||
-        (b.time ?? 0) - (a.time ?? 0),
-    );
+    orderedSets.sort((a, b) => {
+      const x = convertUnits(a.weight, a.units, units);
+      const y = convertUnits(b.weight, b.units, units);
+      return (
+        (b.reps ?? 0) - (a.reps ?? 0) || y - x || (b.time ?? 0) - (a.time ?? 0)
+      );
+    });
   } else {
-    orderedSets.sort(
-      (a, b) =>
-        (b.time ?? 0) - (a.time ?? 0) ||
-        b.weight - a.weight ||
-        (b.reps ?? 0) - (a.reps ?? 0),
-    );
+    orderedSets.sort((a, b) => {
+      const x = convertUnits(a.weight, a.units, units);
+      const y = convertUnits(b.weight, b.units, units);
+      return (
+        (b.time ?? 0) - (a.time ?? 0) || y - x || (b.reps ?? 0) - (a.reps ?? 0)
+      );
+    });
   }
 
   return orderedSets;
@@ -77,8 +85,13 @@ export const createMaxRecord = (
   record: activityType,
   exerciseName: string,
   sortOrder: string | null,
+  units: unitType,
 ) => {
-  const orderedSets = orderSets(record.activity[exerciseName], sortOrder);
+  const orderedSets = orderSets(
+    record.activity[exerciseName],
+    sortOrder,
+    units,
+  );
   const maxSet = orderedSets[0];
 
   const exerciseRecord: exerciseRecordType = {
@@ -87,7 +100,7 @@ export const createMaxRecord = (
       month: "short",
       year: "numeric",
     }),
-    "MAX Weight": maxSet.weight,
+    "MAX Weight": convertUnits(maxSet.weight, maxSet.units, units),
     "MAX Reps": maxSet.reps,
     "MAX Time": maxSet.time,
   };

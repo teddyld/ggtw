@@ -7,14 +7,14 @@ import { settingsType } from "../components/settings/settingsData";
 type userState = {
   id: string;
   userWorkouts: workoutType[];
-  settings: settingsType | {};
+  settings: settingsType;
   status: "idle" | "pending" | "succeeded" | "failed";
 };
 
 const initialState: userState = {
   id: "",
   userWorkouts: [], // Facilitate client fetching of user workouts
-  settings: {},
+  settings: { units: "kg" },
   status: "idle",
 };
 
@@ -77,6 +77,9 @@ const userSlice = createSlice({
     },
     setUserWorkouts: (state, action: PayloadAction<workoutType[]>) => {
       state.userWorkouts = action.payload;
+    },
+    setUserSettings: (state, action: PayloadAction<settingsType>) => {
+      state.settings = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -160,5 +163,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUserId, setUserWorkouts } = userSlice.actions;
+export const { setUserId, setUserWorkouts, setUserSettings } =
+  userSlice.actions;
 export default userSlice.reducer;
