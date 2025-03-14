@@ -27,6 +27,9 @@ export const clerkWebHook = (headers, payload) =>
                 exercises: {},
                 personalBests: {},
               },
+              settings: {
+                units: "kg",
+              },
             },
           },
           { upsert: true }

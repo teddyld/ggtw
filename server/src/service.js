@@ -56,7 +56,7 @@ export const getUserStatistics = async (id) =>
     }
   });
 
-export const updateStatisticsLog = async (userId, logData) =>
+export const updateStatistics = async (userId, logData) =>
   new Promise(async (resolve, reject) => {
     try {
       const collection = db.collection("users");
@@ -142,6 +142,36 @@ export const deleteUserStatistics = async (userId) =>
             },
           },
         }
+      );
+      return resolve();
+    } catch (err) {
+      return reject(new AccessError(err.message));
+    }
+  });
+
+export const getUserSettings = async (id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const collection = db.collection("users");
+      const user = await collection.findOne({ user: id });
+      console.log(user);
+
+      return resolve({
+        settings: user.settings,
+      });
+    } catch (err) {
+      return reject(new AccessError(err.message));
+    }
+  });
+
+export const updateUserSettings = async (userId, settings) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const collection = db.collection("users");
+
+      await collection.updateOne(
+        { user: userId },
+        { $set: { settings: settings } }
       );
       return resolve();
     } catch (err) {

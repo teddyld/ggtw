@@ -11,8 +11,10 @@ import {
   getUserWorkouts,
   updateWorkout,
   getUserStatistics,
-  updateStatisticsLog,
+  updateStatistics,
   deleteUserStatistics,
+  getUserSettings,
+  updateUserSettings,
 } from "./src/service.js";
 
 const app = express();
@@ -105,7 +107,7 @@ app.put(
   "/user/statistics/log",
   catchErrors(async (req, res) => {
     const { userId, logData } = req.body;
-    await updateStatisticsLog(userId, logData);
+    await updateStatistics(userId, logData);
     return res.json({
       success: true,
       message: "Successfully updated user statistics",
@@ -121,6 +123,27 @@ app.put(
     return res.json({
       success: true,
       message: "Successfully deleted user statistics",
+    });
+  })
+);
+
+app.get(
+  "/user/settings/:id",
+  catchErrors(async (req, res) => {
+    const { id } = req.params;
+    const { settings } = await getUserSettings(id);
+    return res.json({ settings, success: true });
+  })
+);
+
+app.put(
+  "/user/settings/update",
+  catchErrors(async (req, res) => {
+    const { userId, settings } = req.body;
+    await updateUserSettings(userId, settings);
+    return res.json({
+      success: true,
+      message: "Successfully updated user settings unit",
     });
   })
 );

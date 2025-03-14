@@ -27,8 +27,16 @@ export const useSettings = () => {
     }
   }, [isLoaded, isSignedIn]);
 
+  const updateSettings = async (settings: settingsType) => {
+    await axios.put("user/settings/update", {
+      userId: id,
+      settings,
+    });
+  };
+
   return {
     userSettings: !isPending ? (data.settings as settingsType) : null,
     settingsPending: isPending,
+    updateSettings,
   };
 };
