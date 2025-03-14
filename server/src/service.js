@@ -154,7 +154,6 @@ export const getUserSettings = async (id) =>
     try {
       const collection = db.collection("users");
       const user = await collection.findOne({ user: id });
-      console.log(user);
 
       return resolve({
         settings: user.settings,
