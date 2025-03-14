@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { Webhook } from "svix";
-import { db } from "./mongodb.js";
+import { db } from "../index.js";
 
 export const clerkWebHook = (headers, payload) =>
   new Promise(async (resolve, reject) => {

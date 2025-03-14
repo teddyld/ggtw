@@ -1,4 +1,4 @@
-import { db } from "./mongodb.js";
+import { db } from "../index.js";
 import { AccessError } from "./error.js";
 
 export const getUserWorkouts = async (id) =>
