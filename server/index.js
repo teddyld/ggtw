@@ -43,7 +43,9 @@ const catchErrors = (fn) => async (req, res) => {
       res.status(403).send({ error: err.message });
     } else {
       console.log(err);
-      res.status(500).send({ error: `A system error ocurred ${err}` });
+      res
+        .status(500)
+        .send({ error: `A system error ocurred ${JSON.stringify(err)}` });
     }
   }
 };
