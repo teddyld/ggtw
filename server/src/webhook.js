@@ -13,29 +13,22 @@ export const clerkWebHook = (headers, payload) =>
       const eventType = evt.type;
 
       // Sync user to MongoDB
-      const collection = db.collection("users");
-
       if (eventType === "user.created") {
-        await collection.updateOne(
-          { user: id },
-          {
-            $setOnInsert: {
-              workouts: {},
-              statistics: {
-                startDate: new Date(),
-                activity: {},
-                exercises: {},
-                personalBests: {},
-              },
-              settings: {
-                units: "kg",
-              },
-            },
+        await db.create({
+          user: id,
+          workouts: {},
+          statistics: {
+            startDate: new Date(),
+            activity: {},
+            exercises: {},
+            personalBests: {},
           },
-          { upsert: true }
-        );
+          settings: {
+            units: "kg",
+          },
+        });
       } else if (eventType === "user.deleted") {
-        await collection.deleteOne({ user: id });
+        await db.deleteOne({ user: id });
       }
 
       return resolve({
