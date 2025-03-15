@@ -59,7 +59,6 @@ export default function WorkoutModal({
       }
       opened={opened}
       onClose={close}
-      centered
       size="md"
       withCloseButton={false}
     >

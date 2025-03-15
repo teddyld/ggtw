@@ -103,7 +103,6 @@ export default function ExerciseModal({
       }
       opened={opened}
       onClose={close}
-      centered
       size="md"
       withCloseButton={false}
     >
