@@ -26,7 +26,7 @@ export default function WorkoutCards({ workout }: { workout: workoutType }) {
         py="sm"
         className="group-hover:border-red-500"
       >
-        <Group justify="space-between" gap={0} align="center">
+        <Group justify="space-between" gap="xs" align="center">
           <Title order={2} fw={500} size="xl">
             {workout.name}
           </Title>
