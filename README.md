@@ -1,6 +1,6 @@
 # GGTW
 
-> A workout tracking web-application
+> A workout tracking web-application which displays your statistics and helps you log your workout
 
 ## Tech Stack
 
