@@ -51,7 +51,7 @@ const catchErrors = (fn) => async (req, res) => {
 };
 
 app.get("/", (req, res) => {
-  res.json({ success: true, message: "Hello World" });
+  res.send("Hello World!");
 });
 
 app.post(
