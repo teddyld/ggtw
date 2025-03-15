@@ -1,5 +1,7 @@
 # GGTW
 
+> A workout tracking web-application
+
 ## Tech Stack
 
 - MongoDB
@@ -15,4 +17,9 @@
 
 ## About
 
-A workout tracking web-application
+Find it deployed here: https://www.ggtw.dev/
+
+<div align="center">
+  <img src="./images/dashboard.JPG" width="200" height="450"/>
+  <img src="./images/1.JPG" width="200" height="450" /> 
+</div>
