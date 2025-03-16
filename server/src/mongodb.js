@@ -101,8 +101,8 @@ async function run() {
     await mongoose.connect(process.env.MONGODB_URI, clientOptions);
     await mongoose.connection.db.admin().command({ ping: 1 });
     console.log("🚀 Connected to MongoDB");
-  } catch (err) {
-    console.error(`Error running MongoDB: ${err.message}`);
+  } finally {
+    await mongoose.disconnect();
   }
 }
 
