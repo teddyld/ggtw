@@ -102,7 +102,7 @@ async function run() {
     await mongoose.connection.db.admin().command({ ping: 1 });
     console.log("🚀 Connected to MongoDB");
   } finally {
-    await mongoose.disconnect();
+    // Swallow error
   }
 }
 
