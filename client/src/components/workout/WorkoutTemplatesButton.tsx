@@ -4,22 +4,13 @@ import { FaChevronDown } from "react-icons/fa";
 import { workoutType, getTemplate } from "./workoutData";
 
 export default function WorkoutTemplatesButton({
-  setWorkout,
-  setLoading,
+  addTemplateWorkout,
   children,
   ...rest
 }: ButtonProps & {
-  setWorkout: (workout: workoutType, message: string) => Promise<void>;
-  setLoading: () => void;
+  addTemplateWorkout: (template: workoutType) => void;
   children?: React.ReactNode;
 }) {
-  // Add template workout defined in workoutData to program
-  const addTemplateWorkout = (template: workoutType) => {
-    setWorkout(template, "Workout created successfully!").then(() => {
-      setLoading();
-    });
-  };
-
   return (
     <Menu>
       <Menu.Target>

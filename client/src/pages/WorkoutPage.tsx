@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, Group, Center, Stack, Button, Skeleton } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { FaPlus } from "react-icons/fa";
 
 import Layout from "../components/layout/Layout";
@@ -8,26 +7,29 @@ import Layout from "../components/layout/Layout";
 import WorkoutCardsLoading from "../components/workout/WorkoutCardsLoading";
 import WorkoutTemplatesButton from "../components/workout/WorkoutTemplatesButton";
 import WorkoutNewButton from "../components/workout/WorkoutNewButton";
+import WorkoutCard from "../components/workout/WorkoutCard";
 
 import { useSignedIn } from "../hooks/useSignedIn";
 import { useWorkout } from "../hooks/useWorkout";
-import WorkoutCard from "../components/workout/WorkoutCard";
+import { workoutType } from "../components/workout/workoutData";
 
 export default function WorkoutPage() {
   const { userWorkouts, workoutPending, setWorkout } = useWorkout();
-  const [loading, { toggle }] = useDisclosure();
+  const [loading, setLoading] = React.useState(false);
 
   useSignedIn();
-
-  React.useEffect(() => {
-    if (loading) {
-      toggle();
-    }
-  }, [loading]);
 
   if (workoutPending) {
     return <WorkoutCardsLoading />;
   }
+
+  // Add template workout defined in workoutData to program
+  const addTemplateWorkout = (template: workoutType) => {
+    setLoading(true);
+    setWorkout(template, "Workout created successfully!").then(() => {
+      setLoading(false);
+    });
+  };
 
   return (
     <Layout>
@@ -41,10 +43,7 @@ export default function WorkoutPage() {
                 <WorkoutNewButton setWorkout={setWorkout}>
                   New workout
                 </WorkoutNewButton>
-                <WorkoutTemplatesButton
-                  setWorkout={setWorkout}
-                  setLoading={toggle}
-                >
+                <WorkoutTemplatesButton addTemplateWorkout={addTemplateWorkout}>
                   Templates
                 </WorkoutTemplatesButton>
               </Group>
@@ -68,8 +67,7 @@ export default function WorkoutPage() {
               Create
             </WorkoutNewButton>
             <WorkoutTemplatesButton
-              setWorkout={setWorkout}
-              setLoading={toggle}
+              addTemplateWorkout={addTemplateWorkout}
               variant="outline"
               color="red"
               radius="lg"
