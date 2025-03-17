@@ -1,14 +1,17 @@
-import { Button } from "@mantine/core";
+import { Button, ButtonProps } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import WorkoutNewModal from "./WorkoutNewModal";
-import { WorkoutButtonType } from "./workoutData";
+import { workoutType } from "./workoutData";
 
 export default function WorkoutNewButton({
   setWorkout,
   children,
   ...rest
-}: WorkoutButtonType) {
+}: ButtonProps & {
+  setWorkout: (workout: workoutType, message: string) => Promise<void>;
+  children: React.ReactNode;
+}) {
   const { color } = rest.color ? rest : { color: "gray" };
   const [opened, { open, close }] = useDisclosure();
 

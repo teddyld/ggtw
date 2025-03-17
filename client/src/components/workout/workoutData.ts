@@ -1,5 +1,3 @@
-import React from "react";
-import { ButtonProps } from "@mantine/core";
 import { v4 as uuidv4 } from "uuid";
 
 export type workoutType = {
@@ -392,9 +390,4 @@ export const getTemplate = (name: string) => {
   // Update id with a generated uuid
   template.id = uuidv4();
   return template;
-};
-
-export type WorkoutButtonType = ButtonProps & {
-  setWorkout: (workout: workoutType, message: string) => Promise<void>;
-  children?: React.ReactNode;
 };

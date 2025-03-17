@@ -1,16 +1,23 @@
-import { Menu, Button, Group } from "@mantine/core";
+import { Menu, Button, ButtonProps, Group } from "@mantine/core";
 import { FaChevronDown } from "react-icons/fa";
 
-import { workoutType, WorkoutButtonType, getTemplate } from "./workoutData";
+import { workoutType, getTemplate } from "./workoutData";
 
 export default function WorkoutTemplatesButton({
   setWorkout,
+  setLoading,
   children,
   ...rest
-}: WorkoutButtonType) {
+}: ButtonProps & {
+  setWorkout: (workout: workoutType, message: string) => Promise<void>;
+  setLoading: () => void;
+  children?: React.ReactNode;
+}) {
   // Add template workout defined in workoutData to program
-  const addTemplateWorkout = async (template: workoutType) => {
-    setWorkout(template, "Workout created successfully!");
+  const addTemplateWorkout = (template: workoutType) => {
+    setWorkout(template, "Workout created successfully!").then(() => {
+      setLoading();
+    });
   };
 
   return (
