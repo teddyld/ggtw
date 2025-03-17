@@ -82,7 +82,9 @@ export const updateStatistics = async (userId, logData) =>
 
       if (
         !personalBests[exerciseName] ||
-        personalBests[exerciseName].weight < bestSet.weight
+        personalBests[exerciseName].weight < bestSet.weight ||
+        (personalBests[exerciseName].weight === bestSet.weight &&
+          personalBests[exerciseName].reps < bestSet.reps)
       ) {
         await db.findOneAndUpdate(
           { user: userId },
