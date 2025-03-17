@@ -39,7 +39,7 @@ export default function Workout() {
   const exercises = Object.values(workout.exercises);
 
   // Create exercise
-  const createExercise = async (exerciseName: string) => {
+  const createExercise = (exerciseName: string) => {
     return new Promise<void>((resolve, reject) => {
       try {
         const newExerciseId = `exercise-${workout.exerciseCount + 1}`;
