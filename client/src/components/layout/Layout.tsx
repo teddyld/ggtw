@@ -1,12 +1,15 @@
 import React from "react";
-import { AppShell, Flex } from "@mantine/core";
+import { AppShell, Flex, Anchor, Text, Group } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 
 import { useNavbar } from "../../hooks/useNavbar";
 import Header from "./Header";
 import NavBar from "./NavBar";
+import PrivacyModal from "./PrivacyModal";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { opened, toggle } = useNavbar();
+  const [modalOpened, { open, close }] = useDisclosure();
 
   return (
     <AppShell
@@ -19,6 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           mobile: !opened,
         },
       }}
+      footer={{ height: 60 }}
       padding="xs"
     >
       <AppShell.Header>
@@ -38,6 +42,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </Flex>
       </AppShell.Main>
+      <AppShell.Footer>
+        <Group p="md" justify="space-between" w="100%">
+          <Text size="sm" c="dimmed">
+            © {new Date().getFullYear()} ggtw. All rights reserved.
+          </Text>
+          <Group gap="xs">
+            <Anchor size="sm" onClick={open}>
+              Privacy Policy
+            </Anchor>
+            <Anchor href="mailto: ggtw.vincent@gmail.com" size="sm">
+              Contact Us
+            </Anchor>
+          </Group>
+        </Group>
+        <PrivacyModal opened={modalOpened} close={close} />
+      </AppShell.Footer>
     </AppShell>
   );
 }

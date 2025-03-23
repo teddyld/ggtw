@@ -1,27 +1,21 @@
 import React from "react";
 import {
-  Anchor,
   Timeline,
-  Text,
   Title,
   Divider,
   Stack,
   Button,
   Highlight,
-  Group,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
 import { SignInButton } from "@clerk/clerk-react";
 import { FaPen, FaDumbbell, FaChartLine } from "react-icons/fa";
 
 import Layout from "../components/layout/Layout";
-import PrivacyModal from "../components/layout/PrivacyModal";
 
 import { useSignedIn } from "../hooks/useSignedIn";
 
 export default function DashboardPage() {
   const [active, setActive] = React.useState(-1);
-  const [opened, { open, close }] = useDisclosure();
 
   const { handleSignedIn } = useSignedIn();
 
@@ -110,21 +104,6 @@ export default function DashboardPage() {
           </Timeline.Item>
         </Timeline>
       </Stack>
-      <Divider w="100%" />
-      <Group p="md" justify="space-between" w="100%">
-        <Text size="sm" c="dimmed">
-          © {new Date().getFullYear()} ggtw. All rights reserved.
-        </Text>
-        <Group gap="xs">
-          <Anchor size="sm" onClick={open}>
-            Privacy Policy
-          </Anchor>
-          <Anchor href="mailto: ggtw.vincent@gmail.com" size="sm">
-            Contact Us
-          </Anchor>
-        </Group>
-      </Group>
-      <PrivacyModal opened={opened} close={close} />
     </Layout>
   );
 }
