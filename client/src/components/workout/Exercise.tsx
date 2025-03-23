@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Title,
   Group,
@@ -10,7 +11,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { FaPlus } from "react-icons/fa";
 
-import { exerciseType, workoutType } from "./workoutData";
+import { exerciseType, setInputTypes, workoutType } from "./workoutData";
 import ExerciseMenu from "./ExerciseMenu";
 import ExerciseModal from "./ExerciseModal";
 import ExercisePillGroup from "./ExercisePillGroup";
@@ -30,6 +31,8 @@ export default function Exercise({
   exercise: exerciseType;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
+  const [edit, setEdit] = React.useState(false);
+  const [canceled, setCanceled] = React.useState(false);
 
   const sets = exercise.setOrder.map((setId) => exercise.sets[setId]);
 
@@ -44,11 +47,28 @@ export default function Exercise({
     changeExerciseUnits,
   } = useExercise(exercise, workout, setWorkout);
 
-  const { deleteSet, addSetBelow, updateSetValue } = useSet(
+  const { deleteSet, addSetBelow, updateSetValues } = useSet(
     exercise,
     workout,
     setWorkout,
   );
+
+  const [modifySets, setModifySets] = React.useState(sets);
+
+  const changeSetValue = (
+    setId: string,
+    value: number,
+    type: setInputTypes,
+  ) => {
+    const newSets = structuredClone(modifySets);
+    const index = newSets.findIndex((set) => set.id === setId);
+    newSets[index].values[type] = value;
+    setModifySets(newSets);
+  };
+
+  React.useEffect(() => {
+    setCanceled(false);
+  }, []);
 
   return (
     <>
@@ -116,13 +136,38 @@ export default function Exercise({
         )}
         <SetList
           sets={sets}
+          changeSetValue={changeSetValue}
           checked={exercise.types}
           logged={logged}
           deleteSet={deleteSet}
           addSetBelow={addSetBelow}
-          updateSetValue={updateSetValue}
           logSet={logSet}
+          edit={edit}
+          canceled={canceled}
+          setEdit={setEdit}
         />
+        {edit && (
+          <Group justify="center">
+            <Button
+              color="gray"
+              onClick={() => {
+                setEdit(false);
+                setCanceled(true);
+                setModifySets([...sets]);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                setEdit(false);
+                updateSetValues(modifySets);
+              }}
+            >
+              Save
+            </Button>
+          </Group>
+        )}
         <Divider />
       </Stack>
       <ExerciseModal

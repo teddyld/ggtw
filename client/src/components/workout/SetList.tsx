@@ -2,29 +2,31 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import Set from "./Set";
-import { setType, setInputTypes, exerciseTypes } from "./workoutData";
+import { setType, exerciseTypes, setInputTypes } from "./workoutData";
 
 const SetList = React.memo(
   ({
     sets,
+    changeSetValue,
     checked,
     logged,
     deleteSet,
     addSetBelow,
-    updateSetValue,
     logSet,
+    edit,
+    canceled,
+    setEdit,
   }: {
     sets: setType[];
+    changeSetValue: (setId: string, value: number, type: setInputTypes) => void;
     checked: exerciseTypes;
     logged: Record<string, boolean>;
     deleteSet: (setId: string) => void;
     addSetBelow: (setId: string) => void;
-    updateSetValue: (
-      setId: string,
-      newValue: number,
-      type: setInputTypes,
-    ) => void;
     logSet: (setId: string) => void;
+    edit: boolean;
+    canceled: boolean;
+    setEdit: React.Dispatch<React.SetStateAction<boolean>>;
   }) => {
     return (
       <AnimatePresence>
@@ -40,12 +42,15 @@ const SetList = React.memo(
             >
               <Set
                 set={set}
+                changeSetValue={changeSetValue}
                 checked={checked}
                 logged={logged}
                 deleteSet={() => deleteSet(set.id)}
                 addSetBelow={() => addSetBelow(set.id)}
-                updateSetValue={updateSetValue}
                 logSet={() => logSet(set.id)}
+                edit={edit}
+                canceled={canceled}
+                makeEdit={() => setEdit(true)}
               />
             </motion.div>
           );
@@ -53,7 +58,8 @@ const SetList = React.memo(
       </AnimatePresence>
     );
   },
-  (prevProps, nextProps) => prevProps.sets === nextProps.sets,
+  (prevProps, nextProps) =>
+    prevProps.sets === nextProps.sets && prevProps.logged === nextProps.logged,
 );
 
 export default SetList;

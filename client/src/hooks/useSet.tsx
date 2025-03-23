@@ -1,6 +1,6 @@
 import {
   exerciseType,
-  setInputTypes,
+  setType,
   workoutType,
 } from "../components/workout/workoutData";
 
@@ -50,7 +50,6 @@ export const useSet = (
           reps: 0,
           time: 0,
         },
-        logged: false,
       },
     };
 
@@ -70,19 +69,12 @@ export const useSet = (
     setWorkout(newWorkout, "");
   };
 
-  // Update setId value of type with newValue
-  const updateSetValue = (
-    setId: string,
-    newValue: number,
-    type: setInputTypes,
-  ) => {
-    const newSets = structuredClone(exercise.sets);
-
-    // Return if type value is the same as newValue
-    const newSet = newSets[setId];
-    if (newSet.values[type] === newValue) return;
-
-    newSet.values[type] = newValue;
+  // Update set values
+  const updateSetValues = (newSets: setType[]) => {
+    const newSetsObj: exerciseType["sets"] = {};
+    for (const set of newSets) {
+      newSetsObj[set.id] = set;
+    }
 
     const newWorkout = {
       ...workout,
@@ -90,10 +82,7 @@ export const useSet = (
         ...workout.exercises,
         [exercise.id]: {
           ...exercise,
-          sets: {
-            ...exercise.sets,
-            [setId]: newSet,
-          },
+          sets: newSetsObj,
         },
       },
     };
@@ -104,6 +93,6 @@ export const useSet = (
   return {
     deleteSet,
     addSetBelow,
-    updateSetValue,
+    updateSetValues,
   };
 };

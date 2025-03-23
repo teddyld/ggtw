@@ -5,14 +5,16 @@ import SetInput from "./SetInput";
 const initialValue = 10;
 
 describe("SetInput component", () => {
-  it("calls updateSetValue on set input change", async () => {
-    const updateSetValueFn = vi.fn();
+  it("calls handleOnChange on set input change", async () => {
+    const handleOnChangeFn = vi.fn();
+    const makeEditFn = vi.fn();
     const { user } = setupRender(
       <SetInput
-        initialValue={initialValue}
+        value={initialValue}
         setId="set-1"
         type="weight"
-        updateSetValue={updateSetValueFn}
+        handleOnChange={handleOnChangeFn}
+        makeEdit={makeEditFn}
       />,
     );
 
@@ -31,6 +33,7 @@ describe("SetInput component", () => {
     expect(setInput).toHaveValue(newValue.toString());
 
     // Called once for clearing input, called three more times for 3 digits
-    expect(updateSetValueFn).toHaveBeenCalledTimes(4);
+    expect(handleOnChangeFn).toHaveBeenCalledTimes(4);
+    expect(makeEditFn).toHaveBeenCalledOnce();
   });
 });
