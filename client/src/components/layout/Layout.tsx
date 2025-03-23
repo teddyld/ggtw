@@ -1,5 +1,5 @@
 import React from "react";
-import { AppShell, Flex, Anchor, Text, Group } from "@mantine/core";
+import { AppShell, Flex, Anchor, Text, Group, Divider } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import { useNavbar } from "../../hooks/useNavbar";
@@ -22,7 +22,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           mobile: !opened,
         },
       }}
-      footer={{ height: 60 }}
       padding="xs"
     >
       <AppShell.Header>
@@ -32,32 +31,35 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <NavBar opened={opened} toggle={toggle} />
       </AppShell.Navbar>
       <AppShell.Main>
-        <Flex
-          gap="md"
-          justify="center"
-          align="center"
-          direction="column"
-          wrap="nowrap"
-        >
-          {children}
-        </Flex>
-      </AppShell.Main>
-      <AppShell.Footer>
-        <Group p="md" justify="space-between" w="100%">
-          <Text size="sm" c="dimmed">
-            © {new Date().getFullYear()} ggtw. All rights reserved.
-          </Text>
-          <Group gap="xs">
-            <Anchor size="sm" onClick={open}>
-              Privacy Policy
-            </Anchor>
-            <Anchor href="mailto: ggtw.vincent@gmail.com" size="sm">
-              Contact Us
-            </Anchor>
+        <div className="min-h-screen">
+          <Flex
+            gap="md"
+            justify="center"
+            align="center"
+            direction="column"
+            wrap="nowrap"
+          >
+            {children}
+          </Flex>
+        </div>
+        <footer className="mt-4 w-full">
+          <Divider w="100%" />
+          <Group p="md" pt="lg" justify="center" w="100%">
+            <Text size="sm" c="dimmed">
+              © {new Date().getFullYear()} ggtw. All rights reserved.
+            </Text>
+            <Group gap="xs">
+              <Anchor size="sm" onClick={open}>
+                Privacy Policy
+              </Anchor>
+              <Anchor href="mailto: ggtw.vincent@gmail.com" size="sm">
+                Contact Us
+              </Anchor>
+            </Group>
           </Group>
-        </Group>
-        <PrivacyModal opened={modalOpened} close={close} />
-      </AppShell.Footer>
+          <PrivacyModal opened={modalOpened} close={close} />
+        </footer>
+      </AppShell.Main>
     </AppShell>
   );
 }
