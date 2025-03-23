@@ -2,12 +2,7 @@ import React from "react";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 
-import {
-  exerciseType,
-  exerciseTypes,
-  unitType,
-  workoutType,
-} from "../components/workout/workoutData";
+import { exerciseType, workoutType } from "../components/workout/workoutData";
 import { logType, logValueType } from "../components/statistics/statisticsData";
 import { useAppSelector } from "../store";
 
@@ -57,7 +52,7 @@ export const useExercise = (
   }, [playAnimation]);
 
   // Update type of exercise
-  const updateExerciseTypes = (types: exerciseTypes) => {
+  const updateExerciseTypes = (types: exerciseType["types"]) => {
     const newExercise = structuredClone(exercise);
     newExercise.types = types;
 
@@ -150,7 +145,7 @@ export const useExercise = (
     setWorkout(newWorkout, "");
   };
 
-  const getLoggedSets = (setIds: string[], units: unitType) => {
+  const getLoggedSets = (setIds: string[], units: exerciseType["units"]) => {
     const sets = [];
     for (const setId of setIds) {
       const setValues = exercise.sets[setId].values;
@@ -239,7 +234,7 @@ export const useExercise = (
     setWorkout(newWorkout, "");
   };
 
-  const changeExerciseUnits = (value: unitType) => {
+  const changeExerciseUnits = (value: exerciseType["units"]) => {
     const newWorkout = {
       ...workout,
       exercises: {
