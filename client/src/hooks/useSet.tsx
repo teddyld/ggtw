@@ -75,7 +75,7 @@ export const useSet = (
   };
 
   // Update set values
-  const updateSetValues = (newSets: setType[]) => {
+  const updateSetValues = async (newSets: setType[]) => {
     const newSetsObj: exerciseType["sets"] = {};
     for (const set of newSets) {
       newSetsObj[set.id] = set;
@@ -93,7 +93,7 @@ export const useSet = (
     };
 
     setLoading(true);
-    setWorkout(newWorkout, "Set updated").then(() => {
+    await setWorkout(newWorkout, "Set updated").then(() => {
       setLoading(false);
       setEdit(false);
     });
