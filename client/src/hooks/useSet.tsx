@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   exerciseType,
   setType,
@@ -7,8 +9,11 @@ import {
 export const useSet = (
   exercise: exerciseType,
   workout: workoutType,
-  setWorkout: (workout: workoutType, message: string) => void,
+  setWorkout: (workout: workoutType, message: string) => Promise<void>,
 ) => {
+  const [edit, setEdit] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
   // Delete setId
   const deleteSet = (setId: string) => {
     const newSetOrder = Array.from(exercise.setOrder);
@@ -87,10 +92,17 @@ export const useSet = (
       },
     };
 
-    setWorkout(newWorkout, "");
+    setLoading(true);
+    setWorkout(newWorkout, "Set updated").then(() => {
+      setLoading(false);
+      setEdit(false);
+    });
   };
 
   return {
+    edit,
+    setEdit,
+    loading,
     deleteSet,
     addSetBelow,
     updateSetValues,

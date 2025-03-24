@@ -31,7 +31,6 @@ export default function Exercise({
   exercise: exerciseType;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
-  const [edit, setEdit] = React.useState(false);
   const [canceled, setCanceled] = React.useState(false);
 
   const sets = exercise.setOrder.map((setId) => exercise.sets[setId]);
@@ -47,11 +46,8 @@ export default function Exercise({
     changeExerciseUnits,
   } = useExercise(exercise, workout, setWorkout);
 
-  const { deleteSet, addSetBelow, updateSetValues } = useSet(
-    exercise,
-    workout,
-    setWorkout,
-  );
+  const { edit, setEdit, loading, deleteSet, addSetBelow, updateSetValues } =
+    useSet(exercise, workout, setWorkout);
 
   const [modifySets, setModifySets] = React.useState(sets);
 
@@ -159,8 +155,8 @@ export default function Exercise({
               Cancel
             </Button>
             <Button
+              loading={loading}
               onClick={() => {
-                setEdit(false);
                 updateSetValues(modifySets);
               }}
             >
