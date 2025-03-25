@@ -24,7 +24,7 @@ export default function SetInput({
       allowLeadingZeros={false}
       variant="filled"
       allowNegative={false}
-      placeholder={type.toUpperCase()}
+      placeholder="0"
       value={value}
       onChange={(value) => handleOnChange(value, type)}
       onClick={makeEdit}
