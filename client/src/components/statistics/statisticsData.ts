@@ -40,8 +40,6 @@ export type exerciseRecordType = {
 export type summaryType = {
   exerciseName: string;
   personalBest: exerciseRecordType;
-  currentRecord: exerciseRecordType;
-  status: "UP" | "DOWN" | "NO CHANGE";
 };
 
 // Sort sets by sortOrder
