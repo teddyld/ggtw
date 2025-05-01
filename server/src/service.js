@@ -81,10 +81,10 @@ export const updateStatistics = async (userId, logData) =>
       const bestSet = orderedSets[0];
 
       if (
-        !personalBests[exerciseName] ||
-        personalBests[exerciseName].weight < bestSet.weight ||
-        (personalBests[exerciseName].weight === bestSet.weight &&
-          personalBests[exerciseName].reps < bestSet.reps)
+        !personalBests.get(exerciseName) ||
+        personalBests.get(exerciseName).weight < bestSet.weight ||
+        (personalBests.get(exerciseName).weight === bestSet.weight &&
+          personalBests.get(exerciseName).reps < bestSet.reps)
       ) {
         await db.findOneAndUpdate(
           { user: userId },
